@@ -1,0 +1,25 @@
+{
+  "editor.insertSpaces": false,
+  "typescript.tsc.autoDetect": "off",
+  "typescript.preferences.quoteStyle": "single",
+  "protoc": {
+    "path": "D:/protoc/bin/protoc.exe",
+    "compile_on_save": true,
+    "options": [
+      "--proto_path=${workspaceRoot}/rcp",
+      "--js_out=${workspaceRoot}/rcp/ignore"
+    ]
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSaveMode": "file",
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["*.scenario.json"],
+      "url": "./schema/scenario.schema.json"
+    }
+  ]
+}

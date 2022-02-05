@@ -1,0 +1,52 @@
+{
+  "name": "acl-arduino-client",
+  "displayName": "AC Lab Arduino Client",
+  "description": "Arduino development environment and similars. Fast and easy!",
+  "version": "0.0.1",
+  "publisher": "aclab",
+  "author": {
+    "name": "Alan Cândido (brodao)",
+    "email": "brodao@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brodao/acl-arduino.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brodao/acl-arduino.git"
+  },
+  "files": [
+    "src",
+    "syntaxes",
+    "languages"
+  ],
+  "type": "commonjs",
+  "scripts": {},
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/glob": "^7.2.0",
+    "@types/lodash": "^4.14.178",
+    "@types/server": "file:://../server",
+    "@types/vscode": "^1.62.0",
+    "css-loader": "^6.5.1",
+    "npm-run-all": "^4.1.5",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.0",
+    "ts-loader": "^9.2.6",
+    "vscode-extension-tester": "^4.2.3",
+    "vscode-languageclient": "^7.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^17.0.13",
+    "@types/server": "file:://../server",
+    "match-sorter": "^6.3.1",
+    "vscode-nls": "^5.0.0",
+    "fs-extra": "^10.0.0",
+    "glob": "^7.2.0",
+    "json-merger": "^1.1.7"
+  }
+}

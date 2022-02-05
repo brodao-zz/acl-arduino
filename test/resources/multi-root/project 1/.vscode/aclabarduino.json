@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "cliVersion": "0.20.2",
+  "board": "arduino:avr:uno",
+  "board_name": "Arduino Uno",
+  "port": "COM7"
+}

@@ -1,0 +1,285 @@
+{
+  "name": "acl-arduino",
+  "displayName": "AC Lab Arduino Service",
+  "description": "Arduino development environment and similars. Fast and easy!",
+  "version": "0.0.1",
+  "publisher": "aclab",
+  "author": {
+    "name": "Alan Cândido (bródão)",
+    "email": "brodao@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "multi-root ready",
+    "arduino",
+    "microprocessor",
+    "MCU",
+    "iot",
+    "ino",
+    "IntelliSense"
+  ],
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "icon": "resources/icons/aclabarduino.png",
+  "categories": [
+    "Programming Languages"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brodao/acl-arduino.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brodao/acl-arduino.git"
+  },
+  "scripts": {
+    "clean": "rimraf **/out **/map **/types **/*.tsbuildinfo",
+    "--COMPILE--": "",
+    "compile": "npm run clean && npm-run-all compile:*",
+    "compile:server": "cd server && tsc -p ./ && cd ..",
+    "compile:client": "cd client && tsc -p ./ && cd ..",
+    "compile:views": "cd client && webpack --mode development && cd ..",
+    "--INSTALL--": "",
+    "postinstall": "npm-run-all postinstall:*",
+    "postinstall:client": "cd client && npm ci && cd ..",
+    "postinstall:server": "cd server && npm ci && cd ..",
+    "postinstall:test": "cd test && npm ci && cd ..",
+    "----------------": "",
+    "_vscode:prepublish": "npm run compile",
+    "_lint": "eslint ./src --ext .ts,.tsx",
+    "_format": "prettier --write \"{src,tests}/**/*.ts\" --single-quote --trailing-comma es5",
+    "-------": "",
+    "-prepare": "npm run format && npm run lint && npm run compile && npm run test",
+    "_release": "standard-version",
+    "_tag": "git push --follow-tags",
+    "_prepublishOnly": "npm run test",
+    "_publish": "npm publish",
+    "--------": "",
+    "-vscode:prepublish": "npm run compile",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
+  },
+  "main": "./client/out/extension.js",
+  "activationEvents": [
+    "onWebviewPanel:arduinoExplorer",
+    "workspaceContains:**/aclabarduino.json",
+    "workspaceContains:**/*.ino",
+    "onLanguage:ino"
+  ],
+  "funding": [
+    {
+      "type": "individual",
+      "url": "http://mpago.la/1sWXCjq"
+    },
+    {
+      "type": "individual",
+      "url": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=265489088-d6ac3c3d-26ec-4b32-9e61-1a6f67f46880"
+    },
+    {
+      "type": "individual",
+      "url": "https://pagseguro.uol.com.br/checkout/nc/nl/donation/sender-identification.jhtml?t=ed1ce6a52728d7cc3f98b07dd597573b7db955e85faff6ff5da31c3d3b58266b&e=true#rmcl"
+    }
+  ],
+  "devDependencies": {
+    "@types/node": "^17.0.13",
+    "@types/vscode": "^1.62.0",
+    "css-loader": "^6.5.1",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "vsce": "^2.6.7",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "AC Lab Configuration",
+      "properties": {
+        "acLabServer.maxNumberOfProblems": {
+          "scope": "resource",
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        },
+        "acLabServer.AskNoMore": {
+          "scope": "application",
+          "type": "boolean",
+          "default": "false",
+          "description": "Não pergunta mais se deve inicializar o AC Lab Arduino."
+        },
+        "acLabServer.trace.server": {
+          "scope": "language-overridable",
+          "description": "Traces the communication between VS Code and the language server.",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "enumDescriptions": [
+            "Não efetua registros de ocorrências",
+            "Apresenta as mensagens trocadas",
+            "Apresenta as mensagens trocadas detalhadamente"
+          ],
+          "default": "off"
+        },
+        "acLabServer.log.level": {
+          "scope": "language-overridable",
+          "type": "string",
+          "description": "Nível do registro de ocorrências da extensão.",
+          "enum": [
+            "error",
+            "warn",
+            "info",
+            "verbose",
+            "debug"
+          ],
+          "default": "info",
+          "enumDescriptions": [
+            "Somente erros",
+            "Avisos",
+            "Informações",
+            "Informações com detalhes",
+            "Depuração (detalhemento do processamento)"
+          ]
+        },
+        "acLabServer.show.banner": {
+          "scope": "language-overridable",
+          "description": "Apresenta faixa de abertura.",
+          "type": "boolean",
+          "default": "false"
+        },
+        "acLabServer.log.to.file": {
+          "scope": "language-overridable",
+          "description": "As ocorrências da extensão são gravadas em arquivo com nível 'verbose'.",
+          "type": "boolean",
+          "default": "false"
+        },
+        "acLabServer.format.log.file": {
+          "scope": "language-overridable",
+          "description": "Formato de gravação das ocorrências em arquivo.",
+          "type": "string",
+          "enum": [
+            "text",
+            "json"
+          ],
+          "default": "text",
+          "enumDescriptions": [
+            "Texto puro",
+            "Formato JSON"
+          ]
+        }
+      }
+    },
+    "iconThemes": [
+      {
+        "id": "aclab",
+        "label": "AC Lab",
+        "path": "./fileicons/aclab-icon-theme.json"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "arduinoExplorer",
+          "name": "Arduino Explorer"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "arduinoExplorer",
+        "contents": "Finding configured projets or candidates."
+      }
+    ],
+    "languages": [
+      {
+        "id": "ino",
+        "extensions": [
+          ".ino"
+        ],
+        "configuration": "./client/languages/ino.language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ino",
+        "scopeName": "source.ino",
+        "path": "./client/syntaxes/ino.tmGrammar.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "arduinoExplorer.initialize",
+        "title": "Initialize",
+        "category": "ACLab",
+        "icon": {
+          "light": "./resources/light/new.svg",
+          "dark": "./resources/dark/new.svg"
+        }
+      },
+      {
+        "command": "aclabExplorer.selectBoard",
+        "title": "Select board",
+        "shortTitle": "Board",
+        "icon": {
+          "light": "./resources/light/board.svg",
+          "dark": "./resources/dark/board.svg"
+        },
+        "category": "ACLab"
+      },
+      {
+        "command": "aclabExplorer.selectPlatform",
+        "title": "Select platform",
+        "shortTitle": "Platform",
+        "icon": {
+          "light": "./resources/light/platform.svg",
+          "dark": "./resources/dark/platform.svg"
+        },
+        "category": "ACLab"
+      },
+      {
+        "command": "aclabExplorer.add3rdPartyUrl",
+        "title": "Add 3rd Party Url",
+        "shortTitle": "3rd Party",
+        "icon": {
+          "light": "./resources/light/platform.svg",
+          "dark": "./resources/dark/platform.svg"
+        },
+        "category": "ACLab"
+      },
+      {
+        "command": "arduinoExplorer.selectPort",
+        "title": "Select port",
+        "shortTitle": "Port",
+        "icon": {
+          "light": "./resources/light/port.svg",
+          "dark": "./resources/dark/port.svg"
+        },
+        "category": "ACLab"
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "arduinoExplorer.initialize",
+          "when": "view == arduinoExplorer && viewItem == notExistFile",
+          "group": "inline"
+        },
+        {
+          "command": "aclabExplorer.selectBoard",
+          "when": "view == arduinoExplorer && viewItem == existFile",
+          "group": "inline"
+        },
+        {
+          "command": "arduinoExplorer.selectPort",
+          "when": "view == arduinoExplorer && viewItem == existFile",
+          "group": "inline"
+        }
+      ]
+    }
+  }
+}

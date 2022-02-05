@@ -1,0 +1,7 @@
+{
+	"name": "Simple Root",
+	"description": [
+		"Folder with unique MCU project."
+	],
+	"project": "simple-root"
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "title": "Test Scenario Schema",
+  "description": "Schema of test scenario configuration files.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Short name to identify the test objective or target.",
+      "type": "string"
+    },
+    "description": {
+      "description": "Test scenario description.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 5
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name used to identify the project in the tests.",
+          "type": "string"
+        },
+        "folder": {
+          "description": "Folder name, with the project structure to be tested, p.e. \"multi-root\". Must be under the folder [test\resource-test].",
+          "markdownDescription": "Folder name, with the project structure to be tested, p.e. ``multi-root``.\nMust be under the folder ``.\\test\\resource-test``.",
+          "type": "string"
+        },
+        "required": true
+      }
+    },
+    "variables": {
+      "description": "List of substitution variables.",
+      "type": "object",
+      "rootPath": {
+        "description": "Root path to be used as a substitution variable, used according to the operating system.",
+        "type": "object",
+        "$ref": "#/definitions/operationSystens"
+      },
+      "execExt": {
+        "description": "Executable file extension.",
+        "type": "object",
+        "$ref": "#/definitions/operationSystens"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/operationSystens"
+      },
+      "required": ["rootPath"]
+    }
+  },
+  "required": ["name", "description", "project"],
+  "definitions": {
+    "operationSystens": {
+      "type": "object",
+      "description": "Associate value to be used according to the operating system.",
+      "properties": {
+        "windows": {
+          "type": "string"
+        },
+        "linux": {
+          "type": "string"
+        },
+        "mac": {
+          "type": "string"
+        }
+      },
+      "required": ["windows", "linux", "mac"]
+    }
+  }
+}

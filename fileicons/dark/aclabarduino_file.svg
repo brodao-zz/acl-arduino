@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 450 450"
+   style="enable-background:new 0 0 450 450;"
+   xml:space="preserve"
+   sodipodi:docname="aclabarduino_file.svg"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"><title
+   id="title51">INO File</title><metadata
+   id="metadata47"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title>INO File</dc:title><cc:license
+         rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/" /><dc:creator><cc:Agent><dc:title>Alan Cândido (brodao@gmail.com)</dc:title></cc:Agent></dc:creator><dc:publisher><cc:Agent><dc:title>Alan Cândido (brodao@gmail.com)</dc:title></cc:Agent></dc:publisher><dc:subject><rdf:Bag><rdf:li>ino file icon</rdf:li></rdf:Bag></dc:subject></cc:Work><cc:License
+       rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/"><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Reproduction" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:requires
+         rdf:resource="http://creativecommons.org/ns#Notice" /><cc:requires
+         rdf:resource="http://creativecommons.org/ns#Attribution" /><cc:prohibits
+         rdf:resource="http://creativecommons.org/ns#CommercialUse" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /><cc:requires
+         rdf:resource="http://creativecommons.org/ns#ShareAlike" /></cc:License></rdf:RDF></metadata><defs
+   id="defs45"><rect
+     x="119.47213"
+     y="330.02698"
+     width="205.82327"
+     height="82.802467"
+     id="rect55" /><clipPath
+     clipPathUnits="userSpaceOnUse"
+     id="clipPath59"><use
+       x="0"
+       y="0"
+       xlink:href="#g55"
+       id="use61"
+       width="100%"
+       height="100%"
+       transform="matrix(10.20838,0,0,9.0545411,6255.6784,12036.634)" /></clipPath></defs><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1366"
+   inkscape:window-height="705"
+   id="namedview43"
+   showgrid="false"
+   inkscape:zoom="1.1955556"
+   inkscape:cx="122.44363"
+   inkscape:cy="201.20274"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g55"
+   inkscape:document-rotation="0" />
+<g
+   id="g10">
+	
+	
+	
+	
+<g
+   inkscape:label="Clip"
+   id="g55"
+   style="visibility:visible;fill-rule:evenodd;stroke-width:28.222;stroke-linejoin:round"
+   transform="matrix(0.09795874,0,0,0.11044182,-612.79837,-1329.3478)"><rect
+     style="fill:none;fill-opacity:1;stroke-width:271.331"
+     id="rect909"
+     width="4636.9595"
+     height="4166.4033"
+     x="6243.603"
+     y="12015.213" /><path
+     d="m 8604.8368,15690.292 h -352.4631 v -3356.959 h 704.9262 v 3356.959 z"
+     id="path7"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:28.1828" /><rect
+     x="8252.374"
+     y="12333.333"
+     width="705.93323"
+     height="3357.9492"
+     id="rect9"
+     style="fill:#ffffff;stroke:#000000;stroke-width:28.1828;fill-opacity:1;stroke-opacity:1" /><g
+     id="g17"
+     transform="matrix(1.0070374,0,0,0.99025341,-47.628517,153.21635)"
+     style="stroke:#000000;stroke-opacity:1"><path
+       d="m 8186,12550 h 789 v 501 h -789 l -200,-251 z"
+       id="path13"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1" /><rect
+       x="7986"
+       y="12549"
+       width="990"
+       height="503"
+       id="rect15"
+       style="fill:none;stroke:#000000;stroke-opacity:1" /></g><g
+     id="g23"
+     transform="matrix(1.0070374,0,0,0.99025341,-47.628517,153.21635)"
+     style="stroke:#000000;stroke-opacity:1"><path
+       d="m 8998,13051 h -789 v -501 h 789 l 200,251 z"
+       id="path19"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1" /><rect
+       x="8209"
+       y="12549"
+       width="990"
+       height="503"
+       id="rect21"
+       style="fill:none;stroke:#000000;stroke-opacity:1" /></g><path
+     d="M 10296.66,15718.019 H 6912.007 l 681.7643,-707.04 h 2022.1311 z"
+     id="path26"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:28.1828;stroke-opacity:1" /><rect
+     x="6911"
+     y="15009.988"
+     width="3386.6667"
+     height="709.02142"
+     id="rect28"
+     style="fill:none;stroke:none;stroke-width:28.1828" /><rect
+     x="6912.0068"
+     y="15011.969"
+     width="3385.6597"
+     height="708.03119"
+     id="rect30"
+     style="fill:none;stroke:none;stroke-width:28.1828" /><path
+     d="m 8604.8368,15362.518 c -222.5552,0 -411.8783,-40.6 -604.2224,-128.732 -192.3442,-89.123 -331.3153,-199.041 -442.0894,-352.531 -111.7812,-153.489 -162.1331,-304.007 -162.1331,-481.263 0,-177.255 50.3519,-327.774 162.1331,-481.263 110.7741,-153.489 249.7452,-263.407 442.0894,-352.53 192.3441,-88.133 381.6672,-128.733 604.2224,-128.733 222.5553,0 411.8783,40.6 604.2225,128.733 192.3441,89.123 331.3153,199.041 442.0894,352.53 111.7811,153.489 162.133,304.008 162.133,481.263 0,177.256 -50.3519,327.774 -162.133,481.263 -110.7741,153.49 -249.7453,263.408 -442.0894,352.531 -192.3442,88.132 -381.6672,128.732 -604.2225,128.732 z"
+     id="path34"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:28.17912125;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><rect
+     x="7396.3921"
+     y="13437.466"
+     width="2417.8967"
+     height="1927.0331"
+     id="rect36"
+     style="fill:none;stroke:none;stroke-width:28.1828" /></g></g>
+<g
+   id="g12">
+</g>
+<g
+   id="g14">
+</g>
+<g
+   id="g16">
+</g>
+<g
+   id="g18">
+</g>
+<g
+   id="g20">
+</g>
+<g
+   id="g22">
+</g>
+<g
+   id="g24">
+</g>
+<g
+   id="g26">
+</g>
+<g
+   id="g28">
+</g>
+<g
+   id="g30">
+</g>
+<g
+   id="g32">
+</g>
+<g
+   id="g34">
+</g>
+<g
+   id="g36">
+</g>
+<g
+   id="g38">
+</g>
+<g
+   id="g40">
+</g>
+</svg>

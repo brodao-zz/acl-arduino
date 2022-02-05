@@ -1,0 +1,8 @@
+{
+	"name": "Multi Root",
+	"description": [
+		"Folder where each subfolder is an MCU project, with its own settings,",
+		"eg different devices on each port."
+	],
+	"project": "multi-root"
+}

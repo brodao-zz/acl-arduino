@@ -1,0 +1,30 @@
+{
+  "iconDefinitions": {
+    "_aclabarduino_file": {
+      "iconPath": "./dark/aclabarduino_file.svg"
+    },
+    "_ino_file": {
+      "iconPath": "./dark/ino_file.svg"
+    },
+    "_aclabarduino_file_light": {
+      "iconPath": "./light/aclabarduino_file.svg"
+    },
+    "_ino_file_light": {
+      "iconPath": "./light/ino_file.svg"
+    }
+  },
+  "fileNames": {
+    "aclabarduino.json": "_aclabarduino_file"
+  },
+  "languageIds": {
+    "ino": "_ino_file"
+  },
+  "light": {
+    "fileNames": {
+      "aclabarduino.json": "_aclabarduino_file_light"
+    },
+    "languageIds": {
+      "ino": "_ino_file_light"
+    }
+  }
+}
