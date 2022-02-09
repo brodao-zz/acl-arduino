@@ -183,6 +183,11 @@ connection.onInitialized(() => {
       connection.console.log("Workspace folder change event received.");
     });
   }
+  // if (hasDiagnosticRelatedInformationCapability) {
+  //   connection.workspace.onDidChangeWorkspaceFolders((_event) => {
+  //     connection.console.log("Workspace folder change event received.");
+  //   });
+  // }
 });
 
 connection.onDidChangeWatchedFiles((_change) => {

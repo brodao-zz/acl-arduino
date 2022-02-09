@@ -26,7 +26,7 @@ export namespace ACLLogger {
     getShortName: () => string;
   }
 
-  export type LogLevel = winston.level;
+  export type LogLevel = typeof winston.level;
 
   export interface ILoggerConfig {
     appInfo: IAppInfo;

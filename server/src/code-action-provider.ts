@@ -9,8 +9,6 @@ import {
 import { ArduinoDiagnostic } from "./arduino-diagnostic";
 import { ACLLogger } from "./logger";
 
-const _logger: ACLLogger.ILogger = ACLLogger.instance();
-
 export function getCodeActionProvider(): CodeActionOptions {
   return {
     codeActionKinds: [CodeActionKind.QuickFix],
@@ -21,7 +19,7 @@ export function provideCodeActions(
   document: TextDocument,
   params: CodeActionParams
 ): CodeAction[] {
-  _logger.debug("provideCodeActions");
+  ACLLogger.instance().debug("provideCodeActions");
 
   if (!params.context.diagnostics.length) {
     return [];
