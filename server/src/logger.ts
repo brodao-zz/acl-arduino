@@ -1,5 +1,5 @@
 import * as winston from "winston";
-import Transport from "winston-transport";
+import Transport = require("winston-transport");
 
 export namespace ACLLogger {
   export class ConnectionServerTransport extends Transport {
@@ -38,7 +38,7 @@ export namespace ACLLogger {
   }
 
   export interface ILogger {
-    addConnection: (connection: any) => void;
+    //addConnection: (connection: any) => void;
     error: (...args: any) => void;
     warn: (...args: any) => void;
     //help: (...args: any) => void;
@@ -56,32 +56,26 @@ export namespace ACLLogger {
     appInfo: IAppInfo;
   }
 
-  const shortTextFormat = winston.format.printf(
+  const textFormat = winston.format.printf(
     ({ level, message, label, timestamp }) => {
       if (message.indexOf("\n") > -1) {
         message = ("\n" + message).replaceAll("\n", "\n\t");
       }
 
-      return `${timestamp} [${label}] ${level
+      return `${timestamp} [${label.padEnd(15).substring(0, 14)}] ${level
         .substring(0, 1)
         .toUpperCase()}: ${message}`;
     }
   );
 
-  const longTextFormat = winston.format.printf(
-    ({ level, message, label, timestamp }) => {
-      return `${timestamp} [${label}] ${level}: ${message}`;
-    }
-  );
-
   class Logger implements ILogger {
     private _config: ILoggerConfig = {
-      appInfo: undefined,
+      appInfo: {} as IAppInfo,
       logLevel: "info",
       showBanner: true,
       logToFile: false,
       logFormat: "text",
-      label: undefined,
+      label: "AC Lab",
     };
 
     private _id: string;
@@ -110,12 +104,10 @@ export namespace ACLLogger {
           winston.format.splat(),
           //winston.format.colorize({ all: false }),
           winston.format.label({
-            label: this._config.label
-              ? this._config.label
-              : this._config.appInfo?.getShortName(),
+            label: this._config.label,
           }),
-          winston.format.timestamp({ format: "HH:mm:ss" }),
-          shortTextFormat
+          winston.format.timestamp({ format: "HH:mm" }),
+          textFormat
         ),
         transports: [new winston.transports.Console()], // { handleExceptions: true }
       };
@@ -132,8 +124,15 @@ export namespace ACLLogger {
             new winston.transports.File({
               level: "debug",
               filename: this._id + ".log",
-              //dirname: outDir,
-              format: longTextFormat,
+              format: winston.format.combine(
+                winston.format.splat(),
+                //winston.format.colorize({ all: false }),
+                winston.format.label({
+                  label: this._config.label,
+                }),
+                winston.format.timestamp({ format: "isoDateTime" }),
+                textFormat
+              ),
             })
           );
         } else {
@@ -141,7 +140,6 @@ export namespace ACLLogger {
             new winston.transports.File({
               level: "debug",
               filename: this._id + ".log.json",
-              //dirname: outDir,
               format: winston.format.json(),
             })
           );
@@ -149,24 +147,24 @@ export namespace ACLLogger {
       }
     }
 
-    addConnection(connection: any) {
-      // this._logger.add(
-      //   new ConnectionServerTransport(connection, {
-      //     level: undefined, //this._config.logLevel,
-      //     levels: winston.config.npm.levels,
-      //     format: winston.format.combine(
-      //       winston.format.splat(),
-      //       winston.format.label({
-      //         label: this._config.label
-      //           ? this._config.label
-      //           : this._config.appInfo?.getShortName(),
-      //       }),
-      //       winston.format.timestamp({ format: "HH:mm:ss" }),
-      //       shortFileTextFormat
-      //     ),
-      //   })
-      // );
-    }
+    //addConnection(connection: any) {
+    // this._logger.add(
+    //   new ConnectionServerTransport(connection, {
+    //     level: undefined, //this._config.logLevel,
+    //     levels: winston.config.npm.levels,
+    //     format: winston.format.combine(
+    //       winston.format.splat(),
+    //       winston.format.label({
+    //         label: this._config.label
+    //           ? this._config.label
+    //           : this._config.appInfo?.getShortName(),
+    //       }),
+    //       winston.format.timestamp({ format: "HH:mm:ss" }),
+    //       shortFileTextFormat
+    //     ),
+    //   })
+    // );
+    //}
 
     removeTransport(transport: winston.transport) {
       this._logger.remove(transport);
@@ -329,7 +327,7 @@ export namespace ACLLogger {
   }
 
   export function getLogger(id: string): ILogger {
-    return loggerMap.get(id);
+    return loggerMap.get(id) || ({} as ILogger);
   }
 
   export function createLogger(

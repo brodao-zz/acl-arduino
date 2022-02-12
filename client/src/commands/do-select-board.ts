@@ -1,4 +1,3 @@
-import path = require("path");
 import * as vscode from "vscode";
 import { MultiStepInput } from "../components/multi-step-quick-pick";
 import { acLabArduino } from "../extension";
@@ -15,13 +14,13 @@ const ADD_PLATFORM: vscode.QuickPickItem = {
 export async function doSelectBoard(state: State): Promise<State> {
   return await getBoard(state)
     .then((state: State) => {
-      if (state.nextOper == "cancel") {
+      if (state.nextOper === "cancel") {
         vscode.window.showInformationMessage(
           "Select board canceled by user request"
         );
 
         return state;
-      } else if (state.nextOper == "confirm") {
+      } else if (state.nextOper === "confirm") {
         vscode.window.showInformationMessage(
           `Selected [${state.board.name}:${state.board.fqbn}]`
         );
@@ -53,7 +52,7 @@ async function getBoard(state: State): Promise<State> {
       return state;
     })
     .then(async (state: State) => {
-      if (state.nextOper == "confirm") {
+      if (state.nextOper === "confirm") {
         let board: Protocol.IBoard = {
           name: state.pickItem.label,
           fqbn: state.pickItem.description,
@@ -78,7 +77,7 @@ async function pickBoard(input: MultiStepInput, state: Partial<State>) {
 
   if (!state.pickItem) {
     state.nextOper = "cancel";
-  } else if (state.pickItem.label == ADD_PLATFORM.label) {
+  } else if (state.pickItem.label === ADD_PLATFORM.label) {
     state.nextOper = "selectPlatform";
   } else {
     state.board = state.pickItem.label;
@@ -89,11 +88,15 @@ async function pickBoard(input: MultiStepInput, state: Partial<State>) {
 }
 
 function getBoardItemsPick(state: Partial<State>): vscode.QuickPickItem[] {
+  if (!state.platforms) {
+    return [];
+  }
+
   const platforms: Map<string, Protocol.IArduinoPlatform> = state.platforms;
   const result: vscode.QuickPickItem[] = [];
 
   platforms.forEach((entry: Protocol.IArduinoPlatform) => {
-    if (!state.platform || state.platform.id == entry.id) {
+    if (!state.platform || state.platform.id === entry.id) {
       entry.boards.forEach((board: Protocol.IBoard) => {
         result.push({
           label: board.name,
@@ -106,7 +109,7 @@ function getBoardItemsPick(state: Partial<State>): vscode.QuickPickItem[] {
   return [
     ADD_PLATFORM,
     ...result.sort((a: vscode.QuickPickItem, b: vscode.QuickPickItem) => {
-      return a.label < b.label ? -1 : a.label == b.label ? 0 : 1;
+      return a.label < b.label ? -1 : a.label === b.label ? 0 : 1;
     }),
   ];
 }

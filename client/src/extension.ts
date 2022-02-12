@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
       acLabArduino.removeModel(folder);
     }
 
-    arduinoExplorer.reveal();
+    console.log("arduinoExplorer.reveal()");
   });
 }
 

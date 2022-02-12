@@ -6,13 +6,13 @@ import { acLabArduino } from "./../extension";
 export async function doAdd3rdPartyUrl(state: State): Promise<State> {
   return await add3rdParty(state)
     .then(async (state: State) => {
-      if (state.nextOper == "cancel") {
+      if (state.nextOper === "cancel") {
         vscode.window.showInformationMessage(
           "Add 3rd party URL canceled by user request"
         );
 
         return state;
-      } else if (state.nextOper == "confirm") {
+      } else if (state.nextOper === "confirm") {
         vscode.window.showInformationMessage(
           `Added 3rd party url [${state.url}]`
         );
@@ -65,7 +65,7 @@ async function validade3rdParty(
 
   try {
     const url: URL = new URL(value);
-    await state.protocol.validate3rdPartyUrl(url).then((result: any[]) => {
+    await state.protocol?.validate3rdPartyUrl(url).then((result: any[]) => {
       result
         .filter((element: any) => !element.status)
         .forEach((element: any) => (message += element.reason));

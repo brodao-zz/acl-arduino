@@ -7,17 +7,14 @@ import {
   InitializeParams,
   MessageType,
   ProposedFeatures,
-  ShowDocumentParams,
   ShowMessageParams,
   ShowMessageRequestParams,
   TextDocuments,
   TextDocumentSyncKind,
   WorkspaceFolder,
   CodeActionParams,
-  CodeAction,
   CompletionItem,
   DidChangeConfigurationNotification,
-  ExecuteCommandOptions,
   ExecuteCommandParams,
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
@@ -31,7 +28,6 @@ import {
 } from "./code-action-provider";
 import { ACLLogger } from "./logger";
 import { ACLCache } from "./cache";
-import { getExecuteCommandProvider } from "./command-provider";
 
 const homedir: string = require("os").homedir();
 export const ACL_HOME: string = path.join(homedir, ".aclabarduino");
@@ -56,22 +52,22 @@ const config: Partial<ACLLogger.ILoggerConfig> = {
 };
 
 process.argv.forEach((element: string, index: number, argv: string[]) => {
-  if (element == "--log-level") {
+  if (element === "--log-level") {
     config.logLevel = argv[index + 1] as ACLLogger.LogLevel;
-  } else if (element == "--log-to-file") {
+  } else if (element === "--log-to-file") {
     config.logToFile = true; //argv[index + 1] === "true";
-  } else if (element == "--no-show-banner") {
+  } else if (element === "--no-show-banner") {
     config.showBanner = false; //argv[index + 1] === "true";
-  } else if (element == "--trace-level") {
+  } else if (element === "--trace-level") {
     //config. = true; //argv[index + 1] === "true";
   }
 });
 const _logger = ACLLogger.createLogger(appInfo.name, config);
 
 export const connection = createConnection(ProposedFeatures.all);
-_logger.addConnection(connection);
+//_logger.addConnection(connection);
 
-let workspaceFolder: WorkspaceFolder | null;
+let workspaceFolder: WorkspaceFolder;
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only
@@ -80,7 +76,7 @@ const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 let languageModes: LanguageModes;
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
-let hasDiagnosticRelatedInformationCapability = false;
+//let hasDiagnosticRelatedInformationCapability = false;
 
 connection.onInitialize((_params: InitializeParams) => {
   _logger.debug("onInitialize", _params);
@@ -94,11 +90,11 @@ connection.onInitialize((_params: InitializeParams) => {
     capabilities.workspace && !!capabilities.workspace.workspaceFolders
   );
 
-  hasDiagnosticRelatedInformationCapability = !!(
-    capabilities.textDocument &&
-    capabilities.textDocument.publishDiagnostics &&
-    capabilities.textDocument.publishDiagnostics.relatedInformation
-  );
+  // hasDiagnosticRelatedInformationCapability = !!(
+  //   capabilities.textDocument &&
+  //   capabilities.textDocument.publishDiagnostics &&
+  //   capabilities.textDocument.publishDiagnostics.relatedInformation
+  // );
 
   languageModes = getLanguageModes();
 
@@ -118,26 +114,32 @@ connection.onInitialize((_params: InitializeParams) => {
     languageModes.dispose();
   });
 
-  workspaceFolder = toUri(
-    _params.workspaceFolders
-      .filter((value: WorkspaceFolder) => {
-        return value.uri == _params.initializationOptions.workspaceFolder;
-      })
-      .pop()
-  );
-  ACLCache.cacheDir = path.join(workspaceFolder.uri, ".vscode", ".acl-cache");
-  _logger.setConfig({ label: workspaceFolder.name });
+  if (_params.workspaceFolders) {
+    workspaceFolder = toUri(
+      _params.workspaceFolders
+        .filter((value: WorkspaceFolder) => {
+          return value.uri === _params.initializationOptions.workspaceFolder;
+        })
+        .pop()
+    );
+  }
+  if (workspaceFolder.uri.length > 0) {
+    ACLCache.cacheDir = path.join(workspaceFolder.uri, ".vscode", ".acl-cache");
+    _logger.setConfig({ label: workspaceFolder.name });
 
-  ArduinoCli.instance({
-    workspaceFolder: workspaceFolder,
-    debug: config.logLevel === "debug",
-    verbose: config.logLevel === "verbose",
-    logFile: config.logLevel === "debug",
-  });
+    ArduinoCli.instance({
+      workspaceFolder: workspaceFolder,
+      debug: config.logLevel === "debug",
+      verbose: config.logLevel === "verbose",
+      logFile: config.logLevel === "debug",
+    });
 
-  _logger.info(
-    `Started and initialize received. WS Count: ${_params.workspaceFolders.length}`
-  );
+    _logger.info(
+      `Started and initialize received. WS Count: ${_params.workspaceFolders?.length}`
+    );
+  } else {
+    _logger.info(`Not possible start server. WS Count: 0 (zero)`);
+  }
 
   return {
     capabilities: {
@@ -152,8 +154,7 @@ connection.onInitialize((_params: InitializeParams) => {
         resolveProvider: false,
       },
       codeActionProvider: getCodeActionProvider(),
-      executeCommandProvider: getExecuteCommandProvider(),
-
+      //executeCommandProvider: false, //getExecuteCommandProvider(),
       // signatureHelpProvider: {
       //   triggerCharacters: ["@"],
       // },
@@ -165,7 +166,7 @@ connection.onInitialized(() => {
   const release: string = ArduinoCli.instance().getCurrentVersion();
   ArduinoCli.instance()
     .checkEnvironment(release)
-    .then((diagnostics: ShowMessageRequestParams) => {
+    .then((diagnostics: ShowMessageRequestParams | undefined) => {
       if (diagnostics) {
         doSendShowMessageRequest(diagnostics);
       }
@@ -195,7 +196,7 @@ connection.onDidChangeWatchedFiles((_change) => {
   // this._watchFile = fse.watchFile(runOptions.configFile, (curr, prev) => {
   //   console.debug(">>>>>", [runOptions.configFile, curr, prev]);
 
-  //   if (curr.uid == 0 && curr.mtimeMs == 0) {
+  //   if (curr.uid===0 && curr.mtimeMs===0) {
   //     //deletado
   //     this._watchFile.unref();
   //     this._instance = undefined;
@@ -236,7 +237,7 @@ documents.onDidChangeContent((change) => {
 // });
 
 connection.onCompletion((textDocumentPosition, token) => {
-  _logger.debug("onCompletion");
+  _logger.debug("onCompletion", token);
 
   const document = documents.get(textDocumentPosition.textDocument.uri);
   if (!document) {
@@ -328,13 +329,13 @@ function doSendErrorMessage(message: string) {
   _doSendShowMessage({ type: MessageType.Error, message: message });
 }
 
-function doSendWarningMessage(message: string) {
-  _doSendShowMessage({ type: MessageType.Warning, message: message });
-}
+// function doSendWarningMessage(message: string) {
+//   _doSendShowMessage({ type: MessageType.Warning, message: message });
+// }
 
-function doSendLogMessage(message: string) {
-  _doSendShowMessage({ type: MessageType.Log, message: message });
-}
+// function doSendLogMessage(message: string) {
+//   _doSendShowMessage({ type: MessageType.Log, message: message });
+// }
 
 export function doSendShowMessageRequest(request: ShowMessageRequestParams) {
   connection
@@ -359,25 +360,32 @@ export function doSendShowMessageRequest(request: ShowMessageRequestParams) {
     });
 }
 
-function doSendShowDocumentRequest(request: ShowDocumentParams) {
-  connection
-    .sendRequest("window/showDocument", request)
-    .then((resp: any) => {
-      if (resp && resp.success) {
-        _logger.info("Document open");
-      } else {
-        _logger.error("Document not open");
-      }
-    })
-    .catch((reason: any) => {
-      _logger.error(reason);
-    });
-}
+// function doSendShowDocumentRequest(request: ShowDocumentParams) {
+//   connection
+//     .sendRequest("window/showDocument", request)
+//     .then((resp: any) => {
+//       if (resp && resp.success) {
+//         _logger.info("Document open");
+//       } else {
+//         _logger.error("Document not open");
+//       }
+//     })
+//     .catch((reason: any) => {
+//       _logger.error(reason);
+//     });
+// }
 
-function toUri(workspace: WorkspaceFolder): WorkspaceFolder {
+function toUri(workspace: WorkspaceFolder | undefined): WorkspaceFolder {
+  if (workspace) {
+    return {
+      name: workspace.name,
+      uri: fileURLToPath(workspace.uri),
+    };
+  }
+
   return {
-    name: workspace.name,
-    uri: fileURLToPath(workspace.uri),
+    name: "",
+    uri: "",
   };
 }
 
@@ -385,9 +393,15 @@ function validateTextDocument(textDocument: TextDocument) {
   try {
     const version: number = textDocument.version;
 
+    if (!documents.get(textDocument.uri)) {
+      return;
+    }
+
     if (textDocument.languageId === "json") {
       const modes = languageModes.getAllModesInDocument(textDocument);
-      const latestTextDocument: TextDocument = documents.get(textDocument.uri);
+      const latestTextDocument: TextDocument | undefined = documents.get(
+        textDocument.uri
+      );
       if (latestTextDocument && latestTextDocument.version === version) {
         // check no new version has come in after in after the async op
         modes.forEach(async (mode) => {

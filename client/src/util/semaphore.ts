@@ -43,7 +43,7 @@ export class Semaphore {
       const task = this.waiting.shift();
 
       // Resolve the promise to allow it to start, provide a release function
-      task.resolve({ release: this.release });
+      task?.resolve({ release: this.release });
     }
   };
 

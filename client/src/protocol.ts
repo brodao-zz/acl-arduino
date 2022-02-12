@@ -1,3 +1,4 @@
+//@ts-nocheck
 import * as vscode from "vscode";
 import { LanguageClient } from "vscode-languageclient/node";
 import { Protocol } from "./protocol-interf";

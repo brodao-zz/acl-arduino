@@ -40,7 +40,7 @@ function quickfix(
   const codeActions: CodeAction[] = [];
 
   diagnostics.forEach((diag) => {
-    if (diag.message == 'Missing property "board".') {
+    if (diag.message === 'Missing property "board".') {
       codeActions.push({
         title: `Run Configuration Board`,
         kind: CodeActionKind.QuickFix,
@@ -53,7 +53,7 @@ function quickfix(
         ),
       });
     }
-    if (diag.code == ArduinoDiagnostic.E001_INVALID_CLI_VERSION) {
+    if (diag.code === ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION) {
       codeActions.push({
         title: `"Set to [${diag.data}] (most recent) version"`,
         kind: CodeActionKind.QuickFix,

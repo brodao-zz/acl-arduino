@@ -1,4 +1,3 @@
-import path = require("path");
 import * as vscode from "vscode";
 import { MultiStepInput } from "../components/multi-step-quick-pick";
 import { acLabArduino } from "../extension";
@@ -8,13 +7,13 @@ import { State } from "./command-interf";
 export async function doSelectPort(state: State): Promise<State> {
   return await getPort(state)
     .then((state: State) => {
-      if (state.nextOper == "cancel") {
+      if (state.nextOper === "cancel") {
         vscode.window.showInformationMessage(
           "Select port canceled by user request"
         );
 
         return state;
-      } else if (state.nextOper == "confirm") {
+      } else if (state.nextOper === "confirm") {
         vscode.window.showInformationMessage(
           `Selected [${state.port}] for [:${state.workspace.name}]`
         );
@@ -69,7 +68,7 @@ async function pickPort(input: MultiStepInput, state: Partial<State>) {
 }
 
 function getPortItemsPick(state: Partial<State>): vscode.QuickPickItem[] {
-  const ports: Protocol.IDetectedPort[] = state.ports;
+  const ports: Protocol.IDetectedPort[] = state.ports || [];
   const result: vscode.QuickPickItem[] = [];
 
   ports.forEach((port: Protocol.IDetectedPort) => {

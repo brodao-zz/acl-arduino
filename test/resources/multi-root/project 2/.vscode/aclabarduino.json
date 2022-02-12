@@ -1,8 +1,8 @@
 {
   "version": "0.0.1",
-  "cliVersion": "0.20.2",
+  "cliVersion": "xxx0.20.2",
   "port": "",
-  "board": "arduino:sam:arduino_due_x",
+  "board": "arduino:sam:xxxxxxarduino_due_x",
   "alias": "",
   "board_name": "Arduino Due (Native USB Port)"
 }

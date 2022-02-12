@@ -9,6 +9,9 @@
     "email": "brodao@gmail.com"
   },
   "license": "Apache-2.0",
+  "categories": [
+    "Programming Languages"
+  ],
   "keywords": [
     "multi-root ready",
     "arduino",
@@ -18,13 +21,6 @@
     "ino",
     "IntelliSense"
   ],
-  "engines": {
-    "vscode": "^1.63.0"
-  },
-  "icon": "resources/icons/aclabarduino.png",
-  "categories": [
-    "Programming Languages"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/brodao/acl-arduino.git"
@@ -32,39 +28,34 @@
   "bugs": {
     "url": "https://github.com/brodao/acl-arduino.git"
   },
+  "engines": {
+    "vscode": "^1.63.0"
+  },
   "scripts": {
-    "clean": "rimraf **/out **/map **/types **/*.tsbuildinfo",
+    "clean": "npm-run-all clean:*",
+    "clean:out": "rimraf ./client/out && rimraf ./server/out",
+    "clean:types": "rimraf ./client/types && rimraf ./server/types",
     "--COMPILE--": "",
-    "compile": "npm run clean && npm-run-all compile:*",
-    "compile:server": "cd server && tsc -p ./ && cd ..",
-    "compile:client": "cd client && tsc -p ./ && cd ..",
+    "compile": "tsc -b",
+    "precompile": "npm run clean",
+    "watch": "tsc -b -w",
+    "_compile:client": "tsc -b ./client/tsconfig.json",
+    "_compile:server": "tsc -b ./server/tsconfig.json",
+    "webpack": "npm run clean && npm run webpack:client && npm run webpack:server",
+    "webpack:client": "webpack --mode developer --config ./client/webpack.config.js",
+    "webpack:server": "webpack --mode developer --config ./server/webpack.config.js",
+    "--PUBLISH--": "",
+    "vscode:prepublish": "npm run webpack:prod",
+    "webpack:prod": "npm run clean && webpack --mode production --config ./client/webpack.config.js && webpack --mode production --config ./server/webpack.config.js",
+    "webpack:prod:client": "webpack --mode production --config ./client/webpack.config.js",
+    "webpack:prod:server": "webpack --mode production --config ./server/webpack.config.js",
+    "-----------": "",
+    "test": "cd client && npm test && cd ..",
     "--INSTALL--": "",
     "postinstall": "npm-run-all postinstall:*",
     "postinstall:client": "cd client && npm ci && cd ..",
-    "postinstall:server": "cd server && npm ci && cd ..",
-    "postinstall:test": "cd test && npm ci && cd ..",
-    "----------------": "",
-    "_vscode:prepublish": "npm run compile",
-    "_lint": "eslint ./src --ext .ts,.tsx",
-    "_format": "prettier --write \"{src,tests}/**/*.ts\" --single-quote --trailing-comma es5",
-    "-------": "",
-    "-prepare": "npm run format && npm run lint && npm run compile && npm run test",
-    "_release": "standard-version",
-    "_tag": "git push --follow-tags",
-    "_prepublishOnly": "npm run test",
-    "_publish": "npm publish",
-    "--------": "",
-    "-vscode:prepublish": "npm run compile",
-    "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "postinstall:server": "cd server && npm ci && cd .."
   },
-  "main": "./client/out/extension.js",
-  "activationEvents": [
-    "onWebviewPanel:arduinoExplorer",
-    "workspaceContains:**/aclabarduino.json",
-    "workspaceContains:**/*.ino",
-    "onLanguage:ino"
-  ],
   "funding": [
     {
       "type": "individual",
@@ -80,13 +71,40 @@
     }
   ],
   "devDependencies": {
-    "@types/node": "^17.0.15",
-    "@types/vscode": "=1.63.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.16",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "eslint": "^8.8.0",
+    "merge-options": "^3.0.4",
+    "mocha": "^9.2.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
+    "ts-loader": "^9.2.6",
     "typescript": "^4.5.5",
-    "vsce": "^2.6.7"
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
   },
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "Using [ACLab Arduino Service] is not possible in virtual workspaces."
+    },
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "The extension requires workspace trust because it loads configuration files and code from the workspace and executes it."
+    }
+  },
+  "main": "./client/out/extension",
+  "activationEvents": [
+    "onWebviewPanel:arduinoExplorer",
+    "workspaceContains:**/aclabarduino.json",
+    "workspaceContains:**/*.ino",
+    "onLanguage:ino"
+  ],
   "contributes": {
     "configuration": {
       "type": "object",
@@ -195,14 +213,14 @@
         "extensions": [
           ".ino"
         ],
-        "configuration": "./client/languages/ino.language-configuration.json"
+        "configuration": "./languages/ino.language-configuration.json"
       }
     ],
     "grammars": [
       {
         "language": "ino",
         "scopeName": "source.ino",
-        "path": "./client/syntaxes/ino.tmGrammar.json"
+        "path": "./syntaxes/ino.tmGrammar.json"
       }
     ],
     "commands": [

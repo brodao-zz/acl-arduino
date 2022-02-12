@@ -1,3 +1,4 @@
+//@ts-nocheck
 import fse = require("fs-extra");
 import * as vscode from "vscode";
 
@@ -59,7 +60,7 @@ export class ConfigModel implements IConfigModel {
     }
 
     this._watchFile = fse.watchFile(filename.fsPath, (curr, prev) => {
-      if (curr.uid == 0 && curr.mtimeMs == 0) {
+      if (curr.uid === 0 && curr.mtimeMs === 0) {
         //deletado
         this._watchFile.unref();
         this._content = DEFAULT_CONFIG;
@@ -147,6 +148,7 @@ export class ConfigModel implements IConfigModel {
   }
 
   get board_name(): string {
+    //@ts-expect-error
     return this.content.board_name;
   }
 }

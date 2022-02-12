@@ -17,12 +17,12 @@ import { ACLCache } from "./cache";
 import { ACLLogger } from "./logger";
 
 export interface ArduinoCliOptions {
-  config: IConfigServerModel;
-  workspaceFolder: WorkspaceFolder;
-  configFile: DocumentUri;
+  config?: IConfigServerModel;
+  workspaceFolder?: WorkspaceFolder;
+  configFile?: DocumentUri;
   debug: boolean;
   verbose: boolean;
-  logFile: boolean | string;
+  logFile?: boolean | string;
   arduinCliBin?: string;
 }
 
@@ -64,7 +64,7 @@ export class ArduinoCli {
     }
 
     if (values.workspaceFolder && values.debug) {
-      if (typeof values.logFile == "string") {
+      if (typeof values.logFile === "string") {
         values.logFile = path.join(values.workspaceFolder.uri, values.logFile);
       } else if (values.logFile) {
         values.logFile = path.join(
@@ -74,7 +74,7 @@ export class ArduinoCli {
       }
     }
 
-    if (fse.existsSync(values.configFile)) {
+    if (values.configFile && fse.existsSync(values.configFile)) {
       values.config = fse.readJsonSync(values.configFile);
     } else {
       values.config = CONFIG_SERVER_DEFAULT;
@@ -138,9 +138,11 @@ export class ArduinoCli {
     this.runOptions = runOptions;
     this.runArguments = runArguments;
 
-    this.runOptions.arduinCliBin = this.findExecutable(
-      this.runOptions.config.cliVersion
-    );
+    if (this.runOptions.config) {
+      this.runOptions.arduinCliBin = this.findExecutable(
+        this.runOptions.config.cliVersion
+      );
+    }
   }
 
   private _executeCommand(
@@ -178,41 +180,49 @@ export class ArduinoCli {
     this._logger.debug(stdout);
 
     return {
-      status: error.length == 0,
+      status: error.length === 0,
       data:
-        stdout.length == 0
+        stdout.length === 0
           ? undefined
-          : extra[1] == "text"
+          : extra[1] === "text"
           ? { text: stdout.split("\r") }
           : JSON.parse(stdout),
       reason: error,
     };
   }
 
-  checkEnvironment(release: string): Promise<ShowMessageRequestParams> {
-    let result: ShowMessageRequestParams;
+  checkEnvironment(
+    release: string
+  ): Promise<ShowMessageRequestParams | undefined> {
+    let result: ShowMessageRequestParams | undefined = undefined;
 
-    if (!fse.existsSync(this.runOptions.configFile)) {
-      result = ArduinoAction.CONFIG_FILE_NOT_FOUND(
-        this.runOptions.workspaceFolder.name,
-        this.runOptions.configFile
-      );
-    } else {
-      this.runOptions.arduinCliBin = this.findExecutable(release);
-
-      if (release !== this.getCurrentVersion()) {
-        result = ArduinoAction.INSTALL_ARDUINO_CLI(
-          release,
-          this.runOptions.workspaceFolder.uri
-        );
+    if (this.runOptions.configFile) {
+      if (!fse.existsSync(this.runOptions.configFile)) {
+        result =
+          this.runOptions.workspaceFolder &&
+          ArduinoAction.configFileNotFound(
+            this.runOptions.workspaceFolder.name,
+            this.runOptions.configFile
+          );
       } else {
-        const cliConfig: string = `${path.join(
-          path.dirname(this.runOptions.configFile),
-          "arduino-cli.yaml"
-        )}`;
+        this.runOptions.arduinCliBin = this.findExecutable(release);
 
-        if (!fse.existsSync(cliConfig)) {
-          this.configInitFile(cliConfig);
+        if (release !== this.getCurrentVersion()) {
+          result =
+            this.runOptions.workspaceFolder &&
+            ArduinoAction.installArduinoCli(
+              release,
+              this.runOptions.workspaceFolder.uri
+            );
+        } else {
+          const cliConfig: string = `${path.join(
+            path.dirname(this.runOptions.configFile),
+            "arduino-cli.yaml"
+          )}`;
+
+          if (!fse.existsSync(cliConfig)) {
+            this.configInitFile(cliConfig);
+          }
         }
       }
     }
@@ -223,7 +233,7 @@ export class ArduinoCli {
   /**
    * Find binary
    */
-  findExecutable(release: string): string {
+  findExecutable(release: string): string | undefined {
     let cliPath = "";
 
     switch (process.platform) {

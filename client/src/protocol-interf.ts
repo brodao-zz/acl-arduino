@@ -12,11 +12,17 @@ export namespace Protocol {
 
   export interface IArduinoCliVersion {
     name: string;
+    //@ts-ignore
     tag_name: string;
+    //@ts-ignore
     tarball_url: string;
+    //@ts-ignore
     zipball_url: string;
+    //@ts-ignore
     prerelease: boolean;
+    //@ts-ignore
     published_at: string;
+    //@ts-ignore
     author: string;
   }
 

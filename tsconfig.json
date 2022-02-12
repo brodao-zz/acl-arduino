@@ -1,12 +1,14 @@
 {
-  "references": [
-    {
-      "path": "./server"
-    },
-    {
-      "path": "./client"
-    }
-  ],
-  "include": [],
-  "exclude": ["node_modules"]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2021",
+    "outDir": "out",
+    "rootDir": "src",
+    "lib": ["es2021"],
+    "sourceMap": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"],
+  "references": [{ "path": "./client" }, { "path": "./server" }]
 }

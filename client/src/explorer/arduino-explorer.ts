@@ -82,7 +82,7 @@ export class ArduinoExplorer {
           };
 
           doSelectBoard(state).then((state: State) => {
-            if (state.nextOper == "selectPlatform") {
+            if (state.nextOper === "selectPlatform") {
               vscode.commands.executeCommand(
                 "aclabExplorer.selectPlatform",
                 resource,
@@ -112,7 +112,7 @@ export class ArduinoExplorer {
           };
 
           doSelectPlatform(state).then((state: State) => {
-            if (state.nextOper == "selectBoard") {
+            if (state.nextOper === "selectBoard") {
               vscode.commands.executeCommand(
                 "aclabExplorer.selectBoard",
                 resource,
@@ -120,7 +120,7 @@ export class ArduinoExplorer {
               );
             }
 
-            if (state.nextOper == "add3rdPartyUrl") {
+            if (state.nextOper === "add3rdPartyUrl") {
               vscode.commands.executeCommand(
                 "aclabExplorer.add3rdPartyUrl",
                 resource,
@@ -150,7 +150,7 @@ export class ArduinoExplorer {
           };
 
           doAdd3rdPartyUrl(state).then((state: State) => {
-            if (state.nextOper == "selectPlatform") {
+            if (state.nextOper === "selectPlatform") {
               vscode.commands.executeCommand(
                 "aclabExplorer.selectPlatform",
                 resource,
@@ -165,7 +165,7 @@ export class ArduinoExplorer {
     context.subscriptions.push(...disposes);
   }
 
-  reveal(element: IArduinoEntry = null) {
+  reveal(element: IArduinoEntry) {
     this.treeView.reveal(element);
   }
 }

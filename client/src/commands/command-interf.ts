@@ -15,7 +15,7 @@ export interface State {
   pickItem: any;
   board: Protocol.IBoard;
   platforms: Map<string, Protocol.IArduinoPlatform>;
-  platform: Protocol.IArduinoPlatform;
+  platform: Protocol.IArduinoPlatform | undefined;
   protocol: AclProtocol;
   url: URL;
   port: string;

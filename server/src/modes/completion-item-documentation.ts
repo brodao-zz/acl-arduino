@@ -14,7 +14,7 @@ export function createReleaseDocumentation(
   return createMarkdown(
     `## Arduino-CLI ${release.tag_name}`,
     `- Published at **${release.published_at}** by **${release.author}**`,
-    release.prerelease ? "- It´s prerelease" : null,
+    release.prerelease ? "- It´s prerelease" : "",
     "\n",
     `See [more info...](${release.html_url})`
   );

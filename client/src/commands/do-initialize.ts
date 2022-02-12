@@ -4,7 +4,7 @@ import { Protocol } from "../protocol-interf";
 
 export function doInitialize(workspace: vscode.WorkspaceFolder) {
   return getVersion().then(
-    (version: Protocol.IArduinoCliVersion) => {
+    (version: Protocol.IArduinoCliVersion | undefined) => {
       if (!version) {
         vscode.window.showInformationMessage(
           "Initialize canceled by user request"
@@ -22,18 +22,16 @@ export function doInitialize(workspace: vscode.WorkspaceFolder) {
   );
 }
 
-function getVersion(): Promise<Protocol.IArduinoCliVersion> {
+function getVersion(): Promise<Protocol.IArduinoCliVersion | undefined> {
   return acLabArduino
     .getDefaultProtocol()
     .getReleases()
     .then(async (releases: Map<string, Protocol.IArduinoCliVersion>) => {
-      const pickItem: vscode.QuickPickItem = await vscode.window.showQuickPick(
-        getItemsPick(releases),
-        {
+      const pickItem: vscode.QuickPickItem | undefined =
+        await vscode.window.showQuickPick(getItemsPick(releases), {
           placeHolder: "Select a version for Arduino-cli",
           title: "Arduino-CLI Version",
-        }
-      );
+        });
 
       return pickItem ? releases.get(pickItem.label) : undefined;
     });

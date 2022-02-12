@@ -1,5 +1,4 @@
-import { Position, TextDocument } from "vscode-languageserver-textdocument";
-import { Diagnostic } from "vscode-languageserver/node";
+import { TextDocument } from "vscode-languageserver-textdocument";
 
 export interface LanguageModelCache<T> {
   get(textDocument: TextDocument): T;

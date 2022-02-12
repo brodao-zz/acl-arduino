@@ -32,8 +32,8 @@ export class Client implements vscode.Disposable {
   private _context: vscode.ExtensionContext;
   private _clientMap: Map<string, AclProtocol> = new Map();
   private _modelMap: Map<string, IConfigModel> = new Map();
-  private _outputChannel: vscode.OutputChannel;
-  private _traceOutputChannel: vscode.OutputChannel;
+  private _outputChannel?: vscode.OutputChannel;
+  private _traceOutputChannel?: vscode.OutputChannel;
 
   constructor(context: vscode.ExtensionContext) {
     this._context = context;
@@ -42,7 +42,7 @@ export class Client implements vscode.Disposable {
 
   dispose() {
     this.stopAllClient();
-    this._clientMap = undefined;
+    this._clientMap.clear();
 
     this._disposable.forEach((value: vscode.Disposable) => {
       value.dispose();
@@ -58,6 +58,7 @@ export class Client implements vscode.Disposable {
     let result: AclProtocol;
 
     try {
+      //@ts-expect-error
       const wfFolder: vscode.WorkspaceFolder =
         vscode.workspace.getWorkspaceFolder(uri);
 
@@ -69,12 +70,12 @@ export class Client implements vscode.Disposable {
           startDisposable,
           languageClient.onDidChangeState((state: StateChangeEvent) => {
             if (state.newState !== state.oldState) {
-              if (state.newState == State.Stopped) {
+              if (state.newState === State.Stopped) {
                 console.log(`LC stoping ${wfFolder.name}`);
                 this.stopClient(uri);
-              } else if (state.newState == State.Starting) {
+              } else if (state.newState === State.Starting) {
                 console.log(`LC starting ${wfFolder.name}`);
-              } else if (state.newState == State.Running) {
+              } else if (state.newState === State.Running) {
                 console.log(`LC running ${wfFolder.name}`);
               }
             }
@@ -87,6 +88,7 @@ export class Client implements vscode.Disposable {
 
         result = AclProtocol.initialize(wfFolder, languageClient);
       } else {
+        //@ts-expect-error
         result = null;
       }
     } finally {
@@ -100,6 +102,7 @@ export class Client implements vscode.Disposable {
     let promise: Promise<void> = Promise.resolve();
 
     try {
+      //@ts-expect-error
       const key: vscode.WorkspaceFolder =
         vscode.workspace.getWorkspaceFolder(uri);
       if (!this._clientMap.has(key.name)) {
@@ -108,6 +111,7 @@ export class Client implements vscode.Disposable {
       }
       console.log(`LC unmapped ${key.name}`);
 
+      //@ts-expect-error
       const client: AclProtocol = this._clientMap.get(key.name);
 
       if (client) {
@@ -305,7 +309,7 @@ export class Client implements vscode.Disposable {
     //return this.outputChannel;
     if (AcLabConfig.traceLevel() !== "off") {
       if (!this._traceOutputChannel) {
-        if (AcLabConfig.traceLevel() == "verbose") {
+        if (AcLabConfig.traceLevel() === "verbose") {
           this._traceOutputChannel = vscode.window.createOutputChannel(
             "AC Lab Service (trace)"
           );
@@ -319,10 +323,12 @@ export class Client implements vscode.Disposable {
   }
 
   getDefaultProtocol(): AclProtocol {
+    //@ts-expect-error
     return this.getProtocol(vscode.workspace.workspaceFolders[0].uri);
   }
 
   hasProtocol(uri: vscode.Uri): boolean {
+    //@ts-expect-error
     const key: vscode.WorkspaceFolder =
       vscode.workspace.getWorkspaceFolder(uri);
 
@@ -339,6 +345,7 @@ export class Client implements vscode.Disposable {
       this._modelMap.set(workspace.name, model);
     }
 
+    //@ts-expect-error
     return this._modelMap.get(workspace.name);
   }
 
@@ -353,6 +360,7 @@ export class Client implements vscode.Disposable {
   }
 
   getProtocol(uri: vscode.Uri): AclProtocol {
+    //@ts-expect-error
     const key: vscode.WorkspaceFolder =
       vscode.workspace.getWorkspaceFolder(uri);
 
@@ -366,6 +374,7 @@ export class Client implements vscode.Disposable {
       lock.then((lock: any) => lock.release());
     }
 
+    //@ts-expect-error
     return this._clientMap.get(key.name);
   }
 }

@@ -56,9 +56,7 @@ export class ArduinoTreeItem extends vscode.TreeItem {
       vscode.TreeItemCollapsibleState.Collapsed
     );
 
-    this.description = `[${entry.model.port}]${
-      entry.model.alias ? entry.project.name : entry.model.alias
-    }:${entry.model.board}`;
+    this.description = `${entry.model.port}:${entry.model.board}`;
     this.tooltip = `${entry.model.board_name} <${entry.project.uri.fsPath}>`;
   }
 

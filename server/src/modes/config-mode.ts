@@ -31,23 +31,24 @@ export function getConfigMode(
         jsonLanguageService.parseJSONDocument(textDocument);
       const diagnostics: Diagnostic[] = await jsonLanguageService.doValidation(
         textDocument,
-        jsonDocument
+        jsonDocument,
+        {
+          comments: "ignore",
+          trailingCommas: "ignore",
+          schemaValidation: "warning",
+          schemaRequest: "warning",
+        }
       );
 
-      let diagnosticsAux: Diagnostic[] = await doValidConfigDocument(
-        jsonLanguageService,
-        textDocument,
-        jsonDocument
-      );
+      if (diagnostics.length === 0) {
+        let diagnosticsAux: Diagnostic[] = await doValidConfigDocument(
+          jsonLanguageService,
+          textDocument,
+          jsonDocument
+        );
 
-      diagnostics.push(...diagnosticsAux);
-
-      // , {a
-      //   comments: "error",
-      //   trailingCommas: "error",
-      //   schemaValidation: "error",
-      //   schemaRequest: "error",
-      // });
+        diagnostics.push(...diagnosticsAux);
+      }
 
       return diagnostics;
     },
@@ -56,10 +57,14 @@ export function getConfigMode(
       position: Position
     ): Thenable<CompletionList> {
       const jsonDocument = jsonLanguageService.parseJSONDocument(textDocument);
-      const completionList: Thenable<CompletionList> =
+      let completionList: Thenable<CompletionList | null> =
         jsonLanguageService.doComplete(textDocument, position, jsonDocument);
 
-      return completionList;
+      if (!completionList) {
+        completionList = Promise.resolve(CompletionList.create());
+      }
+
+      return completionList as Thenable<CompletionList>;
     },
     onDocumentRemoved(_document: TextDocument) {
       /* nothing to do */

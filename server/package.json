@@ -9,9 +9,6 @@
     "email": "brodao@gmail.com"
   },
   "license": "Apache-2.0",
-  "engines": {
-    "vscode": "^1.63.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/brodao/acl-arduino.git"
@@ -19,20 +16,17 @@
   "bugs": {
     "url": "https://github.com/brodao/acl-arduino.git"
   },
-  "files": [
-    "src",
-    "schema"
-  ],
-  "type": "commonjs",
-  "main": "out/index",
+  "engines": {
+    "node": "*"
+  },
   "scripts": {},
   "devDependencies": {
     "@types/download": "^8.0.1",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^17.0.15",
+    "@types/node": "^17.0.16",
     "@types/targz": "^1.0.1",
     "@types/unzip-stream": "^0.3.1",
-    "@types/vscode": "=1.63.0"
+    "@types/vscode": "1.63.0"
   },
   "dependencies": {
     "download": "^8.0.0",

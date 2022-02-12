@@ -1,78 +1,114 @@
+import { TextDocument } from "vscode-languageserver-textdocument";
 import {
+  CodeDescription,
   Diagnostic,
   DiagnosticSeverity,
-  Range,
+  DiagnosticTag,
+  DocumentSymbol,
 } from "vscode-languageserver/node";
 
 export namespace ArduinoDiagnostic {
-  export const E001_INVALID_CLI_VERSION: string = "E001";
-  export const E002_INVALID_BOARD: string = "E002";
-  export const E003_INVALID_PLATFORM_VERSION: string = "E003";
+  export enum Error {
+    E001_INVALID_CLI_VERSION = "E001",
+    E002_INVALID_BOARD = "E002",
+    E003_INVALID_PLATFORM_VERSION = "E003",
+  }
+
+  export enum Information {
+    I002_INVALID_BOARD_NAME = "I002",
+  }
 
   //const NO_RANGE: Range = Range.create(0, 0, 0, 0);
 
-  export function INVALID_ARDUINO_CLI(
-    resource: string,
-    range: Range,
-    last: string
+  export function createDiagnostic(
+    textDocument: TextDocument,
+    documentSymbol: DocumentSymbol,
+    code: Error | Information
   ): Diagnostic {
-    return createDiagnostic(
-      DiagnosticSeverity.Error,
-      E001_INVALID_CLI_VERSION,
-      "Invalid Arduino-CLI version.",
-      resource,
-      range,
-      last
-    );
+    return {
+      severity: codeToSeverity(code),
+      code: code,
+      source: textDocument.uri,
+      range: documentSymbol.range,
+      // {
+      //   start: textDocument.positionAt(node.range.offset),
+      //   end: textDocument.positionAt(node.offset + node.length),
+      // },
+      message: codeToMessage(code),
+      codeDescription: codeToDescription(code),
+      tags: codeToTags(code),
+      //relatedInformation?: DiagnosticRelatedInformation[];
+      data: documentSymbol.detail,
+    };
   }
 
-  export function INVALID_BOARD(
-    resource: string,
-    range: Range,
-    reason: string
-  ): Diagnostic {
-    return createDiagnostic(
-      DiagnosticSeverity.Error,
-      E002_INVALID_BOARD,
-      `Invalid board. ${reason}`,
-      resource,
-      range
-    );
+  function codeToSeverity(
+    code: Error | Information
+  ): DiagnosticSeverity | undefined {
+    switch (code.charAt(0)) {
+      case "E":
+        return DiagnosticSeverity.Error;
+
+      case "W":
+        return DiagnosticSeverity.Warning;
+
+      case "I":
+        return DiagnosticSeverity.Information;
+
+      case "H":
+        return DiagnosticSeverity.Hint;
+
+      default:
+        break;
+    }
+
+    return undefined;
   }
 
-  export function INVALID_PLATFORM_VERSION(
-    resource: string,
-    range: Range,
-    versions: string[]
-  ): Diagnostic {
-    return createDiagnostic(
-      DiagnosticSeverity.Error,
-      E003_INVALID_PLATFORM_VERSION,
-      "Invalid platform version.",
-      resource,
-      range,
-      versions
-    );
-  }
-}
+  function codeToMessage(code: Error | Information): string {
+    switch (code) {
+      case Error.E001_INVALID_CLI_VERSION:
+        return "Invalid CLI version.";
+      case Error.E002_INVALID_BOARD:
+        return "Invalid board (FQBN).";
+      case Error.E003_INVALID_PLATFORM_VERSION:
+        return "Invalid platform version.";
+      //
+      //
+      case Information.I002_INVALID_BOARD_NAME:
+        return "Board name is not equal FQBN name.";
 
-function createDiagnostic(
-  severity: DiagnosticSeverity,
-  code: string,
-  message: string,
-  source: string,
-  range: Range,
-  data?: any
-): Diagnostic {
-  return {
-    range: range,
-    severity: severity,
-    code: code,
-    message: message,
-    source: source,
-    //codeDescription: CodeDescription;
-    //tags?: DiagnosticTag[];
-    //relatedInformation?: DiagnosticRelatedInformation[];
-    data: data,
-  };
+      default:
+        break;
+    }
+
+    return "Unknown error";
+  }
+
+  // @ts-ignore
+  function codeToTags(code: Error | Information): DiagnosticTag[] | undefined {
+    switch (code) {
+      case Error.E001_INVALID_CLI_VERSION:
+        return [DiagnosticTag.Deprecated];
+
+      default:
+        break;
+    }
+
+    return undefined;
+  }
+
+  function codeToDescription(
+    code: ArduinoDiagnostic.Error | ArduinoDiagnostic.Information
+  ): CodeDescription | undefined {
+    switch (code) {
+      case Error.E001_INVALID_CLI_VERSION:
+        return { href: "http://teste" };
+
+      default:
+        break;
+    }
+
+    return undefined;
+  }
 }

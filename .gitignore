@@ -1,9 +1,8 @@
 out
 node_modules
-types
-map
-**/tsconfig.tsbuildinfo
-*.log
-resources/**/.vscode
-temp
-test/**/.acl-cache
+npm-debug.log
+*.vsix
+scrapbook.js
+*.lsif
+*.db
+.DS_Store

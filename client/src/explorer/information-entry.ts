@@ -1,6 +1,3 @@
-import * as vscode from "vscode";
-import { acLabArduino } from "../extension";
-import { IConfigModel } from "../model/config-model";
 import { IArduinoEntry } from "./arduino-entry";
 
 export interface IInformationEntry {

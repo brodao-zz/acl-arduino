@@ -1,13 +1,14 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
     "outDir": "out",
     "rootDir": "src",
-    "composite": true,
-    "declarationDir": "types",
-    "resolveJsonModule": true,
-    "esModuleInterop": true
+    "lib": ["es2021"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", ".vscode-test"]
+  "exclude": ["node_modules"]
 }

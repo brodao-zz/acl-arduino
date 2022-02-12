@@ -45,7 +45,7 @@ interface InputBoxParameters {
 }
 
 export class MultiStepInput {
-  static async run<T>(start: InputStep) {
+  static async run(start: InputStep) {
     const input = new MultiStepInput();
     return input.stepThrough(start);
   }
@@ -53,7 +53,7 @@ export class MultiStepInput {
   private current?: QuickInput;
   private steps: InputStep[] = [];
 
-  private async stepThrough<T>(start: InputStep) {
+  private async stepThrough(start: InputStep) {
     let step: InputStep | void = start;
     while (step) {
       this.steps.push(step);
@@ -108,8 +108,8 @@ export class MultiStepInput {
           placeholder || "Start typing to activate the filter";
         input.ignoreFocusOut = true;
         input.items = items;
-        input.matchOnDescription = matchAll;
-        input.matchOnDetail = matchAll;
+        input.matchOnDescription = matchAll || false;
+        input.matchOnDetail = matchAll || false;
 
         if (activeItem) {
           input.activeItems = [activeItem];
@@ -163,6 +163,7 @@ export class MultiStepInput {
     state,
   }: P) {
     const disposables: Disposable[] = [];
+    //@ts-ignore
     const allValid: any = (value: string): any => {
       return undefined;
     };
@@ -197,6 +198,7 @@ export class MultiStepInput {
             const value = input.value;
             input.enabled = false;
             input.busy = true;
+            //@ts-ignore
             if (!(await validate(state, value))) {
               resolve(value);
             }
@@ -204,6 +206,7 @@ export class MultiStepInput {
             input.busy = false;
           }),
           input.onDidChangeValue(async (text) => {
+            //@ts-ignore
             const current = validate(state, text);
             validating = current;
             const validationMessage = await current;

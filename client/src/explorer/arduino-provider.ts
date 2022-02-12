@@ -8,19 +8,19 @@ import { IInformationEntry, InformationEntry } from "./information-entry";
 export class ArduinoProvider
   implements vscode.TreeDataProvider<IArduinoEntry | IInformationEntry>
 {
-  private _onDidChangeTreeData: vscode.EventEmitter<IArduinoEntry> =
+  private _onDidChangeTreeData: vscode.EventEmitter<IArduinoEntry | null> =
     new vscode.EventEmitter<IArduinoEntry | null>();
 
-  readonly onDidChangeTreeData: vscode.Event<IArduinoEntry> =
+  readonly onDidChangeTreeData: vscode.Event<IArduinoEntry | null> =
     this._onDidChangeTreeData.event;
 
   constructor() {}
 
-  reveal(element: IArduinoEntry = null): void {
-    this._onDidChangeTreeData.fire(element);
+  reveal(element?: IArduinoEntry): void {
+    this._onDidChangeTreeData.fire(element || null);
   }
 
-  getParent(element: IArduinoEntry | IInformationEntry): IArduinoEntry {
+  getParent(element: IArduinoEntry | IInformationEntry): IArduinoEntry | null {
     if (element instanceof InformationEntry) {
       return element.parent;
     }
@@ -42,7 +42,11 @@ export class ArduinoProvider
         new InformationEntry(element, "Board", element.model.board)
       );
       children.push(
-        new InformationEntry(element, "Name", element.model.board_name)
+        new InformationEntry(
+          element,
+          "Name",
+          element.model.board_name ? element.model.board_name : "<run check>"
+        )
       );
       children.push(
         new InformationEntry(element, "Path", element.project.uri.fsPath)
@@ -62,7 +66,7 @@ export class ArduinoProvider
     }
 
     const children: IArduinoEntry[] = [];
-    vscode.workspace.workspaceFolders.forEach(
+    vscode.workspace.workspaceFolders?.forEach(
       async (folder: vscode.WorkspaceFolder) => {
         const inoFiles: string[] = glob.sync(`${folder.uri.fsPath}/**/*.ino`);
         const addEntry: boolean = inoFiles.length > 0;
@@ -70,6 +74,7 @@ export class ArduinoProvider
         if (addEntry) {
           const arduinoEntry: IArduinoEntry = new ArduinoEntry(folder);
           arduinoEntry.model.onDidChangeConfig((event: IConfigModel) => {
+            console.debug("arduinoEntry.model.onDidChangeConfig", event);
             this.reveal();
           });
 

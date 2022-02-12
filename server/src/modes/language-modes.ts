@@ -1,12 +1,10 @@
 import fse = require("fs-extra");
 import { Position, TextDocument } from "vscode-languageserver-textdocument";
 import {
-  Command,
   CompletionItem,
   CompletionItemTag,
   CompletionList,
   Diagnostic,
-  InsertTextFormat,
   MarkedString,
 } from "vscode-languageserver/node";
 import {
@@ -28,8 +26,6 @@ import { ArduinoGithub } from "../arduino-github";
 import { Server } from "../server-interf";
 import {
   createBoardDocumentation,
-  createPlatformDocumentation,
-  createPlatformVersionDocumentation,
   createReleaseDocumentation,
 } from "./completion-item-documentation";
 import { ArduinoCli } from "../arduino-cli";
@@ -92,7 +88,7 @@ export function getLanguageModes(): LanguageModes {
           uri: string,
           location: JSONPath
         ): Thenable<MarkedString[]> => {
-          debug("contributions.getInfoContribution");
+          debug("contributions.getInfoContribution", uri, location);
           return Promise.resolve([]);
         },
         collectPropertyCompletions: (
@@ -103,7 +99,15 @@ export function getLanguageModes(): LanguageModes {
           isLast: boolean,
           result: CompletionsCollector
         ): Thenable<any> => {
-          debug("contributions.collectPropertyCompletions %s", currentWord);
+          debug(
+            "contributions.collectPropertyCompletions",
+            currentWord,
+            uri,
+            location,
+            addValue,
+            isLast,
+            result
+          );
           return Promise.resolve([]);
         },
         collectValueCompletions: (
@@ -112,7 +116,7 @@ export function getLanguageModes(): LanguageModes {
           propertyKey: string,
           result: CompletionsCollector
         ): Thenable<any> => {
-          debug("contributions.collectValueCompletions", propertyKey);
+          debug("contributions.collectValueCompletions", propertyKey, uri);
 
           if (propertyKey) {
             return Promise.resolve(
@@ -126,7 +130,7 @@ export function getLanguageModes(): LanguageModes {
           uri: string,
           result: CompletionsCollector
         ): Thenable<any> => {
-          debug("contributions.collectDefaultCompletions ");
+          debug("contributions.collectDefaultCompletions ", uri, result);
           return Promise.resolve([]);
         },
         resolveCompletion: (item: CompletionItem): Thenable<CompletionItem> => {
@@ -134,7 +138,7 @@ export function getLanguageModes(): LanguageModes {
             `"contributions.resolveCompletion " ${item.label} ${item.kind} `
           );
 
-          return Promise.resolve(undefined);
+          return Promise.resolve(item);
         },
       },
     ],
@@ -233,15 +237,16 @@ async function doCollectValueCompletions(
   propertyKey: string,
   result: CompletionsCollector
 ): Promise<void> {
+  debug("doCollectValueCompletions", location);
   let completionItems: CompletionItem[] = [];
 
-  if (propertyKey == "cliVersion") {
+  if (propertyKey === "cliVersion") {
     completionItems = await doCollectValuesCliVersion();
-  } else if (propertyKey == "board") {
+  } else if (propertyKey === "board") {
     completionItems = await doCollectValuesBoard();
-    //} else if (propertyKey == "platform") {
+    //} else if (propertyKey==="platform") {
     //   completionItems = await doCollectValuesPlatform();
-    // } else if (propertyKey == "platformVersion") {
+    // } else if (propertyKey==="platformVersion") {
     //   //completionItems = await doCollectValuesPlatformVersion();
   }
 
@@ -280,33 +285,33 @@ async function doCollectValuesCliVersion(): Promise<CompletionItem[]> {
   return completionItems;
 }
 
-async function _doCollectValuesBoard(): Promise<CompletionItem[]> {
-  const completionItems: CompletionItem[] = [];
+// async function _doCollectValuesBoard(): Promise<CompletionItem[]> {
+//   const completionItems: CompletionItem[] = [];
 
-  const ci: CompletionItem = CompletionItem.create("Select board");
-  //ci.label = item.name;
-  ci.insertText = "{}";
-  //ci.documentation = createReleaseDocumentation(item);
-  //ci.sortText = `${cnt.toString()}-${item.tag_name}`;
-  ci.command = Command.create("Install", "aclabExplorer.selectBoard");
-  //ci.textEdit =
-  //ci.insertTextMode = InsertTextMode.asIs;
+//   const ci: CompletionItem = CompletionItem.create("Select board");
+//   //ci.label = item.name;
+//   ci.insertText = "{}";
+//   //ci.documentation = createReleaseDocumentation(item);
+//   //ci.sortText = `${cnt.toString()}-${item.tag_name}`;
+//   ci.command = Command.create("Install", "aclabExplorer.selectBoard");
+//   //ci.textEdit =
+//   //ci.insertTextMode = InsertTextMode.asIs;
 
-  //const releases: Server.IArduinoRelease[] = await ArduinoGithub.getReleases();
-  completionItems.push(ci);
+//   //const releases: Server.IArduinoRelease[] = await ArduinoGithub.getReleases();
+//   completionItems.push(ci);
 
-  const ci2: CompletionItem = CompletionItem.create("Select default");
-  //ci.label = item.name;
-  ci2.insertText = "{ platform: ${1:platform} }";
-  //ci.documentation = createReleaseDocumentation(item);
-  //ci.sortText = `${cnt.toString()}-${item.tag_name}`;
-  //ci.command = Command.create("Default", "aclabExplorer.selectBoard");
-  //ci.textEdit =
-  //ci.insertTextMode = InsertTextMode.asIs;
-  completionItems.push(ci2);
+//   const ci2: CompletionItem = CompletionItem.create("Select default");
+//   //ci.label = item.name;
+//   ci2.insertText = "{ platform: ${1:platform} }";
+//   //ci.documentation = createReleaseDocumentation(item);
+//   //ci.sortText = `${cnt.toString()}-${item.tag_name}`;
+//   //ci.command = Command.create("Default", "aclabExplorer.selectBoard");
+//   //ci.textEdit =
+//   //ci.insertTextMode = InsertTextMode.asIs;
+//   completionItems.push(ci2);
 
-  return completionItems;
-}
+//   return completionItems;
+// }
 
 async function doCollectValuesBoard(): Promise<CompletionItem[]> {
   const completionItems: CompletionItem[] = [];
@@ -345,24 +350,24 @@ async function doCollectValuesBoard(): Promise<CompletionItem[]> {
   return completionItems;
 }
 
-async function doCollectValuesPlatformVersion(
-  platform: Server.IArduinoPlatform
-): Promise<CompletionItem[]> {
-  const completionItems: CompletionItem[] = [];
+// async function doCollectValuesPlatformVersion(
+//   platform: Server.IArduinoPlatform
+// ): Promise<CompletionItem[]> {
+//   const completionItems: CompletionItem[] = [];
 
-  const addItem = (item: string) => {
-    const ci: CompletionItem = CompletionItem.create(item);
-    ci.label = item;
-    ci.insertText = `"${item}"`;
-    ci.documentation = createPlatformVersionDocumentation(platform, item);
-    ci.sortText = `${item}`;
+//   const addItem = (item: string) => {
+//     const ci: CompletionItem = CompletionItem.create(item);
+//     ci.label = item;
+//     ci.insertText = `"${item}"`;
+//     ci.documentation = createPlatformVersionDocumentation(platform, item);
+//     ci.sortText = `${item}`;
 
-    return ci;
-  };
+//     return ci;
+//   };
 
-  platform.versions.forEach((version: string) => {
-    completionItems.push(addItem(version));
-  });
+//   platform.versions.forEach((version: string) => {
+//     completionItems.push(addItem(version));
+//   });
 
-  return completionItems;
-}
+//   return completionItems;
+// }

@@ -9,16 +9,18 @@ import { Server } from "../server-interf";
 export async function doInstallArduinoCli(version: string): Promise<string> {
   const _logger: ACLLogger.ILogger = ACLLogger.instance();
 
-  const release: Server.IArduinoRelease = (await ArduinoGithub.getReleases())
+  const release: Server.IArduinoRelease | undefined = (
+    await ArduinoGithub.getReleases()
+  )
     .filter((release: Server.IArduinoRelease) => {
-      return release.tag_name == version;
+      return release.tag_name === version;
     })
     .pop();
 
   if (release) {
     const download: DownloadUtil = new DownloadUtil(ACL_HOME);
     const targetFolder = await download.downloadFile(release).then(
-      async (pack: string) => {
+      async (pack: string | undefined) => {
         if (pack) {
           const target: string = path.join(ACL_HOME, "arduino-cli", version);
           _logger.info(`Unpacking ${pack} into ${target}`);

@@ -1,6 +1,6 @@
-import crypto from "crypto";
+import crypto = require("crypto");
 import path = require("path");
-import fse from "fs-extra";
+import fse = require("fs-extra");
 
 export namespace ACLCache {
   export let maxAgeDefault: number = 1;
@@ -20,7 +20,7 @@ export namespace ACLCache {
   }
 
   export function load(cacehId: string, maxAge: number = maxAgeDefault): any {
-    const file: string = cacheMap.get(cacehId);
+    const file: string = cacheMap.get(cacehId) || `${cacehId}_error_map`;
 
     if (file && fse.existsSync(file)) {
       const stats: fse.Stats = fse.lstatSync(file);
@@ -37,8 +37,8 @@ export namespace ACLCache {
   }
 
   export function write(cacehId: string, data: any): any {
-    if (data.status != false) {
-      const file: string = cacheMap.get(cacehId);
+    if (data.status !== false) {
+      const file: string = cacheMap.get(cacehId) || `${cacehId}_error_map`;
       fse.ensureDirSync(cacheDir);
       fse.writeJsonSync(file, data, { spaces: 2 });
     }

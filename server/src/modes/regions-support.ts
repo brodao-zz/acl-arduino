@@ -1,4 +1,3 @@
-import { Diagnostic } from "vscode";
 import { JSONDocument, LanguageService } from "vscode-json-languageservice";
 import {
   Range,
@@ -30,12 +29,13 @@ export function getDocumentRegions(
   const parsed: JSONDocument = languageService.parseJSONDocument(document);
   const regions: EmbeddedRegion[] = [];
 
-  regions.push({
-    languageId: "json",
-    start: parsed.root.offset,
-    end: parsed.root.offset + parsed.root.length,
-  });
-
+  if (parsed.root) {
+    regions.push({
+      languageId: "json",
+      start: parsed.root.offset,
+      end: parsed.root.offset + parsed.root.length,
+    });
+  }
   return {
     getLanguageRanges: (range: Range) =>
       getLanguageRanges(document, regions, range),
@@ -52,12 +52,14 @@ function getLanguageRanges(
   regions: EmbeddedRegion[],
   range: Range
 ): LanguageRange[] {
+  console.debug("getLanguageRanges", document, regions, range);
+
   const result: LanguageRange[] = [];
   let currentPos: number = range ? document.offsetAt(range.start) : 0;
-  let currentOffset: number = range ? document.offsetAt(range.start) : 0;
-  const endOffset: number = range
-    ? document.offsetAt(range.end)
-    : document.getText().length;
+  // let currentOffset: number = range ? document.offsetAt(range.start) : 0;
+  // const endOffset: number = range
+  //   ? document.offsetAt(range.end)
+  //   : document.getText().length;
 
   result.push({
     languageId: "json",

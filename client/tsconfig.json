@@ -1,15 +1,13 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    //"experimentalDecorators": false,
+    "module": "commonjs",
+    "target": "es2021",
     "outDir": "out",
     "rootDir": "src",
-    "declarationDir": "types",
-    "composite": true,
-    "removeComments": true,
-    //"types": ["server"],
-    "jsx": "react"
+    "lib": ["es2021"],
+    "sourceMap": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "out-test", "src/**/app/**"]
+  "exclude": ["node_modules"]
 }

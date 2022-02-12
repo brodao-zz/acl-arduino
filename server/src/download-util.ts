@@ -3,8 +3,8 @@ import * as fse from "fs-extra";
 import { Server } from "./server-interf";
 import download = require("download");
 import { IncomingMessage } from "http";
-import targz from "targz";
-import unzip from "unzip-stream";
+import targz = require("targz");
+import unzip = require("unzip-stream");
 import { ACLLogger } from "./logger";
 
 /**
@@ -41,7 +41,9 @@ export class DownloadUtil {
     return process.arch === "x64" ? "64" : "32";
   }
 
-  async downloadFile(release: Server.IArduinoRelease): Promise<string> {
+  async downloadFile(
+    release: Server.IArduinoRelease
+  ): Promise<string | undefined> {
     let result: boolean = true;
 
     fse.mkdirpSync(this._downloadFolder);
@@ -65,6 +67,7 @@ export class DownloadUtil {
       await download(url, this._downloadFolder)
         .on("redirect", (res: IncomingMessage, nextOptions: any) => {
           this._logger.debug("-**** redirect ***");
+          this._logger.debug(res);
           this._logger.debug(nextOptions);
         })
         .on("downloadProgress", (progress: any) => {
@@ -78,7 +81,7 @@ export class DownloadUtil {
         });
     }
 
-    return Promise.resolve(result ? target : null);
+    return result ? target : undefined;
   }
 
   unpack(input: string, target: string): Promise<void> {

@@ -1,10 +1,5 @@
-import { execFile } from "child_process";
 import path = require("path");
-import { workspace } from "vscode";
-import {
-  MessageType,
-  ShowMessageRequestParams,
-} from "vscode-languageserver/node";
+import { MessageType, ShowMessageRequestParams } from "vscode-languageserver";
 import { ArduinoCli } from "./arduino-cli";
 import { doInitializeConfig } from "./commands/initialize-config";
 import { doInstallArduinoCli } from "./commands/install-arduino-cli";
@@ -20,7 +15,7 @@ export namespace ArduinoAction {
     [key: string]: string;
   }
 
-  export function CONFIG_FILE_NOT_FOUND(
+  export function configFileNotFound(
     workspaceFolder: string,
     configFile: string
   ): ShowMessageRequestParams {
@@ -42,7 +37,7 @@ export namespace ArduinoAction {
     };
   }
 
-  export function INSTALL_ARDUINO_CLI(
+  export function installArduinoCli(
     version: string,
     workspace: string
   ): ShowMessageRequestParams {
@@ -68,14 +63,18 @@ export namespace ArduinoAction {
     arduinoCli: ArduinoCli,
     params: IActionParams
   ): Promise<string> {
-    if (params.code == ACT_INITIALIZE) {
+    if (params.code === ACT_INITIALIZE) {
       return doInitializeConfig(params.configFile);
-    } else if (params.code == ACT_INSTALL_ARDUINO_CLI) {
+    } else if (params.code === ACT_INSTALL_ARDUINO_CLI) {
       const execFile = await doInstallArduinoCli(params.version);
       arduinoCli.runOptions.arduinCliBin = arduinoCli.findExecutable(
         params.version
       );
-      arduinoCli.configInitDir(path.dirname(arduinoCli.runOptions.configFile));
+      if (arduinoCli.runOptions.configFile) {
+        arduinoCli.configInitDir(
+          path.dirname(arduinoCli.runOptions.configFile)
+        );
+      }
       arduinoCli.coreDownload();
       // arduinoCli.install();
       // arduinoCli.updaterunOptions.configFile();
@@ -85,5 +84,12 @@ export namespace ArduinoAction {
         return "Installation failed.";
       }
     }
+
+    const json: any = JSON.stringify({
+      arduinoCli: arduinoCli,
+      params: params,
+    });
+
+    throw new Error(`FATAL: Process result failed.\n${json}`);
   }
 }

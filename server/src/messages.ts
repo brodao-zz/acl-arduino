@@ -6,7 +6,7 @@ export function registerMessages(
   connection: _Connection<_, _, _, _, _, _, _>,
   arduinoCli: ArduinoCli
 ) {
-  connection.onRequest("$aclab/getReleases", (params: any[]) => {
+  connection.onRequest("$aclab/getReleases", () => {
     return ArduinoGithub.getReleases();
   });
 
@@ -18,7 +18,7 @@ export function registerMessages(
     return arduinoCli.coreInstall(params[0], params[1]);
   });
 
-  connection.onRequest("$aclab/coreUpdateIndex", (param: any[]) => {
+  connection.onRequest("$aclab/coreUpdateIndex", () => {
     return arduinoCli.coreUpdateIndex();
   });
 
@@ -34,7 +34,7 @@ export function registerMessages(
     return arduinoCli.configRemove3thPartyUrl(param);
   });
 
-  connection.onRequest("$aclab/boardList", (param: string) => {
+  connection.onRequest("$aclab/boardList", () => {
     return arduinoCli.boardList();
   });
 

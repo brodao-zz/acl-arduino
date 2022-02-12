@@ -1,5 +1,3 @@
-import path = require("path");
-import fse = require("fs-extra");
 import * as vscode from "vscode";
 import { MultiStepInput } from "../components/multi-step-quick-pick";
 import { Protocol } from "../protocol-interf";
@@ -15,13 +13,13 @@ const ADD_3RD_PARTY_URL: vscode.QuickPickItem = {
 export async function doSelectPlatform(state: State): Promise<State> {
   return await getPlatform(state)
     .then(async (state: State) => {
-      if (state.nextOper == "cancel") {
+      if (!state.platform || state.nextOper === "cancel") {
         vscode.window.showInformationMessage(
           "Add platform canceled by user request"
         );
 
         return state;
-      } else if (state.nextOper == "confirm") {
+      } else if (state.nextOper === "confirm") {
         vscode.window.showInformationMessage(
           `Added [${state.platform.name} version ${state.platform.latest}]`
         );
@@ -57,7 +55,7 @@ async function getPlatform(state: State): Promise<State> {
       return state;
     })
     .then(async (state: State) => {
-      if (state.nextOper == "confirm") {
+      if (state.nextOper === "confirm") {
         state.platform = state.platforms.get(state.pickItem.label);
       }
 
@@ -70,13 +68,13 @@ async function pickPlatform(input: MultiStepInput, state: Partial<State>) {
     title: "Select a Platform",
     step: 0,
     totalSteps: 1,
-    items: getPlatformItemsPick(state.platforms),
+    items: getPlatformItemsPick(state.platforms || new Map()),
     matchAll: true,
   });
 
   if (!state.pickItem) {
     state.nextOper = "cancel";
-  } else if (state.pickItem.label == ADD_3RD_PARTY_URL.label) {
+  } else if (state.pickItem.label === ADD_3RD_PARTY_URL.label) {
     state.nextOper = "add3rdPartyUrl";
   } else {
     state.nextOper = "confirm";
@@ -105,6 +103,6 @@ function getPlatformItemsPick(
   });
 
   return result.sort((a: vscode.QuickPickItem, b: vscode.QuickPickItem) => {
-    return a.label < b.label ? -1 : a.label == b.label ? 0 : 1;
+    return a.label < b.label ? -1 : a.label === b.label ? 0 : 1;
   });
 }
