@@ -32,6 +32,7 @@ export class ArduinoProvider
     element?: IArduinoEntry
   ): Promise<IArduinoEntry[]> | Promise<IInformationEntry[]> {
     if (element) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       const additional_urls: string[] = element.model.additional_urls
         ? element.model.additional_urls
         : [];

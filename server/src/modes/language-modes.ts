@@ -60,14 +60,16 @@ export interface LanguageModeRange extends Range {
   mode: LanguageMode | undefined;
 }
 
-const jsonSchemaUri = "aclab://server/aclabarduino.schema.json";
+const SCHEMA_FOLDER: string = path.join(__dirname, "..", "schema");
+
+const jsonSchemaUri: string = "aclab://server/aclabarduino.schema.json";
 const jsonSchema = fse
-  .readFileSync(path.join(__dirname, "../../schema/aclabarduino.schema.json"))
+  .readFileSync(path.join(SCHEMA_FOLDER, "aclabarduino.schema.json"))
   .toString();
 
 const jsonBoardSchemaUri = "aclab://server/board.schema.json";
 const jsonBoardSchema = fse
-  .readFileSync(path.join(__dirname, "../../schema/board.schema.json"))
+  .readFileSync(path.join(SCHEMA_FOLDER, "board.schema.json"))
   .toString();
 
 export function getLanguageModes(): LanguageModes {

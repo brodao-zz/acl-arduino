@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 //@ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
@@ -5,6 +6,12 @@
 
 const path = require("path");
 const merge = require("merge-options");
+
+var devMode = false;
+const index = process.argv.indexOf("--mode");
+if (index !== -1) {
+  devMode = process.argv[index + 1] !== "production";
+}
 
 module.exports = function withDefaults(/**@type WebpackConfig*/ extConfig) {
   /** @type WebpackConfig */
@@ -18,6 +25,7 @@ module.exports = function withDefaults(/**@type WebpackConfig*/ extConfig) {
       mainFields: ["module", "main"],
       extensions: [".ts", ".js"], // support ts-files and js-files
     },
+    stats: { errorDetails: true },
     module: {
       rules: [
         {
@@ -30,7 +38,7 @@ module.exports = function withDefaults(/**@type WebpackConfig*/ extConfig) {
               loader: "ts-loader",
               options: {
                 compilerOptions: {
-                  sourceMap: true,
+                  sourceMap: devMode,
                 },
               },
             },
@@ -40,6 +48,7 @@ module.exports = function withDefaults(/**@type WebpackConfig*/ extConfig) {
     },
     externals: {
       vscode: "commonjs vscode", // ignored because it doesn't exist
+      electron: "electron", // ignored because it doesn't exist
     },
     output: {
       // all output goes into `dist`.
@@ -49,7 +58,7 @@ module.exports = function withDefaults(/**@type WebpackConfig*/ extConfig) {
       libraryTarget: "commonjs",
     },
     // yes, really source maps
-    devtool: "source-map",
+    devtool: devMode ? "source-map" : false,
   };
 
   return merge(defaultConfig, extConfig);

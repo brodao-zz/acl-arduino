@@ -9,12 +9,16 @@ import {
 
 export namespace ArduinoDiagnostic {
   export enum Error {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     E001_INVALID_CLI_VERSION = "E001",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     E002_INVALID_BOARD = "E002",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     E003_INVALID_PLATFORM_VERSION = "E003",
   }
 
   export enum Information {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     I002_INVALID_BOARD_NAME = "I002",
   }
 
