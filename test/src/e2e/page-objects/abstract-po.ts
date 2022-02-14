@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { By, WebElement, WebView } from "vscode-extension-tester";
 import { delay } from "../helper";
 
@@ -46,18 +47,18 @@ export class AbstractPageObject {
     const element: WebElement = await this.findElement(elementId);
     const tagName: string = await element.getTagName();
 
-    if (tagName == "select") {
+    if (tagName === "select") {
       await this.setOption(elementId, value as string | number);
-    } else if (typeof value == "string") {
+    } else if (typeof value === "string") {
       await element.clear();
       await element.sendKeys(value);
-    } else if (typeof value == "number") {
+    } else if (typeof value === "number") {
       await element.clear();
       await element.sendKeys(String(value));
     } else {
       await element.click();
       const check: boolean = await element.isSelected();
-      if (check != value) {
+      if (check !== value) {
         await element.click();
       }
     }
@@ -71,7 +72,7 @@ export class AbstractPageObject {
         const label: string = await options[i].getText();
         const value: string = await options[i].getAttribute("value");
 
-        if (label == target || value == target) {
+        if (label === target || value === target) {
           await options[i].click();
           await delay(500);
         }
@@ -81,12 +82,12 @@ export class AbstractPageObject {
     // const element: WebElement = await this.findElement(id);
     // await element.click();
 
-    // if (typeof target == "string") {
+    // if (typeof target === "string") {
     //   for await (const option of await element.findElements(By.css("option"))) {
     //     const label: string = await option.getText();
     //     const value: string = await option.getAttribute("value");
 
-    //     if (label == target || value == target) {
+    //     if (label === target || value === target) {
     //       await option.click();
     //       await delay(3000);
     //     }

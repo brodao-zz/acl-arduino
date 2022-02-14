@@ -1,5 +1,5 @@
 import {
-  VSBrowser,
+  //VSBrowser,
   Notification,
   Workbench,
   NotificationType,
@@ -9,13 +9,11 @@ import { delay } from "../helper";
 const WAIT_NOTIFICATION_TIMEOUT = 2000;
 
 export class NotificationPageObject {
-  private workbench: Workbench;
   center: any;
 
   constructor(workbench: Workbench) {
-    this.workbench = workbench;
     (async () => {
-      this.center = await this.workbench.openNotificationsCenter();
+      this.center = await workbench.openNotificationsCenter();
     })();
   }
 
@@ -26,8 +24,8 @@ export class NotificationPageObject {
 
     for await (const notification of await this.waitNotifications()) {
       if (
-        type == NotificationType.Any ||
-        (await notification.getType()) == type
+        type === NotificationType.Any ||
+        (await notification.getType()) === type
       ) {
         notifications.push(notification);
       }
@@ -44,7 +42,7 @@ export class NotificationPageObject {
     const target: RegExp = new RegExp(targetText, "i");
 
     let steps: number = _wait / 500;
-    let result: Notification = undefined;
+    let result: Notification | undefined = undefined;
 
     while (result === undefined && steps > 0) {
       const notifications: Notification[] = await this.getNotifications(type);
@@ -74,7 +72,7 @@ export class NotificationPageObject {
   // notifications = await center.getNotifications(NotificationType.Info);
 
   private async waitNotifications(
-    delay: number = WAIT_NOTIFICATION_TIMEOUT
+    _delay: number = WAIT_NOTIFICATION_TIMEOUT
   ): Promise<Notification[]> {
     //return await VSBrowser.instance.driver.wait(async () => {
     //return await this.workbench.getNotifications();

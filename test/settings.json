@@ -1,0 +1,7 @@
+{
+  "window.newWindowDimensions": "maximized",
+  "workbench.startupEditor": "none",
+  "telemetry.telemetryLevel": "off",
+  "workbench.editor.enablePreview": false,
+  "update.mode": "none"
+}

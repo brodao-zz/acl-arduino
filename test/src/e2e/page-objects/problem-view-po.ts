@@ -1,15 +1,5 @@
-import {
-  SideBarView,
-  TreeItem,
-  ViewContent,
-  DefaultTreeSection,
-  ProblemsView,
-  MarkerType,
-  Marker,
-} from "vscode-extension-tester";
+import { ProblemsView, MarkerType, Marker } from "vscode-extension-tester";
 import { delay } from "../helper";
-import { ViewPageObject } from "./view-po";
-import { WorkbenchPageObject } from "./workbench-po";
 
 export class ProblemsPageObject {
   private _problemsView: ProblemsView;

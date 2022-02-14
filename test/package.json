@@ -1,7 +1,7 @@
 {
   "name": "acl-arduino-test",
   "displayName": "AC Lab Arduino Test",
-  "description": "Pacote de testes automatizados da extensão ACL-Arduino.",
+  "description": "ACL-Arduino extension automated testing package.",
   "version": "0.0.1",
   "publisher": "aclab",
   "author": {
@@ -25,18 +25,7 @@
     "resources"
   ],
   "type": "commonjs",
-  "scripts": {
-    "--TEST--": "",
-    "compile-test": "tsc -p ./",
-    "test": "extest run-tests -l error -f -s ../../temp/test -e ../../temp/extension -o ./test/settings.json './out-test/**/**/*test.js' ",
-    "pretest": "rimraf ./out/*  && npm run compile-test",
-    "test-setup": "npm run vsce:package && extest setup-tests -i -s ../../temp/test -e ../../temp/extension ",
-    "--SCENARIO--": "",
-    "scenario:default": "npm run test",
-    "scenario:simple": "set SCENARIO=simple && npm run test",
-    "--PACKAGE--": "",
-    "vsce:package": "cd .. && vsce package --no-git-tag-version --no-update-package-json -o test && cd ./test"
-  },
+  "scripts": {},
   "devDependencies": {
     "@types/chai": "^4.3.0",
     "@types/fs-extra": "^9.0.13",

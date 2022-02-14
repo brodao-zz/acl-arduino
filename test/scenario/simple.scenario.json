@@ -1,7 +1,8 @@
 {
-	"name": "New MCU Project",
-	"description": [
-		"Launch an new MCU project in an empty folder."
-	],
-	"project": "new-root"
+  "name": "Simple MCU Project",
+  "description": ["Launch an Simple MCU project."],
+  "project": {
+    "folder": "./resources/simple-root",
+    "name": "simple-root"
+  }
 }

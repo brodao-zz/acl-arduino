@@ -60,7 +60,10 @@ export interface LanguageModeRange extends Range {
   mode: LanguageMode | undefined;
 }
 
-const SCHEMA_FOLDER: string = path.join(__dirname, "..", "schema");
+let SCHEMA_FOLDER: string = path.join(__dirname, "..", "schema");
+if (!fse.existsSync(SCHEMA_FOLDER)) {
+  SCHEMA_FOLDER = path.join(__dirname, "..", "..", "schema");
+}
 
 const jsonSchemaUri: string = "aclab://server/aclabarduino.schema.json";
 const jsonSchema = fse

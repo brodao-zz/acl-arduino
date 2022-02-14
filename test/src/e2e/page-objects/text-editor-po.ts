@@ -1,11 +1,4 @@
-import {
-  EditorView,
-  TextEditor,
-  By,
-  promise,
-  DebugToolbar,
-  until,
-} from "vscode-extension-tester";
+import { EditorView, TextEditor, By, promise } from "vscode-extension-tester";
 import { MEDIUM_DELAY, delay } from "../helper";
 
 export class TextEditorPageObject {
@@ -22,6 +15,7 @@ export class TextEditorPageObject {
   }
 
   async sendKeys(
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     ...var_args: Array<string | number | promise.Promise<string | number>>
   ) {
     await this.editor

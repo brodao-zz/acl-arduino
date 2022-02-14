@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { StatusBar, WebElement, Workbench } from "vscode-extension-tester";
 import { TINY_DELAY, delay } from "../helper";
 
@@ -18,7 +19,7 @@ export class StatusPageObject {
   ): Promise<WebElement> {
     const target: RegExp = new RegExp(targetText, "i");
     let steps: number = _wait / 500;
-    let result: WebElement = null;
+    let result: WebElement | null = null;
 
     while (result === null && steps > 0) {
       const statusItems: WebElement[] = await this.statusBar.getItems();

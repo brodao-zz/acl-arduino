@@ -2901,3 +2901,58 @@ brodao@gmail.com                       https://github.com/brodao/acl-arduino.git
 2022-02-11T21:09:57-03:00 [project 2     ] D: provideCodeActions
 2022-02-11T21:10:23-03:00 [project 2     ] D: onCodeAction
 2022-02-11T21:10:23-03:00 [project 2     ] D: provideCodeActions
+2022-02-12T18:19:14-03:00 [AC Lab        ] I: 
+	---------------------------< AC Lab Arduino Server >----------------------------
+	|           O             ___       __               _        ___      ___     |
+	|       o O              /   \    / __|             | |      /   \    | _ )    |
+	|      o  _____          | - |   | (__              | |__    | - |    | _ \    |
+	|     []__[O]_           |_|_|    \___|             |____|   |_|_|    |___/    |
+	|    {======| _\"""""/ _|"""""| _|"""""| _\"""""/ _|"""""| _|"""""| _|"""""|   |
+	|   ./o=-000' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-'   |
+	|                                                                              |
+	--------< Arduino development environment and similars. Fast and easy! >--------
+	Extensions for VS-Code and NodeJS                             acl-arduino-server
+	(C) 2020-22 Alan Candido (bródão)                                  Versão: 0.0.1
+	brodao@gmail.com                       https://github.com/brodao/acl-arduino.git
+	
+2022-02-12T18:19:14-03:00 [AC Lab        ] D: onInitialize
+2022-02-12T18:19:14-03:00 [project 1     ] D: >>>>> ardino-cli constructor
+2022-02-12T18:19:14-03:00 [project 1     ] I: Started and initialize received. WS Count: 4
+2022-02-12T18:19:18-03:00 [AC Lab        ] I: AC Lab Arduino Server [acl-arduino-server] 0.0.1
+2022-02-12T18:19:18-03:00 [AC Lab        ] I: Arduino development environment and similars. Fast and easy!
+2022-02-12T18:19:18-03:00 [AC Lab        ] I: 
+2022-02-12T18:19:18-03:00 [AC Lab        ] D: onInitialize
+2022-02-12T18:19:18-03:00 [project 2     ] D: >>>>> ardino-cli constructor
+2022-02-12T18:19:18-03:00 [project 2     ] I: Started and initialize received. WS Count: 4
+2022-02-12T18:19:18-03:00 [project 2     ] D: documents.onDidOpen
+2022-02-12T18:19:14-03:00 [project 1     ] D: version --config-file p:\acl-arduino\test\resources\multi-root\project 1\.vscode\arduino-cli.yaml --format json
+2022-02-12T18:19:20-03:00 [project 1     ] D: 
+2022-02-12T18:19:20-03:00 [project 1     ] D: 
+	{
+	  "Application": "arduino-cli.exe",
+	  "VersionString": "0.20.2",
+	  "LatestVersion": "0.21.0",
+	  "Commit": "13783819",
+	  "Status": "",
+	  "Date": "2021-12-09T13:32:05Z"
+	}
+	
+2022-02-12T18:19:20-03:00 [project 1     ] D: version --config-file p:\acl-arduino\test\resources\multi-root\project 1\.vscode\arduino-cli.yaml --format json
+2022-02-12T18:19:21-03:00 [project 1     ] D: 
+2022-02-12T18:19:21-03:00 [project 1     ] D: 
+	{
+	  "Application": "arduino-cli.exe",
+	  "VersionString": "0.20.2",
+	  "LatestVersion": "0.21.0",
+	  "Commit": "13783819",
+	  "Status": "",
+	  "Date": "2021-12-09T13:32:05Z"
+	}
+	
+2022-02-12T18:19:18-03:00 [project 2     ] D: onDidChangeContent
+2022-02-12T18:19:24-03:00 [project 2     ] D: onCodeAction
+2022-02-12T18:19:24-03:00 [project 2     ] D: provideCodeActions
+2022-02-12T18:19:25-03:00 [project 2     ] D: onCodeAction
+2022-02-12T18:19:25-03:00 [project 2     ] D: provideCodeActions
+2022-02-12T18:20:09-03:00 [project 1     ] D: onShutdown
+2022-02-12T18:20:09-03:00 [project 2     ] D: onShutdown

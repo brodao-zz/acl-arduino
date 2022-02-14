@@ -1,15 +1,17 @@
 {
-  "extends": "../tsconfig-base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "moduleResolution": "Node",
+    "target": "ES5",
     //"experimentalDecorators": false,
     "outDir": "out",
     "rootDir": "src",
-    "declarationDir": "types",
+    //"declarationDir": "types",
     //"composite": true,
     "removeComments": true
     //"types": ["server"],
     //"jsx": "react"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "out-test", "src/**/app/**"]
+  "exclude": ["node_modules", "out-test"]
 }

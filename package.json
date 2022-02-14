@@ -49,12 +49,21 @@
     "webpack:prod": "npm run clean && webpack --mode production --config ./client/webpack.config.js && webpack --mode production --config ./server/webpack.config.js",
     "webpack:prod:client": "webpack --mode production --config ./client/webpack.config.js",
     "webpack:prod:server": "webpack --mode production --config ./server/webpack.config.js",
-    "-----------": "",
-    "test": "cd client && npm test && cd ..",
+    "--TEST--": "",
+    "compile-test": "cd ./test && tsc -p ./ && cd ..",
+    "test": "cd ./test && extest run-tests -l error -f -s /temp/test -e /temp/extension -o ./settings.json './out/**/**/*test.js' && cd..",
+    "pretest": "cd ./test && rimraf ./out/* && cd .. && npm run compile-test",
+    "test-setup": "cd ./test && extest setup-tests -i -s /temp/test -e /temp/extension && cd ..",
+    "--SCENARIO--": "",
+    "scenario:default": "npm run test",
+    "scenario:simple": "set SCENARIO=simple && npm run test",
+    "--PACKAGE--": "",
+    "test:package": "vsce package --no-git-tag-version --no-update-package-json -o ./test",
     "--INSTALL--": "",
     "postinstall": "npm-run-all postinstall:*",
     "postinstall:client": "cd client && npm ci && cd ..",
-    "postinstall:server": "cd server && npm ci && cd .."
+    "postinstall:server": "cd server && npm ci && cd ..",
+    "postinstall:test": "cd test && npm ci && cd .."
   },
   "funding": [
     {

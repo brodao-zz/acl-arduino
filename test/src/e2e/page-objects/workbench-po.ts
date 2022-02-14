@@ -1,15 +1,11 @@
 import { Notification, VSBrowser } from "vscode-extension-tester";
-
-import { OutputAclPageObject } from "./output-acl-po";
 import { MEDIUM_DELAY, SMALL_DELAY, delay } from "./../helper";
-import path = require("path");
-import fse = require("fs-extra");
 import { SCENARIO } from "../scenario";
 import { AbstractWorkbenchPageObject } from "./abstract-workbench-po";
 
 const FAST_PROCESS_TIMEOUT = 10 * SMALL_DELAY; //10 segundos
 const MEDIUM_PROCESS_TIMEOUT = 60 * SMALL_DELAY; //1 min
-const SLOW_PROCESS_TIMEOUT = 3 * 60 * SMALL_DELAY; //3 min
+//const SLOW_PROCESS_TIMEOUT = 3 * 60 * SMALL_DELAY; //3 min
 
 export interface IOptionsOpenProject {
   reset: boolean;
@@ -82,7 +78,7 @@ export class WorkbenchPageObject extends AbstractWorkbenchPageObject {
 
   async waitAskShowCompileResult(
     wait: number = FAST_PROCESS_TIMEOUT
-  ): Promise<Notification> {
+  ): Promise<Notification | undefined> {
     return await this.waitNotification(/Show table with compile results/, wait);
   }
 

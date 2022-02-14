@@ -1,18 +1,11 @@
-import path = require("path");
-import fse = require("fs-extra");
 import {
   By,
-  VSBrowser,
   InputBox,
   WebElement,
-  QuickPickItem,
   ContextMenu,
   ViewItem,
   ViewControl,
-  EditorView,
-  TreeItem,
 } from "vscode-extension-tester";
-import { expect } from "chai";
 import { setTimeout } from "timers/promises";
 
 export const TINY_DELAY: number = 1000;
@@ -48,7 +41,7 @@ export async function takeQuickPickAction(
     }
   );
 
-  if (actions.length == 1) {
+  if (actions.length === 1) {
     await actions[0].click();
     await delay();
     return true;

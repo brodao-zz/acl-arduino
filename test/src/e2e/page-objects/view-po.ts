@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   SideBarView,
   TreeItem,
@@ -8,13 +9,12 @@ import {
   TitleActionButton,
   ViewTitlePart,
   ActivityBar,
-  DefaultTreeItem,
 } from "vscode-extension-tester";
 import { delay } from "../helper";
 import { TINY_DELAY } from "./../helper";
 
 export class ViewPageObject<T> {
-  private _view: T;
+  private _view?: T;
   private viewName: string;
 
   protected constructor(name: string) {
@@ -63,7 +63,7 @@ export class ViewPageObject<T> {
     const content: ViewContent = view.getContent();
     const sections = await content.getSections();
     const tree: DefaultTreeSection = sections[0] as DefaultTreeSection;
-    const result: TreeItem = await this.findChildNode(tree, path);
+    const result: TreeItem | undefined = await this.findChildNode(tree, path);
 
     return await Promise.resolve(result);
   }
@@ -75,7 +75,7 @@ export class ViewPageObject<T> {
     const tree: DefaultTreeSection = sections[0] as DefaultTreeSection;
     let result: number = 0;
 
-    if (path.length == 0) {
+    if (path.length === 0) {
       result = (await tree.getVisibleItems()).length;
     } else {
       result = (await tree.openItem(...path)).length;
@@ -87,15 +87,14 @@ export class ViewPageObject<T> {
   async findChildNode(
     tree: DefaultTreeSection,
     path: string[]
-  ): Promise<TreeItem> {
+  ): Promise<TreeItem | undefined> {
     const DELAY: number = TINY_DELAY;
 
-    if (path.length == 1) {
-      let node: TreeItem = await tree.findItem(path[0]);
-      return node;
+    if (path.length === 1) {
+      return await tree.findItem(path[0]);
     }
 
-    let aux: DefaultTreeItem = undefined;
+    let aux: TreeItem | undefined = undefined;
     let children = await tree.openItem(path[0]);
     await delay(DELAY);
 
@@ -105,7 +104,7 @@ export class ViewPageObject<T> {
         const child = children[index];
         const label: string = await child.getLabel();
 
-        if (label == path[level]) {
+        if (label === path[level]) {
           aux = child;
           break;
         }

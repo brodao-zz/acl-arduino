@@ -3,37 +3,35 @@ import {
   Notification,
   NotificationType,
   EditorView,
-  VSBrowser,
+  // VSBrowser,
 } from "vscode-extension-tester";
 
 import { NotificationPageObject } from "./notification-po";
-import { StatusPageObject } from "./status-po";
 import { expect } from "chai";
 import { ExplorerPageObject } from "./explorer-view-po";
 import { OutputAclPageObject } from "./output-acl-po";
 import { ProblemsPageObject } from "./problem-view-po";
 import { BottomBarPageObject } from "./bottom-bar-po";
-import { MEDIUM_DELAY, SMALL_DELAY, TINY_DELAY, delay } from "./../helper";
+import { SMALL_DELAY, TINY_DELAY, delay } from "./../helper";
 import path = require("path");
 import fse = require("fs-extra");
-import { SCENARIO } from "../scenario";
 import { OutputAclTracePageObject } from "./output-acl-trace-po";
 
 const FAST_PROCESS_TIMEOUT = 10 * SMALL_DELAY; //10 segundos
-const MEDIUM_PROCESS_TIMEOUT = 60 * SMALL_DELAY; //1 min
-const SLOW_PROCESS_TIMEOUT = 3 * 60 * SMALL_DELAY; //3 min
+//const MEDIUM_PROCESS_TIMEOUT = 60 * SMALL_DELAY; //1 min
+//const SLOW_PROCESS_TIMEOUT = 3 * 60 * SMALL_DELAY; //3 min
 
 export interface IOptionsOpenProject {
   reset: boolean;
 }
 
-const DEFAULT_OPTIONS_OPEN_PROJECT: IOptionsOpenProject = {
-  reset: false,
-};
+// const DEFAULT_OPTIONS_OPEN_PROJECT: IOptionsOpenProject = {
+//   reset: false,
+// };
 
 export class AbstractWorkbenchPageObject {
   private _workbench: Workbench;
-  private statusBar: StatusPageObject;
+  //private statusBar: StatusPageObject;
   private notification: NotificationPageObject;
   private bottombar: BottomBarPageObject;
 
@@ -63,7 +61,7 @@ export class AbstractWorkbenchPageObject {
 
   protected constructor() {
     this._workbench = new Workbench();
-    this.statusBar = new StatusPageObject(this._workbench);
+    //this.statusBar = new StatusPageObject(this._workbench);
     this.notification = new NotificationPageObject(this._workbench);
     this.bottombar = new BottomBarPageObject();
   }
@@ -93,7 +91,9 @@ export class AbstractWorkbenchPageObject {
   protected async testNotification(
     targetText: RegExp | string
   ): Promise<boolean> {
-    const notification: Notification = await this.getNotification(targetText);
+    const notification: Notification | undefined = await this.getNotification(
+      targetText
+    );
     const result: boolean = notification ? true : false;
     await notification?.dismiss();
 
@@ -103,9 +103,11 @@ export class AbstractWorkbenchPageObject {
   protected async processInProgress(
     targetText: RegExp | string
   ): Promise<boolean> {
-    let notification: Notification = await this.getNotification(targetText);
+    let notification: Notification | undefined = await this.getNotification(
+      targetText
+    );
 
-    return await notification?.hasProgress();
+    return (await notification?.hasProgress()) || false;
   }
 
   protected async waitNotification(
@@ -113,7 +115,9 @@ export class AbstractWorkbenchPageObject {
     _wait: number = FAST_PROCESS_TIMEOUT
   ) {
     let steps: number = _wait / 500;
-    let notification: Notification = await this.getNotification(targetText);
+    let notification: Notification | undefined = await this.getNotification(
+      targetText
+    );
 
     if (notification) {
       let notificationAux;
@@ -146,9 +150,11 @@ export class AbstractWorkbenchPageObject {
   protected async waitProcessFinish(
     targetText: RegExp | string,
     _wait: number = FAST_PROCESS_TIMEOUT
-  ): Promise<Notification> {
+  ): Promise<Notification | undefined> {
     let steps: number = _wait / 500;
-    let notification: Notification = await this.getNotification(targetText);
+    let notification: Notification | undefined = await this.getNotification(
+      targetText
+    );
 
     if (notification) {
       try {
@@ -172,12 +178,13 @@ export class AbstractWorkbenchPageObject {
   protected async getNotification(
     targetText: RegExp | string,
     _wait: number = 5000
-  ): Promise<Notification> {
-    const notification: Notification = await this.notification.getNotification(
-      targetText,
-      NotificationType.Any,
-      _wait
-    );
+  ): Promise<Notification | undefined> {
+    const notification: Notification | undefined =
+      await this.notification.getNotification(
+        targetText,
+        NotificationType.Any,
+        _wait
+      );
 
     return notification;
   }

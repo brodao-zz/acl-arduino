@@ -1,15 +1,15 @@
+//@ts-nocheck
 import {
   CheckboxSetting,
   ComboSetting,
   SettingsEditor,
-  TextSetting,
   Workbench,
 } from "vscode-extension-tester";
 import { delay } from "../helper";
 import { expect } from "chai";
 
 export class SettingsPageObject {
-  private _settingsEditor: SettingsEditor;
+  private _settingsEditor?: SettingsEditor;
 
   constructor() {}
 
@@ -48,16 +48,17 @@ export class SettingsPageObject {
     return comboSetting;
   }
 
-  private async findText(keys: string[]): Promise<TextSetting> {
-    const textSetting: TextSetting = (await this._settingsEditor.findSetting(
-      keys.reverse()[0],
-      ...keys.reverse().slice(1)
-    )) as ComboSetting;
+  // private async findText(keys: string[]): Promise<TextSetting> {
+  //   const textSetting: TextSetting = (await this._settingsEditor.findSetting(
+  //     keys.reverse()[0],
+  //     ...keys.reverse().slice(1)
+  //   )) as ComboSetting;
 
-    expect(textSetting, `Settings: ${keys.join(".")}`).not.undefined;
+  //   expect(textSetting, `Settings: ${keys.join(".")}`).not.undefined;
 
-    return textSetting;
-  }
+  //   return textSetting;
+  // }
+
   async isLinter(): Promise<boolean> {
     const chexkBox: CheckboxSetting = await this.findCheckbox([
       "totvsLanguageServer",

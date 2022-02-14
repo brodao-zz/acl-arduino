@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    //"tsBuildInfoFile": ".tsbuildinfo",
+    "incremental": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,

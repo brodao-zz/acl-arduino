@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   By,
   EditorView,
@@ -44,7 +45,7 @@ export class AbstractEditorPageObject {
     await delay();
     const title: string = await this.editor.getTitle();
 
-    return title == this.expectTitle;
+    return title === this.expectTitle;
   }
 
   async findElement(id: string) {
