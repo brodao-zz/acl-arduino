@@ -45,21 +45,33 @@ export class ArduinoExplorer {
     disposes.push(
       vscode.commands.registerCommand(
         "arduinoExplorer.selectPort",
-        (resource: IArduinoEntry, _state: State) => {
-          const state: State = _state || {
-            nextOper: "selectPort",
-            workspace: resource.project,
-            pickItem: null,
-            board: null,
-            platforms: null,
-            platform: null,
-            url: null,
-            protocol: acLabArduino.getProtocol(resource.project.uri),
-            port: null,
-            ports: null,
-          };
+        (resource: IArduinoEntry | undefined, _state: State) => {
+          if (typeof resource === "string") {
+            const url: vscode.Uri = vscode.Uri.parse(resource);
 
-          doSelectPort(state);
+            resource = this.treeDataProvider.entries.find(
+              (entry: IArduinoEntry) => {
+                return url.fsPath.startsWith(entry.project.uri.fsPath);
+              }
+            );
+          }
+
+          if (resource) {
+            const state: State = _state || {
+              nextOper: "selectPort",
+              workspace: resource.project,
+              pickItem: null,
+              board: null,
+              platforms: null,
+              platform: null,
+              url: null,
+              protocol: acLabArduino.getProtocol(resource.project.uri),
+              port: null,
+              ports: null,
+            };
+
+            doSelectPort(state);
+          }
         }
       )
     );

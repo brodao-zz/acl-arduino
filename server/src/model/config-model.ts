@@ -7,7 +7,7 @@ export interface IConfigServerModel {
   version: string;
   cliVersion: string;
   port: string;
-  board: IBoardServerModel;
+  board: string;
   alias?: string;
 }
 
@@ -15,9 +15,6 @@ export const CONFIG_SERVER_DEFAULT: IConfigServerModel = {
   version: "",
   cliVersion: "",
   port: "",
-  board: {
-    fqbn: "",
-    name: "",
-  },
+  board: "",
   alias: "",
 };

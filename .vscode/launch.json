@@ -12,7 +12,7 @@
         "--inspect",
         "--inspect-brk"
       ],
-      "stopOnEntry": false,
+      //"stopOnEntry": false,
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/client/out/**/*.js"],
       "preLaunchTask": "npm: compile"
@@ -23,14 +23,15 @@
       "type": "node",
       "request": "attach",
       "name": "Attach6010",
-      "address": "localhost",
-      "protocol": "inspector",
+      //"address": "localhost",
+      "//protocol": "inspector",
       "port": 6010,
-      "outputCapture": "console",
+      //"outputCapture": "console",
       "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/server/out/**/*.js"],
-      "internalConsoleOptions": "openOnSessionStart"
-      //"continueOnAttach": true
+      //"outFiles": ["${workspaceRoot}/server/out/**/*.js"],
+      //"internalConsoleOptions": "openOnSessionStart",
+      "args": ["--inspect", "--inspect-brk"],
+      "restart": true
     },
     {
       "type": "node",
@@ -42,14 +43,14 @@
       "outputCapture": "console",
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/server/out/**/*.js"],
-      "internalConsoleOptions": "openOnSessionStart"
+      "internalConsoleOptions": "openOnSessionStart",
+      "restart": true
     }
   ],
   "compounds": [
     {
       "name": "Extension and Server",
-      "configurations": ["Extension", "Attach6010", "Attach6011"],
-      "preLaunchTask": "npm: compile"
+      "configurations": ["Extension", "Attach6010"]
     }
   ]
 }

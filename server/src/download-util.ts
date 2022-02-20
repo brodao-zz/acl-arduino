@@ -67,8 +67,8 @@ export class DownloadUtil {
       await download(url, this._downloadFolder)
         .on("redirect", (res: IncomingMessage, nextOptions: any) => {
           this._logger.debug("-**** redirect ***");
-          this._logger.debug(res);
-          this._logger.debug(nextOptions);
+          this._logger.debug(JSON.stringify(res.headers));
+          this._logger.debug(JSON.stringify(nextOptions));
         })
         .on("downloadProgress", (progress: any) => {
           this._logger.info(
@@ -76,7 +76,7 @@ export class DownloadUtil {
           );
         })
         .on("error", (error: any) => {
-          this._logger.error(error);
+          this._logger.error(error.toString());
           result = false;
         });
     }

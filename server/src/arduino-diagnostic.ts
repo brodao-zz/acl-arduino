@@ -15,11 +15,15 @@ export namespace ArduinoDiagnostic {
     E002_INVALID_BOARD = "E002",
     // eslint-disable-next-line @typescript-eslint/naming-convention
     E003_INVALID_PLATFORM_VERSION = "E003",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    E004_INVALID_PORT = "E004",
   }
 
   export enum Information {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    I002_INVALID_BOARD_NAME = "I002",
+    I002_INVALID_BOARD_NAME_UPDATE = "I002",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    I003_INVALID_BOARD_NAME_INSERT = "I003",
   }
 
   //const NO_RANGE: Range = Range.create(0, 0, 0, 0);
@@ -32,17 +36,17 @@ export namespace ArduinoDiagnostic {
     return {
       severity: codeToSeverity(code),
       code: code,
-      source: textDocument.uri,
+      //source: textDocument.uri,
       range: documentSymbol.range,
-      // {
-      //   start: textDocument.positionAt(node.range.offset),
-      //   end: textDocument.positionAt(node.offset + node.length),
-      // },
       message: codeToMessage(code),
       codeDescription: codeToDescription(code),
       tags: codeToTags(code),
       //relatedInformation?: DiagnosticRelatedInformation[];
-      data: documentSymbol.detail,
+      data: {
+        source: textDocument.uri,
+        name: documentSymbol.name,
+        value: documentSymbol.detail,
+      },
     };
   }
 
@@ -77,10 +81,14 @@ export namespace ArduinoDiagnostic {
         return "Invalid board (FQBN).";
       case Error.E003_INVALID_PLATFORM_VERSION:
         return "Invalid platform version.";
+      case Error.E004_INVALID_PORT:
+        return "Port required.";
       //
       //
-      case Information.I002_INVALID_BOARD_NAME:
+      case Information.I002_INVALID_BOARD_NAME_UPDATE:
         return "Board name is not equal FQBN name.";
+      case Information.I003_INVALID_BOARD_NAME_INSERT:
+        return "Board name is informed.";
 
       default:
         break;

@@ -288,17 +288,17 @@
       "view/item/context": [
         {
           "command": "arduinoExplorer.initialize",
-          "when": "view == arduinoExplorer && viewItem == notExistFile",
+          "when": "view == arduinoExplorer && viewItem == candidateProject",
           "group": "inline"
         },
         {
           "command": "aclabExplorer.selectBoard",
-          "when": "view == arduinoExplorer && viewItem == existFile",
+          "when": "view == arduinoExplorer && viewItem == aclProject",
           "group": "inline"
         },
         {
           "command": "arduinoExplorer.selectPort",
-          "when": "view == arduinoExplorer && viewItem == existFile",
+          "when": "view == arduinoExplorer && viewItem == aclProject",
           "group": "inline"
         }
       ]

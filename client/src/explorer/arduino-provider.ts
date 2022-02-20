@@ -13,6 +13,7 @@ export class ArduinoProvider
 
   readonly onDidChangeTreeData: vscode.Event<IArduinoEntry | null> =
     this._onDidChangeTreeData.event;
+  private _entries: IArduinoEntry[] = [];
 
   constructor() {}
 
@@ -84,6 +85,8 @@ export class ArduinoProvider
       }
     );
 
+    this._entries = children;
+
     return Promise.resolve(
       children.sort((a: IArduinoEntry, b: IArduinoEntry) => {
         return a.project.name.localeCompare(b.project.name);
@@ -97,5 +100,9 @@ export class ArduinoProvider
     }
 
     return new ArduinoTreeItem(element as IArduinoEntry);
+  }
+
+  public get entries(): IArduinoEntry[] {
+    return this._entries;
   }
 }

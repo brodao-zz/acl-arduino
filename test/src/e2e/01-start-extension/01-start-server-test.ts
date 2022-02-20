@@ -22,6 +22,6 @@ describe("Arduino View", async () => {
   it("Console log (Local Server)", async () => {
     const text: string[] = await outputPO.extractServerStartSequence();
 
-    expect(text).is.be.to.eqls(START_SERVER_BLOCK);
+    expect(text).is.eqls(START_SERVER_BLOCK);
   });
 });

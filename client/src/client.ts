@@ -177,7 +177,7 @@ export class Client implements vscode.Disposable {
     );
     const debugOptions = {
       execArgv: [
-        "--nolazy", //não aguarda "attach" do depurador
+        //"--nolazy", //não aguarda "attach" do depurador
         `--inspect=${Client.debugPort}`,
         "--inspect-brk",
       ],
@@ -202,9 +202,9 @@ export class Client implements vscode.Disposable {
 
     fileEvents.push(
       vscode.workspace.createFileSystemWatcher(
-        `**/.vscode/aclabarduino.json`,
+        "**/aclabarduino.json",
         true,
-        true,
+        false,
         true
       )
     );

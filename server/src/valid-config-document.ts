@@ -35,6 +35,13 @@ export async function doValidConfigDocument(
       jsonDocument
     );
     diagnostics.push(...diagnosticsAux);
+
+    diagnosticsAux = doValidPort(
+      jsonLanguageService,
+      textDocument,
+      jsonDocument
+    );
+    diagnostics.push(...diagnosticsAux);
   }
 
   return diagnostics;
@@ -120,16 +127,23 @@ function doValidBoard(
         if (board) {
           if (
             boardNameSymbol &&
-            boardNameSymbol.detail?.toLowerCase() &&
-            board.name.toLowerCase()
+            boardNameSymbol.detail?.toLowerCase() === board.name.toLowerCase()
           ) {
             // ok
+          } else if (boardNameSymbol) {
+            diagnostics.push(
+              ArduinoDiagnostic.createDiagnostic(
+                textDocument,
+                boardNameSymbol,
+                ArduinoDiagnostic.Information.I002_INVALID_BOARD_NAME_UPDATE
+              )
+            );
           } else {
             diagnostics.push(
               ArduinoDiagnostic.createDiagnostic(
                 textDocument,
                 boardSymbol,
-                ArduinoDiagnostic.Information.I002_INVALID_BOARD_NAME
+                ArduinoDiagnostic.Information.I003_INVALID_BOARD_NAME_INSERT
               )
             );
           }
@@ -151,6 +165,32 @@ function doValidBoard(
           )
         );
       }
+    }
+  }
+
+  return diagnostics;
+}
+
+function doValidPort(
+  jsonLanguageService: JsonLanguageService,
+  textDocument: TextDocument,
+  jsonDocument: any
+): Diagnostic[] {
+  const diagnostics: Diagnostic[] = [];
+  const portSymbol: DocumentSymbol | undefined = jsonLanguageService
+    .findDocumentSymbols2(textDocument, jsonDocument)
+    .find((symbol: DocumentSymbol) => symbol.name === "port");
+
+  if (portSymbol) {
+    const port: string = portSymbol.detail || "";
+    if (port.trim().length === 0) {
+      diagnostics.push(
+        ArduinoDiagnostic.createDiagnostic(
+          textDocument,
+          portSymbol,
+          ArduinoDiagnostic.Error.E004_INVALID_PORT
+        )
+      );
     }
   }
 

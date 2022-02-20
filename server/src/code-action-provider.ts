@@ -5,6 +5,7 @@ import {
   CodeActionKind,
   Command,
   CodeActionOptions,
+  TextEdit,
 } from "vscode-languageserver/node";
 import { ArduinoDiagnostic } from "./arduino-diagnostic";
 import { ACLLogger } from "./logger";
@@ -45,17 +46,18 @@ function quickfix(
         title: `Run Configuration Board`,
         kind: CodeActionKind.QuickFix,
         diagnostics: [diag],
-        isPreferred: true,
+        //isPreferred: true,
         command: Command.create(
           "Select Board",
           "aclabExplorer.selectBoard",
           textDocument.uri.toString()
         ),
       });
-    }
-    if (diag.code === ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION) {
+    } else if (diag.code === ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION) {
+      const data: any = diag.data || {};
+
       codeActions.push({
-        title: `"Set to [${diag.data}] (most recent) version"`,
+        title: `"Set [${data.name}] to most recent version"`,
         kind: CodeActionKind.QuickFix,
         diagnostics: [diag],
         edit: {
@@ -63,11 +65,84 @@ function quickfix(
             [params.textDocument.uri]: [
               {
                 range: diag.range,
-                newText: `"${diag.data}"`,
+                newText: `"${data.value}"`,
               },
             ],
           },
         },
+      });
+
+      return;
+    } else if (
+      diag.code === ArduinoDiagnostic.Information.I002_INVALID_BOARD_NAME_UPDATE
+    ) {
+      const data: any = diag.data || {};
+
+      codeActions.push({
+        title: "Update 'Board Name' property",
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diag],
+        edit: {
+          changes: {
+            [params.textDocument.uri]: [
+              {
+                range: diag.range,
+                newText: `"board_name": "${data.value}"`,
+              },
+            ],
+          },
+        },
+      });
+    } else if (
+      diag.code === ArduinoDiagnostic.Information.I003_INVALID_BOARD_NAME_INSERT
+    ) {
+      const data: any = diag.data || {};
+
+      codeActions.push({
+        title: `Add '${data.name}' property`,
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diag],
+        edit: {
+          changes: {
+            [params.textDocument.uri]: [
+              TextEdit.insert(
+                {
+                  line: diag.range.end.line + 1,
+                  character: diag.range.start.character,
+                },
+                `"${data.name}": "${data.value}",\n${" ".repeat(
+                  diag.range.start.character
+                )}`
+              ),
+            ],
+          },
+        },
+      });
+    } else if (diag.code === ArduinoDiagnostic.Error.E004_INVALID_PORT) {
+      codeActions.push({
+        title: "Select port",
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diag],
+        command: Command.create(
+          "Select Port",
+          "arduinoExplorer.selectPort",
+          diag.source
+        ),
+        // edit: {
+        //   changes: {
+        //     [params.textDocument.uri]: [
+        //       TextEdit.insert(
+        //         {
+        //           line: diag.range.end.line + 1,
+        //           character: diag.range.start.character,
+        //         },
+        //         `"board_name": "${diag.data}",\n${" ".repeat(
+        //           diag.range.start.character
+        //         )}`
+        //       ),
+        //     ],
+        //   },
+        // },
       });
 
       return;

@@ -75,7 +75,7 @@ export namespace ArduinoAction {
           path.dirname(arduinoCli.runOptions.configFile)
         );
       }
-      arduinoCli.coreDownload();
+      //arduinoCli.coreDownload();
       // arduinoCli.install();
       // arduinoCli.updaterunOptions.configFile();
       if (execFile && arduinoCli.runOptions.arduinCliBin) {

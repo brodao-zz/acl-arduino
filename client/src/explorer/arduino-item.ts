@@ -56,11 +56,13 @@ export class ArduinoTreeItem extends vscode.TreeItem {
       vscode.TreeItemCollapsibleState.Collapsed
     );
 
-    this.description = `${entry.model.port}:${entry.model.board}`;
+    this.description = this._existsFile ? `${entry.model.port}` : "<candidate>";
     this.tooltip = `${entry.model.board_name} <${entry.project.uri.fsPath}>`;
   }
 
-  private _existsFile: boolean = this.entry.model.existFile;
+  private _existsFile: Function = (): boolean => {
+    return this.entry.model.existFile;
+  };
 
   command = this._existsFile
     ? {
@@ -70,7 +72,7 @@ export class ArduinoTreeItem extends vscode.TreeItem {
       }
     : {
         command: "arduinoExplorer.initialize",
-        title: "New",
+        title: "Initialize",
         arguments: [this.entry.project],
       };
 
@@ -79,7 +81,7 @@ export class ArduinoTreeItem extends vscode.TreeItem {
     dark: this._existsFile ? iconFileDark : iconFileNotExistDark,
   };
 
-  contextValue = this._existsFile ? "existFile" : "notExistFile";
+  contextValue = this._existsFile ? "aclProject" : "candidateProject";
 }
 
 export class InformationTreeItem extends vscode.TreeItem {

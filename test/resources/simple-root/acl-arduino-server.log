@@ -104247,3 +104247,45 @@ brodao@gmail.com                       https://github.com/brodao/acl-arduino.git
 	
 2022-02-13T21:12:59-03:00 [simple-root   ] D: onDidChangeConfiguration
 2022-02-13T21:13:05-03:00 [simple-root   ] D: onShutdown
+2022-02-15T19:31:09-03:00 [AC Lab        ] I: 
+	---------------------------< AC Lab Arduino Server >----------------------------
+	|           O             ___       __               _        ___      ___     |
+	|       o O              /   \    / __|             | |      /   \    | _ )    |
+	|      o  _____          | - |   | (__              | |__    | - |    | _ \    |
+	|     []__[O]_           |_|_|    \___|             |____|   |_|_|    |___/    |
+	|    {======| _\"""""/ _|"""""| _|"""""| _\"""""/ _|"""""| _|"""""| _|"""""|   |
+	|   ./o=-000' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-' "'-0^0-'   |
+	|                                                                              |
+	--------< Arduino development environment and similars. Fast and easy! >--------
+	Extensions for VS-Code and NodeJS                             acl-arduino-server
+	(C) 2020-22 Alan Candido (bródão)                                  Versão: 0.0.1
+	brodao@gmail.com                       https://github.com/brodao/acl-arduino.git
+	
+2022-02-15T19:31:09-03:00 [AC Lab        ] D: onInitialize
+2022-02-15T19:31:09-03:00 [simple-root   ] D: >>>>> ardino-cli constructor
+2022-02-15T19:31:09-03:00 [simple-root   ] I: Started and initialize received. WS Count: 1
+2022-02-15T19:31:09-03:00 [simple-root   ] D: version --config-file p:\acl-arduino\test\resources\simple-root\.vscode\arduino-cli.yaml --format json
+2022-02-15T19:31:12-03:00 [simple-root   ] D: 
+2022-02-15T19:31:12-03:00 [simple-root   ] D: 
+	{
+	  "Application": "arduino-cli.exe",
+	  "VersionString": "0.20.2",
+	  "LatestVersion": "0.21.0",
+	  "Commit": "13783819",
+	  "Status": "",
+	  "Date": "2021-12-09T13:32:05Z"
+	}
+	
+2022-02-15T19:31:12-03:00 [simple-root   ] D: version --config-file p:\acl-arduino\test\resources\simple-root\.vscode\arduino-cli.yaml --format json
+2022-02-15T19:31:14-03:00 [simple-root   ] D: 
+2022-02-15T19:31:14-03:00 [simple-root   ] D: 
+	{
+	  "Application": "arduino-cli.exe",
+	  "VersionString": "0.20.2",
+	  "LatestVersion": "0.21.0",
+	  "Commit": "13783819",
+	  "Status": "",
+	  "Date": "2021-12-09T13:32:05Z"
+	}
+	
+2022-02-15T19:31:19-03:00 [simple-root   ] D: onShutdown

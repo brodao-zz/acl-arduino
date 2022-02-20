@@ -17,7 +17,6 @@ import { ACLCache } from "./cache";
 import { ACLLogger } from "./logger";
 
 export interface ArduinoCliOptions {
-  config?: IConfigServerModel;
   workspaceFolder?: WorkspaceFolder;
   configFile?: DocumentUri;
   debug: boolean;
@@ -41,6 +40,7 @@ export class ArduinoCli {
   private runArguments: string[];
   readonly runOptions: ArduinoCliOptions;
   static _initializationOptions: Partial<ArduinoCliOptions>;
+  private _config?: IConfigServerModel;
 
   private static normalizeOptions(
     args: Partial<ArduinoCliOptions>
@@ -51,7 +51,6 @@ export class ArduinoCli {
       verbose: false,
       configFile: undefined,
       logFile: undefined,
-      config: undefined,
       ...args,
     };
 
@@ -72,12 +71,6 @@ export class ArduinoCli {
           `arduino-cli-${values.workspaceFolder.name}.log`
         );
       }
-    }
-
-    if (values.configFile && fse.existsSync(values.configFile)) {
-      values.config = fse.readJsonSync(values.configFile);
-    } else {
-      values.config = CONFIG_SERVER_DEFAULT;
     }
 
     return values;
@@ -138,11 +131,32 @@ export class ArduinoCli {
     this.runOptions = runOptions;
     this.runArguments = runArguments;
 
-    if (this.runOptions.config) {
+    if (this.config) {
       this.runOptions.arduinCliBin = this.findExecutable(
-        this.runOptions.config.cliVersion
+        this.config.cliVersion
       );
     }
+  }
+
+  private get config(): IConfigServerModel | undefined {
+    if (!this._config) {
+      try {
+        if (
+          this.runOptions.configFile &&
+          fse.existsSync(this.runOptions.configFile)
+        ) {
+          const content: string =
+            fse.readFileSync(this.runOptions.configFile).toString() || "";
+          this._config = JSON.parse(content);
+        } else {
+          this._config = CONFIG_SERVER_DEFAULT;
+        }
+      } catch (error: any) {
+        ACLLogger.instance().error(error.message);
+      }
+    }
+
+    return this._config;
   }
 
   private _executeCommand(
@@ -264,8 +278,8 @@ export class ArduinoCli {
       if (result.status) {
         version = result.data["VersionString"];
       }
-    } catch (e) {
-      this._logger.error(e);
+    } catch (e: any) {
+      this._logger.error(e.toString());
     }
 
     return version;

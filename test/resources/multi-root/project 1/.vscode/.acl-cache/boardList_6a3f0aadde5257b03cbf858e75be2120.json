@@ -1,0 +1,14 @@
+{
+  "status": true,
+  "data": [
+    {
+      "port": {
+        "address": "COM3",
+        "label": "COM3",
+        "protocol": "serial",
+        "protocol_label": "Serial Port"
+      }
+    }
+  ],
+  "reason": ""
+}

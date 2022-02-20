@@ -16,6 +16,9 @@ import {
   CompletionItem,
   DidChangeConfigurationNotification,
   ExecuteCommandParams,
+  InitializeResult,
+  FileEvent,
+  FileChangeType,
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { ArduinoCli } from "./arduino-cli";
@@ -28,6 +31,7 @@ import {
 } from "./code-action-provider";
 import { ACLLogger } from "./logger";
 import { ACLCache } from "./cache";
+import { doInitializeConfig } from "./commands/initialize-config";
 
 const homedir: string = require("os").homedir();
 export const ACL_HOME: string = path.join(homedir, ".aclabarduino");
@@ -79,7 +83,9 @@ let hasWorkspaceFolderCapability = false;
 //let hasDiagnosticRelatedInformationCapability = false;
 
 connection.onInitialize((_params: InitializeParams) => {
-  _logger.debug("onInitialize", _params);
+  _logger.debug("onInitialize");
+  //_logger.debug(_params);
+
   const capabilities = _params.capabilities;
 
   hasConfigurationCapability = !!(
@@ -141,37 +147,30 @@ connection.onInitialize((_params: InitializeParams) => {
     _logger.info(`Not possible start server. WS Count: 0 (zero)`);
   }
 
-  return {
+  const result: InitializeResult = {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Full,
-      // 			textDocumentSync: {
-      // 	openClose: true,
-      // 	change: TextDocumentSyncKind.None
-      // }
-
-      // Tell the client that the server supports code completion
+      // Tell the client that this server supports code completion.
       completionProvider: {
-        resolveProvider: false,
+        resolveProvider: true,
       },
-      codeActionProvider: getCodeActionProvider(),
-      //executeCommandProvider: false, //getExecuteCommandProvider(),
-      // signatureHelpProvider: {
-      //   triggerCharacters: ["@"],
-      // },
     },
   };
+
+  if (hasWorkspaceFolderCapability) {
+    result.capabilities.workspace = {
+      workspaceFolders: {
+        supported: true,
+      },
+    };
+  }
+
+  result.capabilities.codeActionProvider = getCodeActionProvider();
+
+  return result;
 });
 
 connection.onInitialized(() => {
-  const release: string = ArduinoCli.instance().getCurrentVersion();
-  ArduinoCli.instance()
-    .checkEnvironment(release)
-    .then((diagnostics: ShowMessageRequestParams | undefined) => {
-      if (diagnostics) {
-        doSendShowMessageRequest(diagnostics);
-      }
-    });
-
   if (hasConfigurationCapability) {
     // Register for all configuration changes.
     connection.client.register(
@@ -189,28 +188,36 @@ connection.onInitialized(() => {
   //     connection.console.log("Workspace folder change event received.");
   //   });
   // }
+
+  const release: string = ArduinoCli.instance().getCurrentVersion();
+  ArduinoCli.instance()
+    .checkEnvironment(release)
+    .then((diagnostics: ShowMessageRequestParams | undefined) => {
+      if (diagnostics) {
+        doSendShowMessageRequest(diagnostics);
+      }
+    });
 });
 
 connection.onDidChangeWatchedFiles((_change) => {
-  _logger.debug("We received an file change event");
-  // this._watchFile = fse.watchFile(runOptions.configFile, (curr, prev) => {
-  //   console.debug(">>>>>", [runOptions.configFile, curr, prev]);
+  _logger.debug("onDidChangeWatchedFiles", JSON.stringify(_change));
 
-  //   if (curr.uid===0 && curr.mtimeMs===0) {
-  //     //deletado
-  //     this._watchFile.unref();
-  //     this._instance = undefined;
-  //   } else if (curr.mtimeMs > prev.mtimeMs) {
-  //     //novo ou modificado
-  //     this._instance = undefined;
-  //   }
-  // });
+  _change.changes.forEach((event: FileEvent) => {
+    if (event.uri.endsWith("aclabarduino.json")) {
+      if (event.type === FileChangeType.Created) {
+        doInitializeConfig(fileURLToPath(event.uri));
+      } else if (event.type === FileChangeType.Changed) {
+        //doInitializeConfig(fileURLToPath(event.uri));
+      } else if (event.type === FileChangeType.Deleted) {
+        //doInitializeConfig(fileURLToPath(event.uri));
+      }
+    }
+  });
 });
 
 connection.onDidChangeConfiguration((_change) => {
   // Revalidate all open text documents
-  _logger.debug("onDidChangeConfiguration");
-  _logger.debug(_change);
+  _logger.debug("onDidChangeConfiguration", JSON.stringify(_change));
 
   documents.all().forEach(validateTextDocument);
 });

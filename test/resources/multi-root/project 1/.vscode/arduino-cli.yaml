@@ -1,6 +1,5 @@
 board_manager:
-  additional_urls:
-    - https://dl.espressif.com/dl/package_esp32_index.json
+  additional_urls: []
 daemon:
   port: "50051"
 directories:
@@ -10,10 +9,9 @@ directories:
 library:
   enable_unsafe_install: false
 logging:
-  file: p:\acl-arduino\test\resources\multi-root\project 1\arduino-cli-project
-    1.log
+  file: ""
   format: text
-  level: debug
+  level: info
 metrics:
   addr: :9090
   enabled: true

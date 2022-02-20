@@ -1,7 +1,8 @@
 {
   "version": "0.0.1",
-  "cliVersion": "0.20.2",
-  "board": "arduino:avr:bt",
-  "board_name": "Arduino BT",
-  "port": "COM7"
+  "cliVersion": "0.21.0-rc1",
+  "port": "",
+  "board": "esp32:esp32:esp32",
+  "board_name": "ESP32 Dev Module",
+  "alias": ""
 }
