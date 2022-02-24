@@ -1,4 +1,4 @@
-import { TextDocument } from "vscode-languageserver-textdocument";
+import { Range, TextDocument } from "vscode-languageserver-textdocument";
 import {
   CodeDescription,
   Diagnostic,
@@ -24,9 +24,33 @@ export namespace ArduinoDiagnostic {
     I002_INVALID_BOARD_NAME_UPDATE = "I002",
     // eslint-disable-next-line @typescript-eslint/naming-convention
     I003_INVALID_BOARD_NAME_INSERT = "I003",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    I004_INVALID_PROJECT = "I004",
   }
 
-  //const NO_RANGE: Range = Range.create(0, 0, 0, 0);
+  const NO_RANGE: Range = {
+    start: { line: 0, character: 0 },
+    end: { line: 0, character: 0 },
+  };
+
+  export function createProjectDiagnostic(
+    workspace: string,
+    code: Error | Information
+  ): Diagnostic {
+    return {
+      severity: codeToSeverity(code),
+      code: code,
+      //source: textDocument.uri,
+      range: NO_RANGE,
+      message: codeToMessage(code),
+      codeDescription: codeToDescription(code),
+      tags: codeToTags(code),
+      //relatedInformation?: DiagnosticRelatedInformation[];
+      data: {
+        workspace: workspace,
+      },
+    };
+  }
 
   export function createDiagnostic(
     textDocument: TextDocument,
@@ -89,6 +113,8 @@ export namespace ArduinoDiagnostic {
         return "Board name is not equal FQBN name.";
       case Information.I003_INVALID_BOARD_NAME_INSERT:
         return "Board name is informed.";
+      case Information.I004_INVALID_PROJECT:
+        return "Invalid project.";
 
       default:
         break;

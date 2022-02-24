@@ -235,6 +235,15 @@
     ],
     "commands": [
       {
+        "command": "arduinoExplorer.checkProject",
+        "title": "Check Project",
+        "category": "ACLab",
+        "icon": {
+          "light": "./resources/light/new.svg",
+          "dark": "./resources/dark/new.svg"
+        }
+      },
+      {
         "command": "arduinoExplorer.initialize",
         "title": "Initialize",
         "category": "ACLab",
@@ -285,6 +294,20 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "arduinoExplorer.checkProject",
+          "when": "1==0"
+        },
+        {
+          "command": "arduinoExplorer.initialize",
+          "when": "1==0"
+        },
+        {
+          "command": "arduinoExplorer.selectPort",
+          "when": "1==0"
+        }
+      ],
       "view/item/context": [
         {
           "command": "arduinoExplorer.initialize",

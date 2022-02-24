@@ -82,9 +82,15 @@ export class Client implements vscode.Disposable {
           }, languageClient)
         );
 
-        languageClient.onReady().then(() => {
-          console.log(`LC ready ${wfFolder.name}`);
-        });
+        languageClient.onReady().then(
+          () => {
+            console.log(`LC ready [${wfFolder.name}]`);
+          },
+          (reason: any) => {
+            console.error(`LC error [${wfFolder.name}]`);
+            console.error(reason);
+          }
+        );
 
         result = AclProtocol.initialize(wfFolder, languageClient);
       } else {

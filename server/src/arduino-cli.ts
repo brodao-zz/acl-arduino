@@ -365,6 +365,31 @@ export class ArduinoCli {
     return result;
   }
 
+  // checkProject(
+  //   workspaceFolder: any
+  // ): Promise<ShowMessageRequestParams | undefined> {
+  //   let result: ShowMessageRequestParams | undefined = undefined;
+
+  //   result = {
+  //     type: MessageType.Info,
+  //     message: `Check project [${workspaceFolder}].`,
+  //     // actions: [
+  //     //   {
+  //     //     title: "Create",
+  //     //     //context: 15,
+  //     //     returnParams: {
+  //     //       code: ACT_INITIALIZE,
+  //     //       workspaceFolder: workspaceFolder,
+  //     //       configFile: configFile,
+  //     //     },
+  //     //   },
+  //     //   { title: "Don't ask more", code: ACT_DONT_ASK_MORE },
+  //     // ],
+  //   };
+
+  //   return Promise.resolve(result);
+  // }
+
   ///////////////////////////////////////////
   ///////////////////////////////////////////
   ///////////////////////////////////////////

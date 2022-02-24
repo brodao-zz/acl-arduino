@@ -1,7 +1,17 @@
+import { Diagnostic } from "vscode-languageclient";
+
 export namespace Protocol {
   export interface Message {
     // sendBoardList(): Thenable<IBoard[]>;
     // sendPorts(): Thenable<IDetectedPort[]>;
+  }
+
+  export function getResult<T>(serverResult: IServerResult): T {
+    if (serverResult.status) {
+      return serverResult.data as T;
+    }
+
+    throw new Error(serverResult.reason);
   }
 
   export interface IServerResult {
@@ -12,17 +22,16 @@ export namespace Protocol {
 
   export interface IArduinoCliVersion {
     name: string;
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     tag_name: string;
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     tarball_url: string;
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     zipball_url: string;
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     prerelease: boolean;
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     published_at: string;
-    //@ts-ignore
     author: string;
   }
 
@@ -43,6 +52,7 @@ export namespace Protocol {
       address: string;
       label: string;
       protocol: string;
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       protocol_label: string;
       properties?: {
         pid: string;
@@ -61,5 +71,26 @@ export namespace Protocol {
   export interface IBoard {
     name: string;
     fqbn: string;
+  }
+
+  export interface IDetectedPort {
+    port: {
+      address: string;
+      label: string;
+      protocol: string;
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      protocol_label: string;
+      properties?: {
+        pid: string;
+        serialNumber: string;
+        vid: string;
+      };
+    };
+  }
+
+  export interface ICheckProject {
+    uri: string;
+    status: number;
+    diagnostics: Diagnostic[];
   }
 }

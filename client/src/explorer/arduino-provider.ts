@@ -1,7 +1,11 @@
 import glob = require("glob");
 import * as vscode from "vscode";
 import { ArduinoTreeItem, InformationTreeItem } from "./arduino-item";
-import { ArduinoEntry, IArduinoEntry } from "./arduino-entry";
+import {
+  ArduinoEntry,
+  ArduinoEntryStatus,
+  IArduinoEntry,
+} from "./arduino-entry";
 import { IConfigModel } from "../model/config-model";
 import { IInformationEntry, InformationEntry } from "./information-entry";
 
@@ -39,29 +43,33 @@ export class ArduinoProvider
         : [];
       const children: IInformationEntry[] = [];
 
-      children.push(new InformationEntry(element, "Port", element.model.port));
-      children.push(
-        new InformationEntry(element, "Board", element.model.board)
-      );
-      children.push(
-        new InformationEntry(
-          element,
-          "Name",
-          element.model.board_name ? element.model.board_name : "<run check>"
-        )
-      );
-      children.push(
-        new InformationEntry(element, "Path", element.project.uri.fsPath)
-      );
-      if (additional_urls.length) {
+      if (element.status === ArduinoEntryStatus.ok) {
+        children.push(
+          new InformationEntry(element, "Port", element.model.port)
+        );
+        children.push(
+          new InformationEntry(element, "Board", element.model.board)
+        );
         children.push(
           new InformationEntry(
             element,
-            "3th URL",
-            `${additional_urls.length} URL's`,
-            additional_urls.join("\n")
+            "Name",
+            element.model.board_name ? element.model.board_name : "<run check>"
           )
         );
+        children.push(
+          new InformationEntry(element, "Path", element.project.uri.fsPath)
+        );
+        if (additional_urls.length) {
+          children.push(
+            new InformationEntry(
+              element,
+              "3th URL",
+              `${additional_urls.length} URL's`,
+              additional_urls.join("\n")
+            )
+          );
+        }
       }
 
       return Promise.resolve(children);

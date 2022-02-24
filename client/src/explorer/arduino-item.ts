@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as vscode from "vscode";
-import { IArduinoEntry } from "./arduino-entry";
+import { ArduinoEntryStatus, IArduinoEntry } from "./arduino-entry";
 import { IInformationEntry } from "./information-entry";
 
 const iconFolder: string[] = [__dirname, "..", "..", "..", "fileicons"];
@@ -53,35 +53,49 @@ export class ArduinoTreeItem extends vscode.TreeItem {
   constructor(public readonly entry: IArduinoEntry) {
     super(
       entry.model.alias ? entry.model.alias : entry.project.name,
-      vscode.TreeItemCollapsibleState.Collapsed
+      entry.status === ArduinoEntryStatus.ok
+        ? vscode.TreeItemCollapsibleState.Collapsed
+        : vscode.TreeItemCollapsibleState.None
     );
 
-    this.description = this._existsFile ? `${entry.model.port}` : "<candidate>";
+    this.description = `${entry.model.port} ${statusToString(entry.status)}`;
     this.tooltip = `${entry.model.board_name} <${entry.project.uri.fsPath}>`;
   }
 
-  private _existsFile: Function = (): boolean => {
-    return this.entry.model.existFile;
-  };
-
-  command = this._existsFile
-    ? {
-        command: "arduinoExplorer.openConfiguration",
-        title: "Open",
-        arguments: [this.entry.project],
-      }
-    : {
-        command: "arduinoExplorer.initialize",
-        title: "Initialize",
-        arguments: [this.entry.project],
-      };
+  command =
+    this.entry.status === ArduinoEntryStatus.ok
+      ? {
+          command: "arduinoExplorer.openConfiguration",
+          title: "Open",
+          arguments: [this.entry.project],
+        }
+      : this.entry.status === ArduinoEntryStatus.candidate
+      ? {
+          command: "arduinoExplorer.initialize",
+          title: "Initialize",
+          arguments: [this.entry.project],
+        }
+      : {
+          command: "arduinoExplorer.checkProject",
+          title: "Check",
+          arguments: [this.entry.project],
+        };
 
   iconPath = {
-    light: this._existsFile ? iconFileLight : iconFileNotExistLight,
-    dark: this._existsFile ? iconFileDark : iconFileNotExistDark,
+    light:
+      this.entry.status === ArduinoEntryStatus.ok
+        ? iconFileLight
+        : iconFileNotExistLight,
+    dark:
+      this.entry.status === ArduinoEntryStatus.ok
+        ? iconFileDark
+        : iconFileNotExistDark,
   };
 
-  contextValue = this._existsFile ? "aclProject" : "candidateProject";
+  contextValue =
+    this.entry.status === ArduinoEntryStatus.ok
+      ? "aclProject"
+      : "candidateProject";
 }
 
 export class InformationTreeItem extends vscode.TreeItem {
@@ -98,4 +112,19 @@ export class InformationTreeItem extends vscode.TreeItem {
   };
 
   contextValue = "information";
+}
+function statusToString(status: ArduinoEntryStatus): string {
+  switch (status) {
+    case ArduinoEntryStatus.ok:
+      return "";
+    case ArduinoEntryStatus.candidate:
+      return "<candidate>";
+    case ArduinoEntryStatus.error:
+      return "<error>";
+
+    default:
+      break;
+  }
+
+  return `<unknow ${status}`;
 }

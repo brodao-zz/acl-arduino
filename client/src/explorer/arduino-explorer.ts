@@ -180,4 +180,10 @@ export class ArduinoExplorer {
   reveal(element: IArduinoEntry) {
     this.treeView.reveal(element);
   }
+
+  checkAllProjects() {
+    this.treeDataProvider.entries.forEach((entry: IArduinoEntry) => {
+      entry.checkProject(this.treeView);
+    });
+  }
 }

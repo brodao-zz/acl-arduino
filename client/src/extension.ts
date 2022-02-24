@@ -21,7 +21,18 @@ export function activate(context: vscode.ExtensionContext) {
   //
   // Inicializa LS padrão
   //
-  acLabArduino.getDefaultProtocol();
+  acLabArduino
+    .getDefaultProtocol()
+    .languageClient.onReady()
+    .then(
+      () => {
+        arduinoExplorer.checkAllProjects();
+      },
+      (reason: any) => {
+        console.error(`LC error [checkAllProjects]`);
+        console.error(reason);
+      }
+    );
 
   //
   // Arduino Explorer View

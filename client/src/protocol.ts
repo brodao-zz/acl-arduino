@@ -44,10 +44,14 @@ export class AclProtocol implements Protocol.Message {
       const name: string = element["name"];
       const data: Protocol.IArduinoCliVersion = {
         name: element["name"],
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         tag_name: element["tag_name"],
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         tarball_url: element["tarball_url"],
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         zipball_url: element["zipball_url"],
         prerelease: element["prerelease"],
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         published_at: element["published_at"],
         author: element["author"],
       };

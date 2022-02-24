@@ -128,21 +128,6 @@ function quickfix(
           "arduinoExplorer.selectPort",
           diag.source
         ),
-        // edit: {
-        //   changes: {
-        //     [params.textDocument.uri]: [
-        //       TextEdit.insert(
-        //         {
-        //           line: diag.range.end.line + 1,
-        //           character: diag.range.start.character,
-        //         },
-        //         `"board_name": "${diag.data}",\n${" ".repeat(
-        //           diag.range.start.character
-        //         )}`
-        //       ),
-        //     ],
-        //   },
-        // },
       });
 
       return;

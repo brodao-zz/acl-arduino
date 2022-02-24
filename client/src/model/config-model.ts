@@ -7,8 +7,10 @@ export interface IConfigDataModel {
   cliVersion: string;
   port: string;
   board: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   board_name?: string;
   alias?: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   additional_urls?: string[];
 }
 
@@ -16,6 +18,7 @@ export interface IConfigModel extends IConfigDataModel {
   filename: vscode.Uri;
   existFile: boolean;
   onDidChangeConfig: any; //(event: IConfigModel) => void;
+
   add3rdPartyUrl: (url: URL) => void;
 }
 
@@ -82,6 +85,7 @@ export class ConfigModel implements IConfigModel {
 
     if (!additionalUrls.includes(url.toString())) {
       additionalUrls.push(url.toString());
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       this.content = { ...this._content, additional_urls: additionalUrls };
     }
   }
@@ -140,15 +144,17 @@ export class ConfigModel implements IConfigModel {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   set board_name(value: string) {
     this.content = {
       ...this._content,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       board_name: value,
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   get board_name(): string {
-    //@ts-expect-error
     return this.content.board_name;
   }
 }

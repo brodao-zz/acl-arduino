@@ -25,13 +25,18 @@ import { ArduinoCli } from "./arduino-cli";
 import { ArduinoAction } from "./arduino-action";
 import { getLanguageModes, LanguageModes } from "./modes/language-modes";
 import { fileURLToPath } from "url";
+import { ACLLogger } from "./logger";
+import { ACLCache } from "./cache";
+import { doInitializeConfig } from "./commands/initialize-config";
 import {
   getCodeActionProvider,
   provideCodeActions,
 } from "./code-action-provider";
-import { ACLLogger } from "./logger";
-import { ACLCache } from "./cache";
-import { doInitializeConfig } from "./commands/initialize-config";
+import {
+  COMMAND_CHECK_PROJECT,
+  doCheckProject,
+  //NOTIFICATION_CHECK_PROJECT,
+} from "./commands/do-check-project";
 
 const homedir: string = require("os").homedir();
 export const ACL_HOME: string = path.join(homedir, ".aclabarduino");
@@ -129,6 +134,7 @@ connection.onInitialize((_params: InitializeParams) => {
         .pop()
     );
   }
+
   if (workspaceFolder.uri.length > 0) {
     ACLCache.cacheDir = path.join(workspaceFolder.uri, ".vscode", ".acl-cache");
     _logger.setConfig({ label: workspaceFolder.name });
@@ -154,6 +160,22 @@ connection.onInitialize((_params: InitializeParams) => {
       completionProvider: {
         resolveProvider: true,
       },
+      codeActionProvider: getCodeActionProvider(),
+      codeLensProvider: undefined,
+      definitionProvider: false,
+      documentFormattingProvider: false,
+      documentHighlightProvider: false,
+      documentSymbolProvider: false,
+      executeCommandProvider: {
+        commands: [COMMAND_CHECK_PROJECT],
+      },
+      hoverProvider: false,
+      renameProvider: false,
+      referencesProvider: false,
+      // signatureHelpProvider: {
+      //   triggerCharacters: ["(", ","],
+      // },
+      workspaceSymbolProvider: false,
     },
   };
 
@@ -164,8 +186,6 @@ connection.onInitialize((_params: InitializeParams) => {
       },
     };
   }
-
-  result.capabilities.codeActionProvider = getCodeActionProvider();
 
   return result;
 });
@@ -276,6 +296,25 @@ connection.onCodeAction((params: CodeActionParams) => {
 
 connection.onExecuteCommand((params: ExecuteCommandParams) => {
   _logger.debug("onExecuteCommand", JSON.stringify(params));
+  const args: any[] = params.arguments || [];
+
+  if (params.command === COMMAND_CHECK_PROJECT) {
+    return doCheckProject(args[0]).then(
+      (diagnostics: Diagnostic[] | undefined) => {
+        return {
+          status: true,
+          reason: "",
+          data: {
+            uri: args[0],
+            status: 1,
+            diagnostics: diagnostics,
+          },
+        };
+      }
+    );
+  }
+
+  return;
 });
 
 connection.onShutdown(() => {
