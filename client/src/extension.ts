@@ -52,8 +52,6 @@ export function activate(context: vscode.ExtensionContext) {
     for (const folder of event.removed) {
       acLabArduino.removeModel(folder);
     }
-
-    console.log("arduinoExplorer.reveal()");
   });
 }
 

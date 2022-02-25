@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { acLabArduino } from "../extension";
 import { IConfigModel } from "../model/config-model";
 import { Protocol } from "../protocol-interf";
+import { ArduinoProvider } from "./arduino-provider";
 
 export enum ArduinoEntryStatus {
   none,
@@ -16,7 +17,7 @@ export interface IArduinoEntry {
   readonly model: IConfigModel;
   readonly status: ArduinoEntryStatus;
 
-  checkProject(treeView: vscode.TreeView<any>): void;
+  checkProject(provider: ArduinoProvider): void;
 }
 
 export class ArduinoEntry implements IArduinoEntry {
@@ -39,7 +40,8 @@ export class ArduinoEntry implements IArduinoEntry {
     return this._status;
   }
 
-  checkProject(treeView: vscode.TreeView<any>): void {
+  checkProject(provider: ArduinoProvider): void {
+    console.log("checkProject %s", this._project.name);
     vscode.commands
       .executeCommand<Protocol.IServerResult>(
         "arduinoExplorer.checkProject",
@@ -49,10 +51,10 @@ export class ArduinoEntry implements IArduinoEntry {
         (value: Protocol.IServerResult) => {
           const data: Protocol.ICheckProject =
             Protocol.getResult<Protocol.ICheckProject>(value);
-
+          console.error(data);
           this._status = data.status;
           //this._status = data.diagnostics;
-          treeView.reveal(this);
+          provider.reveal(this);
         },
         (reason: any) => {
           console.error(reason);

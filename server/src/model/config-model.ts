@@ -1,7 +1,7 @@
-export interface IBoardServerModel {
-  name: string;
-  fqbn: string;
-}
+// export interface IBoardServerModel {
+//   name: string;
+//   fqbn: string;
+// }
 
 export interface IConfigServerModel {
   version: string;

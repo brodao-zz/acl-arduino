@@ -35,7 +35,7 @@ import {
 import {
   COMMAND_CHECK_PROJECT,
   doCheckProject,
-  //NOTIFICATION_CHECK_PROJECT,
+  ICheckProjectResult,
 } from "./commands/do-check-project";
 
 const homedir: string = require("os").homedir();
@@ -299,19 +299,17 @@ connection.onExecuteCommand((params: ExecuteCommandParams) => {
   const args: any[] = params.arguments || [];
 
   if (params.command === COMMAND_CHECK_PROJECT) {
-    return doCheckProject(args[0]).then(
-      (diagnostics: Diagnostic[] | undefined) => {
-        return {
-          status: true,
-          reason: "",
-          data: {
-            uri: args[0],
-            status: 1,
-            diagnostics: diagnostics,
-          },
-        };
-      }
-    );
+    return doCheckProject(args[0]).then((result: ICheckProjectResult) => {
+      return {
+        status: true,
+        reason: "",
+        data: {
+          uri: args[0],
+          status: result.status,
+          diagnostics: result.diagnostics,
+        },
+      };
+    });
   }
 
   return;

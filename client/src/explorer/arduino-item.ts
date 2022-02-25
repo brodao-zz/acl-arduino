@@ -57,10 +57,12 @@ export class ArduinoTreeItem extends vscode.TreeItem {
         ? vscode.TreeItemCollapsibleState.Collapsed
         : vscode.TreeItemCollapsibleState.None
     );
-
-    this.description = `${entry.model.port} ${statusToString(entry.status)}`;
-    this.tooltip = `${entry.model.board_name} <${entry.project.uri.fsPath}>`;
   }
+
+  description = `${this.entry.model.port} ${statusToString(
+    this.entry.status
+  )} [${this.entry.status}]`;
+  tooltip = `${this.entry.model.board_name} <${this.entry.project.uri.fsPath}>`;
 
   command =
     this.entry.status === ArduinoEntryStatus.ok
@@ -101,10 +103,10 @@ export class ArduinoTreeItem extends vscode.TreeItem {
 export class InformationTreeItem extends vscode.TreeItem {
   constructor(public readonly entry: IInformationEntry) {
     super(entry.label, vscode.TreeItemCollapsibleState.None);
-
-    this.label = `${entry.label}: ${entry.value}`;
-    this.tooltip = entry.tooltip;
   }
+
+  label = `${this.entry.label}: ${this.entry.value}`;
+  tooltip = this.entry.tooltip;
 
   iconPath = {
     light: this.entry.value ? iconInformationLight : iconIncompleteLight,
@@ -113,6 +115,7 @@ export class InformationTreeItem extends vscode.TreeItem {
 
   contextValue = "information";
 }
+
 function statusToString(status: ArduinoEntryStatus): string {
   switch (status) {
     case ArduinoEntryStatus.ok:
@@ -126,5 +129,5 @@ function statusToString(status: ArduinoEntryStatus): string {
       break;
   }
 
-  return `<unknow ${status}`;
+  return `<checking>`;
 }

@@ -75,31 +75,31 @@ export class ArduinoProvider
       return Promise.resolve(children);
     }
 
-    const children: IArduinoEntry[] = [];
-    vscode.workspace.workspaceFolders?.forEach(
-      async (folder: vscode.WorkspaceFolder) => {
-        const inoFiles: string[] = glob.sync(`${folder.uri.fsPath}/**/*.ino`);
-        const addEntry: boolean = inoFiles.length > 0;
+    if (this._entries.length === 0) {
+      const children: IArduinoEntry[] = [];
+      vscode.workspace.workspaceFolders?.forEach(
+        async (folder: vscode.WorkspaceFolder) => {
+          const inoFiles: string[] = glob.sync(`${folder.uri.fsPath}/**/*.ino`);
+          const addEntry: boolean = inoFiles.length > 0;
 
-        if (addEntry) {
-          const arduinoEntry: IArduinoEntry = new ArduinoEntry(folder);
-          arduinoEntry.model.onDidChangeConfig((event: IConfigModel) => {
-            console.debug("arduinoEntry.model.onDidChangeConfig", event);
-            this.reveal();
-          });
+          if (addEntry) {
+            const arduinoEntry: IArduinoEntry = new ArduinoEntry(folder);
+            arduinoEntry.model.onDidChangeConfig((event: IConfigModel) => {
+              console.debug("arduinoEntry.model.onDidChangeConfig", event);
+              //this.reveal(arduinoEntry);
+            });
 
-          children.push(arduinoEntry);
+            children.push(arduinoEntry);
+          }
         }
-      }
-    );
+      );
 
-    this._entries = children;
-
-    return Promise.resolve(
-      children.sort((a: IArduinoEntry, b: IArduinoEntry) => {
+      this._entries = children.sort((a: IArduinoEntry, b: IArduinoEntry) => {
         return a.project.name.localeCompare(b.project.name);
-      })
-    );
+      });
+    }
+
+    return Promise.resolve(this._entries);
   }
 
   getTreeItem(element: IArduinoEntry | IInformationEntry): vscode.TreeItem {

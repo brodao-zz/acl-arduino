@@ -17,6 +17,8 @@ export namespace ArduinoDiagnostic {
     E003_INVALID_PLATFORM_VERSION = "E003",
     // eslint-disable-next-line @typescript-eslint/naming-convention
     E004_INVALID_PORT = "E004",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    E005_INVALID_CONTENT = "E005",
   }
 
   export enum Information {
@@ -35,14 +37,15 @@ export namespace ArduinoDiagnostic {
 
   export function createProjectDiagnostic(
     workspace: string,
-    code: Error | Information
+    code: Error | Information,
+    message: string
   ): Diagnostic {
     return {
       severity: codeToSeverity(code),
       code: code,
       //source: textDocument.uri,
       range: NO_RANGE,
-      message: codeToMessage(code),
+      message: `${codeToMessage(code)} ${message}`,
       codeDescription: codeToDescription(code),
       tags: codeToTags(code),
       //relatedInformation?: DiagnosticRelatedInformation[];
@@ -107,6 +110,8 @@ export namespace ArduinoDiagnostic {
         return "Invalid platform version.";
       case Error.E004_INVALID_PORT:
         return "Port required.";
+      case Error.E005_INVALID_CONTENT:
+        return "Invalida content.";
       //
       //
       case Information.I002_INVALID_BOARD_NAME_UPDATE:

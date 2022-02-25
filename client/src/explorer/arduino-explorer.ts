@@ -177,13 +177,9 @@ export class ArduinoExplorer {
     context.subscriptions.push(...disposes);
   }
 
-  reveal(element: IArduinoEntry) {
-    this.treeView.reveal(element);
-  }
-
   checkAllProjects() {
     this.treeDataProvider.entries.forEach((entry: IArduinoEntry) => {
-      entry.checkProject(this.treeView);
+      entry.checkProject(this.treeDataProvider);
     });
   }
 }

@@ -65,25 +65,25 @@ if (!fse.existsSync(SCHEMA_FOLDER)) {
   SCHEMA_FOLDER = path.join(__dirname, "..", "..", "schema");
 }
 
-const jsonSchemaUri: string = "aclab://server/aclabarduino.schema.json";
-const jsonSchema = fse
+const configSchemaUri: string = "aclab://server/aclabarduino.schema.json";
+export const configSchema = fse
   .readFileSync(path.join(SCHEMA_FOLDER, "aclabarduino.schema.json"))
   .toString();
 
-const jsonBoardSchemaUri = "aclab://server/board.schema.json";
-const jsonBoardSchema = fse
-  .readFileSync(path.join(SCHEMA_FOLDER, "board.schema.json"))
-  .toString();
+// const jsonBoardSchemaUri = "aclab://server/board.schema.json";
+// const jsonBoardSchema = fse
+//   .readFileSync(path.join(SCHEMA_FOLDER, "board.schema.json"))
+//   .toString();
 
 export function getLanguageModes(): LanguageModes {
   const jsonLanguageService: JsonLanguageService = getJsonLanguageService({
     schemaRequestService: (uri) => {
-      if (uri === jsonSchemaUri) {
-        return Promise.resolve(jsonSchema);
+      if (uri === configSchemaUri) {
+        return Promise.resolve(configSchema);
       }
-      if (uri === jsonBoardSchemaUri) {
-        return Promise.resolve(jsonBoardSchema);
-      }
+      // if (uri === jsonBoardSchemaUri) {
+      //   return Promise.resolve(jsonBoardSchema);
+      // }
 
       return Promise.reject(`Unabled to load schema at ${uri}`);
     },
@@ -152,7 +152,7 @@ export function getLanguageModes(): LanguageModes {
   // associate `*.data.json` with the `foo://server/data.schema.json` schema
   jsonLanguageService.configure({
     allowComments: true,
-    schemas: [{ fileMatch: ["aclabarduino.json"], uri: jsonSchemaUri }],
+    schemas: [{ fileMatch: ["aclabarduino.json"], uri: configSchemaUri }],
   });
 
   const documentRegions = getLanguageModelCache<JsonDocumentRegions>(

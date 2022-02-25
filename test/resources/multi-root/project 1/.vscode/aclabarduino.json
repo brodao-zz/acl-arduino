@@ -4,5 +4,6 @@
   "port": "",
   "board": "esp32:esp32:esp32",
   "board_name": "ESP32 Dev Module",
-  "alias": ""
+  "alias": "",
+  "xxxxxxxxxx": "aaaaa "
 }
