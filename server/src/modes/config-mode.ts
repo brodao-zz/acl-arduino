@@ -9,7 +9,7 @@ import {
   JSONDocument,
 } from "vscode-json-languageservice";
 import { LanguageMode } from "./language-modes";
-import { doValidConfigDocument } from "../valid-config-document";
+import { doValidContentModel } from "../commands/do-valid-model";
 
 export interface IConfigMode {}
 
@@ -41,10 +41,9 @@ export function getConfigMode(
       );
 
       if (diagnostics.length === 0) {
-        let diagnosticsAux: Diagnostic[] = await doValidConfigDocument(
-          jsonLanguageService,
-          textDocument,
-          jsonDocument
+        let diagnosticsAux: Diagnostic[] = await doValidContentModel(
+          textDocument.uri,
+          JSON.parse(textDocument.getText())
         );
 
         diagnostics.push(...diagnosticsAux);

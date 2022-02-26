@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Range, TextDocument } from "vscode-languageserver-textdocument";
 import {
   CodeDescription,
@@ -9,24 +10,18 @@ import {
 
 export namespace ArduinoDiagnostic {
   export enum Error {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     E001_INVALID_CLI_VERSION = "E001",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     E002_INVALID_BOARD = "E002",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     E003_INVALID_PLATFORM_VERSION = "E003",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     E004_INVALID_PORT = "E004",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     E005_INVALID_CONTENT = "E005",
+    E006_FILE_NOT_FOUND = "E006",
+    E007_CLI_NOT_INSTALLED = "E007",
   }
 
   export enum Information {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     I002_INVALID_BOARD_NAME_UPDATE = "I002",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     I003_INVALID_BOARD_NAME_INSERT = "I003",
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     I004_INVALID_PROJECT = "I004",
   }
 
@@ -43,7 +38,7 @@ export namespace ArduinoDiagnostic {
     return {
       severity: codeToSeverity(code),
       code: code,
-      //source: textDocument.uri,
+      source: workspace,
       range: NO_RANGE,
       message: `${codeToMessage(code)} ${message}`,
       codeDescription: codeToDescription(code),
@@ -111,7 +106,11 @@ export namespace ArduinoDiagnostic {
       case Error.E004_INVALID_PORT:
         return "Port required.";
       case Error.E005_INVALID_CONTENT:
-        return "Invalida content.";
+        return "";
+      case Error.E006_FILE_NOT_FOUND:
+        return "File not found.";
+      case Error.E007_CLI_NOT_INSTALLED:
+        return "Arduino CLI not installed.";
       //
       //
       case Information.I002_INVALID_BOARD_NAME_UPDATE:

@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as vscode from "vscode";
+import { Diagnostic } from "vscode-languageclient";
 import { ArduinoEntryStatus, IArduinoEntry } from "./arduino-entry";
 import { IInformationEntry } from "./information-entry";
 
@@ -62,8 +63,11 @@ export class ArduinoTreeItem extends vscode.TreeItem {
   description = `${this.entry.model.port} ${statusToString(
     this.entry.status
   )} [${this.entry.status}]`;
-  tooltip = `${this.entry.model.board_name} <${this.entry.project.uri.fsPath}>`;
-
+  tooltip =
+    this.entry.status === ArduinoEntryStatus.error
+      ? this.entry.errors.map((value: Diagnostic) => value.message).join("\n")
+      : `${this.entry.model.board_name} <${this.entry.project.uri.fsPath}>`;
+  //resourceUri = this.entry.project.uri;
   command =
     this.entry.status === ArduinoEntryStatus.ok
       ? {

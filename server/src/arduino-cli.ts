@@ -1,11 +1,10 @@
 import path = require("path");
 import fse = require("fs-extra");
 import {
+  Diagnostic,
   DocumentUri,
-  ShowMessageRequestParams,
   WorkspaceFolder,
 } from "vscode-languageserver/node";
-import { ArduinoAction } from "./arduino-action";
 import { spawnSync } from "child_process";
 import { ACL_HOME, connection } from "./server";
 import {
@@ -15,6 +14,7 @@ import {
 import { registerMessages } from "./messages";
 import { ACLCache } from "./cache";
 import { ACLLogger } from "./logger";
+import { ArduinoDiagnostic } from "./arduino-diagnostic";
 
 export interface ArduinoCliOptions {
   workspaceFolder?: WorkspaceFolder;
@@ -205,29 +205,39 @@ export class ArduinoCli {
     };
   }
 
-  checkEnvironment(
-    release: string
-  ): Promise<ShowMessageRequestParams | undefined> {
-    let result: ShowMessageRequestParams | undefined = undefined;
+  checkEnvironment(release: string): Promise<Diagnostic | undefined> {
+    let result: Diagnostic | undefined = undefined;
 
     if (this.runOptions.configFile) {
       if (!fse.existsSync(this.runOptions.configFile)) {
         result =
           this.runOptions.workspaceFolder &&
-          ArduinoAction.configFileNotFound(
-            this.runOptions.workspaceFolder.name,
+          ArduinoDiagnostic.createProjectDiagnostic(
+            "",
+            ArduinoDiagnostic.Error.E006_FILE_NOT_FOUND,
             this.runOptions.configFile
           );
+        // this.runOptions.workspaceFolder &&
+        //   ArduinoAction.configFileNotFound(
+        //     this.runOptions.workspaceFolder.name,
+        //     this.runOptions.configFile
+        //   );
       } else {
         this.runOptions.arduinCliBin = this.findExecutable(release);
 
         if (release !== this.getCurrentVersion()) {
           result =
             this.runOptions.workspaceFolder &&
-            ArduinoAction.installArduinoCli(
-              release,
-              this.runOptions.workspaceFolder.uri
+            ArduinoDiagnostic.createProjectDiagnostic(
+              "",
+              ArduinoDiagnostic.Error.E007_CLI_NOT_INSTALLED,
+              this.getCurrentVersion()
             );
+          //     this.runOptions.workspaceFolder &&
+          //     ArduinoAction.installArduinoCli(
+          //       release,
+          //       this.runOptions.workspaceFolder.uri
+          //     );
         } else {
           const cliConfig: string = `${path.join(
             path.dirname(this.runOptions.configFile),
@@ -249,6 +259,7 @@ export class ArduinoCli {
    */
   findExecutable(release: string): string | undefined {
     let cliPath = "";
+    release = release || "xxxx";
 
     switch (process.platform) {
       case "win32":

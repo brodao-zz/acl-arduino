@@ -11,7 +11,7 @@ export interface ICheckProjectResult {
   diagnostics: Diagnostic[];
 }
 
-export function doCheckProject(
+export async function doCheckProject(
   workspace: string
 ): Promise<ICheckProjectResult> {
   //arduinoCli.checkProject(param);
@@ -30,7 +30,7 @@ export function doCheckProject(
   if (existsConfig) {
     result.status = 1;
 
-    const diagnostics: Diagnostic[] = doValidModel(workspace);
+    const diagnostics: Diagnostic[] = await doValidModel(workspace);
     if (diagnostics.length > 0) {
       result.status = 4;
       result.diagnostics.push(...diagnostics);

@@ -209,14 +209,14 @@ connection.onInitialized(() => {
   //   });
   // }
 
-  const release: string = ArduinoCli.instance().getCurrentVersion();
-  ArduinoCli.instance()
-    .checkEnvironment(release)
-    .then((diagnostics: ShowMessageRequestParams | undefined) => {
-      if (diagnostics) {
-        doSendShowMessageRequest(diagnostics);
-      }
-    });
+  // const release: string = ArduinoCli.instance().getCurrentVersion();
+  // ArduinoCli.instance()
+  //   .checkEnvironment(release)
+  //   .then((diagnostics: ShowMessageRequestParams | undefined) => {
+  //     if (diagnostics) {
+  //       doSendShowMessageRequest(diagnostics);
+  //     }
+  //   });
 });
 
 connection.onDidChangeWatchedFiles((_change) => {
