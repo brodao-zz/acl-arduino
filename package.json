@@ -305,6 +305,10 @@
     "menus": {
       "commandPalette": [
         {
+          "command": "arduinoExplorer.openConfiguration",
+          "when": "1==0"
+        },
+        {
           "command": "arduinoExplorer.checkProject",
           "when": "1==0"
         },

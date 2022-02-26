@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
-  "cliVersion": "xxxxxxxx",
+  "cliVersion": "0.21.0",
   "port": "xxxxx",
   "board": "esp32:esp32:esp32",
   "board_name": "ESP32 Dev Module",

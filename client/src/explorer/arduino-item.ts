@@ -102,7 +102,7 @@ function statusToCommand(entry: IArduinoEntry): vscode.Command | undefined {
       return {
         command: "arduinoExplorer.openConfiguration",
         title: "Open",
-        arguments: [entry.project],
+        arguments: [entry],
       };
     case ArduinoEntryStatus.candidate:
       return undefined;

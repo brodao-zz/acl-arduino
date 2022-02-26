@@ -4,6 +4,7 @@ import { acLabArduino } from "../extension";
 import { IConfigModel } from "../model/config-model";
 import { Protocol } from "../protocol-interf";
 import { ArduinoProvider } from "./arduino-provider";
+import { doOpenConfiguration } from "./../commands/do-open-configuration";
 
 export enum ArduinoEntryStatus {
   none,
@@ -57,11 +58,15 @@ export class ArduinoEntry implements IArduinoEntry {
         (value: Protocol.IServerResult) => {
           const data: Protocol.ICheckProject =
             Protocol.getResult<Protocol.ICheckProject>(value);
-          console.error(data);
+
           this._status = data.status;
           this._errors = data.diagnostics;
           //this._status = data.diagnostics;
           provider.reveal(this);
+
+          if (this._errors.length > 0) {
+            doOpenConfiguration(this._project);
+          }
         },
         (reason: any) => {
           console.error(reason);
