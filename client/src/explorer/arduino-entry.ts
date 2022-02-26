@@ -48,7 +48,6 @@ export class ArduinoEntry implements IArduinoEntry {
   }
 
   checkProject(provider: ArduinoProvider): void {
-    console.log("checkProject %s", this._project.name);
     vscode.commands
       .executeCommand<Protocol.IServerResult>(
         "arduinoExplorer.checkProject",

@@ -20,9 +20,8 @@ export async function doCheckProject(
     diagnostics: [],
   };
   const inoFiles: string[] = glob.sync(`${workspace}/**/*.ino`);
-  const existsConfig: boolean = fse.existsSync(
-    `${workspace}/.vscode/aclabarduino.json`
-  );
+  const filename: string = `${workspace}/.vscode/aclabarduino.json`;
+  const existsConfig: boolean = fse.existsSync(filename);
 
   if (inoFiles.length > 0) {
     result.status = 2;
@@ -30,7 +29,7 @@ export async function doCheckProject(
   if (existsConfig) {
     result.status = 1;
 
-    const diagnostics: Diagnostic[] = await doValidModel(workspace);
+    const diagnostics: Diagnostic[] = await doValidModel(filename);
     if (diagnostics.length > 0) {
       result.status = 4;
       result.diagnostics.push(...diagnostics);

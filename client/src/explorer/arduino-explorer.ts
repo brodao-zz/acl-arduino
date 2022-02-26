@@ -10,6 +10,7 @@ import { acLabArduino } from "../extension";
 import { doSelectPlatform } from "../commands/do-select-platform";
 import { doAdd3rdPartyUrl } from "../commands/do-add-3rd-party";
 import { IInformationEntry } from "./information-entry";
+import { doOpenConfiguration } from "../commands/do-open-configuration";
 
 export class ArduinoExplorer {
   private treeView: vscode.TreeView<IArduinoEntry | IInformationEntry>;
@@ -38,6 +39,15 @@ export class ArduinoExplorer {
         "arduinoExplorer.initialize",
         (resource: IArduinoEntry) => {
           doInitialize(resource.project);
+        }
+      )
+    );
+
+    disposes.push(
+      vscode.commands.registerCommand(
+        "arduinoExplorer.openConfiguration",
+        (resource: IArduinoEntry) => {
+          doOpenConfiguration(resource.project);
         }
       )
     );

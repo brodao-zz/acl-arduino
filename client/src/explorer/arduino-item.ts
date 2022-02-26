@@ -4,8 +4,8 @@ import { Diagnostic } from "vscode-languageclient";
 import { ArduinoEntryStatus, IArduinoEntry } from "./arduino-entry";
 import { IInformationEntry } from "./information-entry";
 
-const iconFolder: string[] = [__dirname, "..", "..", "..", "fileicons"];
-const resourceFolder: string[] = [__dirname, "..", "..", "..", "resources"];
+const iconFolder: string[] = [__dirname, "..", "..", "fileicons"];
+const resourceFolder: string[] = [__dirname, "..", "..", "resources"];
 const iconFolderLight: string[][] = [
   [...iconFolder, "light"],
   [...resourceFolder, "light"],
@@ -14,22 +14,13 @@ const iconFolderDark: string[][] = [
   [...iconFolder, "dark"],
   [...resourceFolder, "dark"],
 ];
-const iconFileLight: string = path.resolve(
+const iconFileLight: string = path.join(
   ...iconFolderLight[0],
-  "aclabarduino_file.svg"
+  "aclabarduino{1}_file.svg"
 );
 const iconFileDark: string = path.resolve(
   ...iconFolderDark[0],
-  "aclabarduino_file.svg"
-);
-
-const iconFileNotExistLight: string = path.resolve(
-  ...iconFolderLight[0],
-  "aclabarduino_file_not_exist.svg"
-);
-const iconFileNotExistDark: string = path.resolve(
-  ...iconFolderDark[0],
-  "aclabarduino_file_not_exist.svg"
+  "aclabarduino{1}_file.svg"
 );
 
 const iconInformationLight: string = path.resolve(
@@ -63,45 +54,12 @@ export class ArduinoTreeItem extends vscode.TreeItem {
   description = `${this.entry.model.port} ${statusToString(
     this.entry.status
   )} [${this.entry.status}]`;
-  tooltip =
-    this.entry.status === ArduinoEntryStatus.error
-      ? this.entry.errors.map((value: Diagnostic) => value.message).join("\n")
-      : `${this.entry.model.board_name} <${this.entry.project.uri.fsPath}>`;
+  tooltip = statusToTooltip(this.entry);
   //resourceUri = this.entry.project.uri;
-  command =
-    this.entry.status === ArduinoEntryStatus.ok
-      ? {
-          command: "arduinoExplorer.openConfiguration",
-          title: "Open",
-          arguments: [this.entry.project],
-        }
-      : this.entry.status === ArduinoEntryStatus.candidate
-      ? {
-          command: "arduinoExplorer.initialize",
-          title: "Initialize",
-          arguments: [this.entry.project],
-        }
-      : {
-          command: "arduinoExplorer.checkProject",
-          title: "Check",
-          arguments: [this.entry.project],
-        };
+  command = statusToCommand(this.entry);
+  iconPath = statusToIcon(this.entry);
 
-  iconPath = {
-    light:
-      this.entry.status === ArduinoEntryStatus.ok
-        ? iconFileLight
-        : iconFileNotExistLight,
-    dark:
-      this.entry.status === ArduinoEntryStatus.ok
-        ? iconFileDark
-        : iconFileNotExistDark,
-  };
-
-  contextValue =
-    this.entry.status === ArduinoEntryStatus.ok
-      ? "aclProject"
-      : "candidateProject";
+  contextValue = statusToContext(this.entry);
 }
 
 export class InformationTreeItem extends vscode.TreeItem {
@@ -110,7 +68,7 @@ export class InformationTreeItem extends vscode.TreeItem {
   }
 
   label = `${this.entry.label}: ${this.entry.value}`;
-  tooltip = this.entry.tooltip;
+  //tooltip = this.entry.tooltip;
 
   iconPath = {
     light: this.entry.value ? iconInformationLight : iconIncompleteLight,
@@ -134,4 +92,91 @@ function statusToString(status: ArduinoEntryStatus): string {
   }
 
   return `<checking>`;
+}
+
+function statusToCommand(entry: IArduinoEntry): vscode.Command | undefined {
+  switch (entry.status) {
+    case ArduinoEntryStatus.ok:
+      return undefined;
+    case ArduinoEntryStatus.error:
+      return {
+        command: "arduinoExplorer.openConfiguration",
+        title: "Open",
+        arguments: [entry.project],
+      };
+    case ArduinoEntryStatus.candidate:
+      return undefined;
+
+    default:
+      break;
+  }
+
+  return {
+    command: "arduinoExplorer.checkProject",
+    title: "Check",
+    arguments: [entry.project],
+  };
+}
+
+function statusToTooltip(entry: IArduinoEntry): string {
+  let tooltip: string = "";
+
+  switch (entry.status) {
+    case ArduinoEntryStatus.ok:
+      tooltip = `${entry.model.board_name} <${entry.project.uri.fsPath}>`;
+      break;
+    case ArduinoEntryStatus.candidate:
+      tooltip = `<candidate> <${entry.project.uri.fsPath}>`;
+      break;
+    case ArduinoEntryStatus.error:
+      tooltip = entry.errors
+        .map((value: Diagnostic) => value.message)
+        .join("\n");
+      break;
+
+    default:
+      tooltip = `<checking> <${entry.project.uri.fsPath}>`;
+      break;
+  }
+
+  return tooltip;
+}
+
+function statusToContext(entry: IArduinoEntry): string | undefined {
+  switch (entry.status) {
+    case ArduinoEntryStatus.ok:
+      return "aclProject";
+    case ArduinoEntryStatus.candidate:
+      return "candidateProject";
+
+    default:
+      break;
+  }
+
+  return undefined;
+}
+
+function statusToIcon(entry: IArduinoEntry): any {
+  let sufix: string = "";
+
+  switch (entry.status) {
+    case ArduinoEntryStatus.ok:
+      sufix = "";
+      break;
+    case ArduinoEntryStatus.candidate:
+      sufix = "_candidate";
+      break;
+    case ArduinoEntryStatus.error:
+      sufix = "_error";
+      break;
+
+    default:
+      sufix = "_checking";
+      break;
+  }
+
+  return {
+    light: `${iconFileLight.replace("{1}", sufix)}`,
+    dark: `${iconFileDark.replace("{1}", sufix)}`,
+  };
 }

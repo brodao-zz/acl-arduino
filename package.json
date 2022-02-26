@@ -200,7 +200,7 @@
       {
         "id": "aclab",
         "label": "AC Lab",
-        "path": "./fileicons/aclab-icon-theme.json"
+        "path": "./client/fileicons/aclab-icon-theme.json"
       }
     ],
     "views": {
@@ -237,6 +237,15 @@
       {
         "command": "arduinoExplorer.checkProject",
         "title": "Check Project",
+        "category": "ACLab",
+        "icon": {
+          "light": "./resources/light/new.svg",
+          "dark": "./resources/dark/new.svg"
+        }
+      },
+      {
+        "command": "arduinoExplorer.openConfiguration",
+        "title": "Open configuration",
         "category": "ACLab",
         "icon": {
           "light": "./resources/light/new.svg",

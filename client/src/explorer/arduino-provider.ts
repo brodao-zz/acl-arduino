@@ -62,12 +62,7 @@ export class ArduinoProvider
         );
         if (additional_urls.length) {
           children.push(
-            new InformationEntry(
-              element,
-              "3th URL",
-              `${additional_urls.length} URL's`,
-              additional_urls.join("\n")
-            )
+            new InformationEntry(element, "3th URL", additional_urls.join("\n"))
           );
         }
       }

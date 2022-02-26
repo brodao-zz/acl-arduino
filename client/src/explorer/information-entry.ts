@@ -4,25 +4,20 @@ export interface IInformationEntry {
   readonly parent: IArduinoEntry;
   readonly label: string;
   readonly value: string;
-  readonly tooltip: string;
+  //readonly tooltip: string;
 }
 
 export class InformationEntry implements IInformationEntry {
   private readonly _parent: IArduinoEntry;
   private readonly _label: string;
   private readonly _property: string;
-  private readonly _tooltip: string;
+  //private readonly _tooltip: string;
 
-  constructor(
-    parent: IArduinoEntry,
-    label: string,
-    property: string,
-    tooltip?: string
-  ) {
+  constructor(parent: IArduinoEntry, label: string, property: string) {
     this._parent = parent;
     this._label = label;
     this._property = property;
-    this._tooltip = tooltip ? tooltip : `${label}: ${property}`;
+    //this._tooltip = tooltip ? tooltip : `${label}: ${property}`;
   }
 
   get parent(): IArduinoEntry {
@@ -37,7 +32,7 @@ export class InformationEntry implements IInformationEntry {
     return this._property;
   }
 
-  get tooltip(): string {
-    return this._tooltip;
-  }
+  // get tooltip(): string {
+  //   return this._tooltip;
+  //}
 }

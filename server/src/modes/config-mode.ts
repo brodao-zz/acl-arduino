@@ -40,14 +40,14 @@ export function getConfigMode(
         }
       );
 
-      if (diagnostics.length === 0) {
-        let diagnosticsAux: Diagnostic[] = await doValidContentModel(
+      //if (diagnostics.length === 0) {
+      diagnostics.push(
+        ...(await doValidContentModel(
           textDocument.uri,
           JSON.parse(textDocument.getText())
-        );
-
-        diagnostics.push(...diagnosticsAux);
-      }
+        ))
+      );
+      //}
 
       return diagnostics;
     },

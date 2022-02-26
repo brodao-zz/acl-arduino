@@ -9,15 +9,14 @@ import { configSchema } from "../modes/language-modes";
 
 export const COMMAND_VALID_MODEL: string = "arduinoExplorer.validModel";
 
-export function doValidModel(workspace: string): Promise<Diagnostic[]> {
-  const filename: string = `${workspace}/.vscode/aclabarduino.json`;
+export function doValidModel(filename: string): Promise<Diagnostic[]> {
   const content: any = fse.readJSONSync(filename);
 
-  return doValidContentModel(workspace, content);
+  return doValidContentModel(filename, content);
 }
 
 export async function doValidContentModel(
-  workspace: string,
+  filename: string,
   data: IConfigServerModel
 ): Promise<Diagnostic[]> {
   const result: Diagnostic[] = [];
@@ -32,7 +31,7 @@ export async function doValidContentModel(
     validate.errors?.forEach((value: Ajv.ErrorObject) => {
       result.push(
         ArduinoDiagnostic.createProjectDiagnostic(
-          workspace,
+          filename,
           ArduinoDiagnostic.Error.E005_INVALID_CONTENT,
           `${value.keyword.charAt(0).toUpperCase()}${value.keyword.substring(
             1
@@ -41,7 +40,7 @@ export async function doValidContentModel(
       );
     });
   } else {
-    result.push(...(await doValidCliVersion(workspace, data)));
+    result.push(...(await doValidCliVersion(filename, data)));
   }
 
   return result;
