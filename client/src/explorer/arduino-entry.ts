@@ -65,7 +65,7 @@ export class ArduinoEntry implements IArduinoEntry {
           provider.reveal(this);
 
           if (this._errors.length > 0) {
-            doOpenConfiguration(this._project);
+            doOpenConfiguration(this._project, false);
           }
         },
         (reason: any) => {

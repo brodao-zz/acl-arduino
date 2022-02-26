@@ -47,7 +47,7 @@ export class ArduinoExplorer {
       vscode.commands.registerCommand(
         "arduinoExplorer.openConfiguration",
         (resource: IArduinoEntry) => {
-          doOpenConfiguration(resource.project);
+          doOpenConfiguration(resource.project, true);
         }
       )
     );
