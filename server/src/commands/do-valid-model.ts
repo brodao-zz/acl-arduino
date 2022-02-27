@@ -16,7 +16,7 @@ export function doValidModel(filename: string): Promise<Diagnostic[]> {
 }
 
 export async function doValidContentModel(
-  filename: string,
+  workspace: string,
   data: IConfigServerModel
 ): Promise<Diagnostic[]> {
   const result: Diagnostic[] = [];
@@ -27,20 +27,20 @@ export async function doValidContentModel(
   const validate = ajv.compile(schema);
 
   if (!validate(data)) {
-    console.log(validate.errors);
     validate.errors?.forEach((value: Ajv.ErrorObject) => {
       result.push(
         ArduinoDiagnostic.createProjectDiagnostic(
-          filename,
+          workspace,
           ArduinoDiagnostic.Error.E005_INVALID_CONTENT,
           `${value.keyword.charAt(0).toUpperCase()}${value.keyword.substring(
             1
-          )}: ${value.message}` //[${JSON.stringify(value.params)}]
+          )}: ${value.message}`,
+          {} //[${JSON.stringify(value.params)}]
         )
       );
     });
   } else {
-    result.push(...(await doValidCliVersion(filename, data)));
+    result.push(...(await doValidCliVersion(workspace, data)));
   }
 
   return result;
@@ -75,7 +75,8 @@ async function doValidCliVersion(
       ArduinoDiagnostic.createProjectDiagnostic(
         workspace,
         ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION,
-        "cliVersion invalid or unsupported."
+        "cliVersion invalid or unsupported.",
+        {}
       )
     );
   }

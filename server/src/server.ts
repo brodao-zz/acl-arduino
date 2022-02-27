@@ -37,6 +37,11 @@ import {
   doCheckProject,
   ICheckProjectResult,
 } from "./commands/do-check-project";
+import {
+  COMMAND_INSTALL_CLI,
+  doInstallArduinoCli,
+  IInstalltCliResult,
+} from "./commands/do-install-cli";
 
 const homedir: string = require("os").homedir();
 export const ACL_HOME: string = path.join(homedir, ".aclabarduino");
@@ -167,7 +172,7 @@ connection.onInitialize((_params: InitializeParams) => {
       documentHighlightProvider: false,
       documentSymbolProvider: false,
       executeCommandProvider: {
-        commands: [COMMAND_CHECK_PROJECT],
+        commands: [COMMAND_CHECK_PROJECT, COMMAND_INSTALL_CLI],
       },
       hoverProvider: false,
       renameProvider: false,
@@ -308,6 +313,25 @@ connection.onExecuteCommand((params: ExecuteCommandParams) => {
           status: result.status,
           diagnostics: result.diagnostics,
         },
+      };
+    });
+  } else if (params.command === COMMAND_INSTALL_CLI) {
+    return doInstallArduinoCli(args[0]).then((result: IInstalltCliResult) => {
+      const arduinoCli: ArduinoCli = ArduinoCli.instance();
+
+      arduinoCli.runOptions.arduinCliBin = arduinoCli.findExecutable(
+        result.data.version
+      );
+      if (arduinoCli.runOptions.configFile) {
+        arduinoCli.configInitDir(
+          path.dirname(arduinoCli.runOptions.configFile)
+        );
+      }
+
+      return {
+        status: result.status,
+        reason: result.message,
+        data: result.data,
       };
     });
   }

@@ -1,6 +1,4 @@
 import fse = require("fs-extra");
-//import path = require("path");
-//import { CONFIG_SERVER_DEFAULT } from "../model/config-model";
 import glob = require("glob");
 import { Diagnostic } from "vscode-languageserver/node";
 import { doValidModel } from "./do-valid-model";

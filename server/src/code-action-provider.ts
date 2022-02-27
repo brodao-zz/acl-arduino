@@ -8,6 +8,7 @@ import {
   TextEdit,
 } from "vscode-languageserver/node";
 import { ArduinoDiagnostic } from "./arduino-diagnostic";
+import { COMMAND_INSTALL_CLI } from "./commands/do-install-cli";
 import { ACLLogger } from "./logger";
 
 export function getCodeActionProvider(): CodeActionOptions {
@@ -119,6 +120,8 @@ function quickfix(
         },
       });
     } else if (diag.code === ArduinoDiagnostic.Error.E004_INVALID_PORT) {
+      const data: any = diag.data || {};
+
       codeActions.push({
         title: "Select port",
         kind: CodeActionKind.QuickFix,
@@ -126,7 +129,22 @@ function quickfix(
         command: Command.create(
           "Select Port",
           "arduinoExplorer.selectPort",
-          diag.source
+          data.source
+        ),
+      });
+
+      return;
+    } else if (diag.code === ArduinoDiagnostic.Error.E007_CLI_NOT_INSTALLED) {
+      const data: any = diag.data || {};
+
+      codeActions.push({
+        title: `Install Arduino-CLI ${data.version}`,
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diag],
+        command: Command.create(
+          "Install Arduino-CLI",
+          COMMAND_INSTALL_CLI,
+          data.version
         ),
       });
 

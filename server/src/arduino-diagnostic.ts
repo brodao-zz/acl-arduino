@@ -33,20 +33,19 @@ export namespace ArduinoDiagnostic {
   export function createProjectDiagnostic(
     workspace: string,
     code: Error | Information,
-    message: string
+    message: string,
+    data: any
   ): Diagnostic {
     return {
       severity: codeToSeverity(code),
       code: code,
-      source: workspace,
+      //source: workspace,
       range: NO_RANGE,
       message: `${codeToMessage(code)} ${message}`,
       codeDescription: codeToDescription(code),
       tags: codeToTags(code),
       //relatedInformation?: DiagnosticRelatedInformation[];
-      data: {
-        workspace: workspace,
-      },
+      data: { workspace: workspace, ...data },
     };
   }
 

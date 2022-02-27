@@ -1,8 +1,6 @@
-import path = require("path");
 import { MessageType, ShowMessageRequestParams } from "vscode-languageserver";
 import { ArduinoCli } from "./arduino-cli";
 import { doInitializeConfig } from "./commands/initialize-config";
-import { doInstallArduinoCli } from "./commands/install-arduino-cli";
 
 export namespace ArduinoAction {
   export const ACT_NOT_TO_DO = "0x00";
@@ -65,24 +63,6 @@ export namespace ArduinoAction {
   ): Promise<string> {
     if (params.code === ACT_INITIALIZE) {
       return doInitializeConfig(params.configFile);
-    } else if (params.code === ACT_INSTALL_ARDUINO_CLI) {
-      const execFile = await doInstallArduinoCli(params.version);
-      arduinoCli.runOptions.arduinCliBin = arduinoCli.findExecutable(
-        params.version
-      );
-      if (arduinoCli.runOptions.configFile) {
-        arduinoCli.configInitDir(
-          path.dirname(arduinoCli.runOptions.configFile)
-        );
-      }
-      //arduinoCli.coreDownload();
-      // arduinoCli.install();
-      // arduinoCli.updaterunOptions.configFile();
-      if (execFile && arduinoCli.runOptions.arduinCliBin) {
-        return "Installation completed successfully";
-      } else {
-        return "Installation failed.";
-      }
     }
 
     const json: any = JSON.stringify({

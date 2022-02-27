@@ -235,15 +235,6 @@
     ],
     "commands": [
       {
-        "command": "arduinoExplorer.checkProject",
-        "title": "Check Project",
-        "category": "ACLab",
-        "icon": {
-          "light": "./resources/light/new.svg",
-          "dark": "./resources/dark/new.svg"
-        }
-      },
-      {
         "command": "arduinoExplorer.openConfiguration",
         "title": "Open configuration",
         "category": "ACLab",
@@ -306,10 +297,6 @@
       "commandPalette": [
         {
           "command": "arduinoExplorer.openConfiguration",
-          "when": "1==0"
-        },
-        {
-          "command": "arduinoExplorer.checkProject",
           "when": "1==0"
         },
         {
