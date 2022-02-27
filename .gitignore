@@ -6,5 +6,5 @@ scrapbook.js
 *.lsif
 *.db
 .DS_Store
-*.log
-*.log
+**/*.log
+**/.acl-cache
