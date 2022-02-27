@@ -1,0 +1,937 @@
+{
+  "status": true,
+  "data": [
+    {
+      "id": "arduino:avr",
+      "installed": "1.8.4",
+      "latest": "1.8.4",
+      "name": "Arduino AVR Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Mega ADK",
+          "fqbn": "arduino:avr:megaADK"
+        },
+        {
+          "name": "Arduino Robot Control",
+          "fqbn": "arduino:avr:robotControl"
+        },
+        {
+          "name": "Arduino Uno Mini",
+          "fqbn": "arduino:avr:unomini"
+        },
+        {
+          "name": "LilyPad Arduino",
+          "fqbn": "arduino:avr:lilypad"
+        },
+        {
+          "name": "Arduino Mega or Mega 2560",
+          "fqbn": "arduino:avr:mega"
+        },
+        {
+          "name": "Arduino Robot Motor",
+          "fqbn": "arduino:avr:robotMotor"
+        },
+        {
+          "name": "Arduino Uno WiFi",
+          "fqbn": "arduino:avr:unowifi"
+        },
+        {
+          "name": "LilyPad Arduino USB",
+          "fqbn": "arduino:avr:LilyPadUSB"
+        },
+        {
+          "name": "Arduino Fio",
+          "fqbn": "arduino:avr:fio"
+        },
+        {
+          "name": "Arduino Mini",
+          "fqbn": "arduino:avr:mini"
+        },
+        {
+          "name": "Arduino Industrial 101",
+          "fqbn": "arduino:avr:chiwawa"
+        },
+        {
+          "name": "Linino One",
+          "fqbn": "arduino:avr:one"
+        },
+        {
+          "name": "Arduino Ethernet",
+          "fqbn": "arduino:avr:ethernet"
+        },
+        {
+          "name": "Arduino Leonardo",
+          "fqbn": "arduino:avr:leonardo"
+        },
+        {
+          "name": "Arduino Nano",
+          "fqbn": "arduino:avr:nano"
+        },
+        {
+          "name": "Arduino Esplora",
+          "fqbn": "arduino:avr:esplora"
+        },
+        {
+          "name": "Arduino Yún Mini",
+          "fqbn": "arduino:avr:yunmini"
+        },
+        {
+          "name": "Arduino Yún",
+          "fqbn": "arduino:avr:yun"
+        },
+        {
+          "name": "Arduino Gemma",
+          "fqbn": "arduino:avr:gemma"
+        },
+        {
+          "name": "Arduino Duemilanove or Diecimila",
+          "fqbn": "arduino:avr:diecimila"
+        },
+        {
+          "name": "Arduino Micro",
+          "fqbn": "arduino:avr:micro"
+        },
+        {
+          "name": "Arduino Leonardo ETH",
+          "fqbn": "arduino:avr:leonardoeth"
+        },
+        {
+          "name": "Adafruit Circuit Playground",
+          "fqbn": "arduino:avr:circuitplay32u4cat"
+        },
+        {
+          "name": "Arduino Uno",
+          "fqbn": "arduino:avr:uno"
+        },
+        {
+          "name": "Arduino NG or older",
+          "fqbn": "arduino:avr:atmegang"
+        },
+        {
+          "name": "Arduino Pro or Pro Mini",
+          "fqbn": "arduino:avr:pro"
+        },
+        {
+          "name": "Arduino BT",
+          "fqbn": "arduino:avr:bt"
+        }
+      ]
+    },
+    {
+      "id": "arduino:mbed_edge",
+      "installed": "2.6.1",
+      "latest": "2.6.1",
+      "name": "Arduino Mbed OS Edge Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Edge Control",
+          "fqbn": "arduino:mbed_edge:edge_control"
+        }
+      ]
+    },
+    {
+      "id": "arduino:mbed_nano",
+      "installed": "2.6.1",
+      "latest": "2.6.1",
+      "name": "Arduino Mbed OS Nano Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Nano RP2040 Connect",
+          "fqbn": "arduino:mbed_nano:nanorp2040connect"
+        },
+        {
+          "name": "Arduino Nano 33 BLE",
+          "fqbn": "arduino:mbed_nano:nano33ble"
+        }
+      ]
+    },
+    {
+      "id": "arduino:mbed_nicla",
+      "installed": "2.6.1",
+      "latest": "2.6.1",
+      "name": "Arduino Mbed OS Nicla Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Nicla Sense ME",
+          "fqbn": "arduino:mbed_nicla:nicla_sense"
+        }
+      ]
+    },
+    {
+      "id": "arduino:mbed_portenta",
+      "installed": "2.6.1",
+      "latest": "2.6.1",
+      "name": "Arduino Mbed OS Portenta Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Portenta H7 (M7 core)",
+          "fqbn": "arduino:mbed_portenta:envie_m7"
+        },
+        {
+          "name": "Arduino Portenta H7 (M4 core)",
+          "fqbn": "arduino:mbed_portenta:envie_m4"
+        }
+      ]
+    },
+    {
+      "id": "arduino:mbed_rp2040",
+      "installed": "2.6.1",
+      "latest": "2.6.1",
+      "name": "Arduino Mbed OS RP2040 Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Raspberry Pi Pico",
+          "fqbn": "arduino:mbed_rp2040:pico"
+        }
+      ]
+    },
+    {
+      "id": "arduino:megaavr",
+      "installed": "1.8.7",
+      "latest": "1.8.7",
+      "name": "Arduino megaAVR Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Uno WiFi Rev2",
+          "fqbn": "arduino:megaavr:uno2018"
+        },
+        {
+          "name": "Arduino Nano Every",
+          "fqbn": "arduino:megaavr:nona4809"
+        }
+      ]
+    },
+    {
+      "id": "arduino:nrf52",
+      "installed": "1.0.2",
+      "latest": "1.0.2",
+      "name": "Arduino nRF52 Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Primo",
+          "fqbn": "arduino:nrf52:primo"
+        },
+        {
+          "name": "Arduino Primo Core",
+          "fqbn": "arduino:nrf52:primo_core"
+        }
+      ]
+    },
+    {
+      "id": "arduino:sam",
+      "installed": "1.6.12",
+      "latest": "1.6.12",
+      "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Due (Programming Port)",
+          "fqbn": "arduino:sam:arduino_due_x_dbg"
+        },
+        {
+          "name": "Arduino Due (Native USB Port)",
+          "fqbn": "arduino:sam:arduino_due_x"
+        }
+      ]
+    },
+    {
+      "id": "arduino:samd",
+      "installed": "1.8.12",
+      "latest": "1.8.12",
+      "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino MKR Vidor 4000",
+          "fqbn": "arduino:samd:mkrvidor4000"
+        },
+        {
+          "name": "Arduino M0 Pro (Programming Port)",
+          "fqbn": "arduino:samd:mzero_pro_bl_dbg"
+        },
+        {
+          "name": "Arduino MKR1000",
+          "fqbn": "arduino:samd:mkr1000"
+        },
+        {
+          "name": "Arduino Tian (MIPS Console port)",
+          "fqbn": "arduino:samd:tian_cons"
+        },
+        {
+          "name": "Arduino MKR NB 1500",
+          "fqbn": "arduino:samd:mkrnb1500"
+        },
+        {
+          "name": "Adafruit Circuit Playground Express",
+          "fqbn": "arduino:samd:adafruit_circuitplayground_m0"
+        },
+        {
+          "name": "Arduino Zero (Programming Port)",
+          "fqbn": "arduino:samd:arduino_zero_edbg"
+        },
+        {
+          "name": "Arduino NANO 33 IoT",
+          "fqbn": "arduino:samd:nano_33_iot"
+        },
+        {
+          "name": "Arduino M0",
+          "fqbn": "arduino:samd:mzero_bl"
+        },
+        {
+          "name": "Arduino MKR GSM 1400",
+          "fqbn": "arduino:samd:mkrgsm1400"
+        },
+        {
+          "name": "Arduino M0 Pro (Native USB Port)",
+          "fqbn": "arduino:samd:mzero_pro_bl"
+        },
+        {
+          "name": "Arduino MKR WiFi 1010",
+          "fqbn": "arduino:samd:mkrwifi1010"
+        },
+        {
+          "name": "Arduino Zero (Native USB Port)",
+          "fqbn": "arduino:samd:arduino_zero_native"
+        },
+        {
+          "name": "Arduino MKRZERO",
+          "fqbn": "arduino:samd:mkrzero"
+        },
+        {
+          "name": "Arduino MKR WAN 1310",
+          "fqbn": "arduino:samd:mkrwan1310"
+        },
+        {
+          "name": "Arduino MKR FOX 1200",
+          "fqbn": "arduino:samd:mkrfox1200"
+        },
+        {
+          "name": "Arduino Tian",
+          "fqbn": "arduino:samd:tian"
+        },
+        {
+          "name": "Arduino MKR WAN 1300",
+          "fqbn": "arduino:samd:mkrwan1300"
+        }
+      ]
+    },
+    {
+      "id": "Arrow:samd",
+      "installed": "2.1.0",
+      "latest": "2.1.0",
+      "name": "Arrow Boards",
+      "maintainer": "Axel Elettronica S.r.l.",
+      "website": "http://axelelettronica.it/",
+      "email": "development@axelelettronica.it",
+      "boards": [
+        {
+          "name": "SmartEverything Dragonfly (Native USB Port)",
+          "fqbn": "Arrow:samd:SmartEverything_Dragonfly_native"
+        },
+        {
+          "name": "SmartEverything Fox (Native USB Port)",
+          "fqbn": "Arrow:samd:SmartEverything_Fox_native"
+        },
+        {
+          "name": "SmartEverything Lion (via Atmel-ICE)",
+          "fqbn": "Arrow:samd:SmartEverything_Lion_atmel_ice"
+        },
+        {
+          "name": "SmartEverything Fox3 (Native USB Port)",
+          "fqbn": "Arrow:samd:SmartEverything_Fox3_native"
+        },
+        {
+          "name": "SmartEverything Lion (Native USB Port)",
+          "fqbn": "Arrow:samd:SmartEverything_Lion_native"
+        },
+        {
+          "name": "Analog ADI (via Atmel-ICE)",
+          "fqbn": "Arrow:samd:adi_atmel_ice"
+        },
+        {
+          "name": "SmartEverything Fox (via Atmel-ICE)",
+          "fqbn": "Arrow:samd:SmartEverything_Fox_atmel_ice"
+        },
+        {
+          "name": "SmartEverything Dragonfly (via Atmel-ICE)",
+          "fqbn": "Arrow:samd:SmartEverything_Dragonfly_atmel_ice"
+        },
+        {
+          "name": "SmartEverything Fox3 (via Atmel-ICE)",
+          "fqbn": "Arrow:samd:SmartEverything_Fox3_atmel_ice"
+        },
+        {
+          "name": "SmartTutto (Native USB Port)",
+          "fqbn": "Arrow:samd:NetTrotter_native"
+        },
+        {
+          "name": "SmartTutto (via Atmel-ICE)",
+          "fqbn": "Arrow:samd:NetTrotter_atmel_ice"
+        },
+        {
+          "name": "Analog ADI (Native USB Port)",
+          "fqbn": "Arrow:samd:adi_native"
+        }
+      ]
+    },
+    {
+      "id": "atmel-avr-xminis:avr",
+      "latest": "0.6.0",
+      "name": "Atmel AVR Xplained-minis",
+      "maintainer": "Atmel University France",
+      "website": "https://github.com/AtmelUniversityFrance/atmel-avr-xmini-boardmanagermodule/wiki",
+      "boards": [
+        {
+          "name": "atmega168pb-xmini"
+        },
+        {
+          "name": "atmega328pb-xmini"
+        },
+        {
+          "name": "atmega328p-xmini"
+        }
+      ]
+    },
+    {
+      "id": "emoro:avr",
+      "latest": "3.2.2",
+      "name": "EMORO 2560",
+      "maintainer": "Inovatic-ICT",
+      "website": "http://www.emoro.eu/shop/system/download/EMoRo2560_and_GLAM_brochure.pdf.0b83da8ad90db30722cca3a5d2529494",
+      "email": "support@inovatic-ict.com",
+      "boards": [
+        {
+          "name": "EMoRo 2560. Board based on ATmega 2560 MCU"
+        }
+      ]
+    },
+    {
+      "id": "esp32:esp32",
+      "installed": "1.0.6",
+      "latest": "1.0.6",
+      "name": "esp32",
+      "maintainer": "Espressif Systems",
+      "website": "https://github.com/espressif/arduino-esp32",
+      "email": "hristo@espressif.com",
+      "boards": [
+        {
+          "name": "ESP32 FM DevKit",
+          "fqbn": "esp32:esp32:fm-devkit"
+        },
+        {
+          "name": "OLIMEX ESP32-PoE-ISO",
+          "fqbn": "esp32:esp32:esp32-poe-iso"
+        },
+        {
+          "name": "Senses's WEIZEN",
+          "fqbn": "esp32:esp32:sensesiot_weizen"
+        },
+        {
+          "name": "Noduino Quantum",
+          "fqbn": "esp32:esp32:quantum"
+        },
+        {
+          "name": "Onehorse ESP32 Dev Module",
+          "fqbn": "esp32:esp32:onehorse32dev"
+        },
+        {
+          "name": "ET-Board",
+          "fqbn": "esp32:esp32:ET-Board"
+        },
+        {
+          "name": "OLIMEX ESP32-PoE",
+          "fqbn": "esp32:esp32:esp32-poe"
+        },
+        {
+          "name": "OLIMEX ESP32-EVB",
+          "fqbn": "esp32:esp32:esp32-evb"
+        },
+        {
+          "name": "AI Thinker ESP32-CAM",
+          "fqbn": "esp32:esp32:esp32cam"
+        },
+        {
+          "name": "M5Stack-Core2",
+          "fqbn": "esp32:esp32:m5stack-core2"
+        },
+        {
+          "name": "LOLIN D32",
+          "fqbn": "esp32:esp32:d32"
+        },
+        {
+          "name": "MGBOT IOTIK 32B",
+          "fqbn": "esp32:esp32:mgbot-iotik32b"
+        },
+        {
+          "name": "OLIMEX ESP32-GATEWAY",
+          "fqbn": "esp32:esp32:esp32-gateway"
+        },
+        {
+          "name": "LoPy",
+          "fqbn": "esp32:esp32:lopy"
+        },
+        {
+          "name": "TTGO LoRa32-OLED V1",
+          "fqbn": "esp32:esp32:ttgo-lora32-v1"
+        },
+        {
+          "name": "Heltec WiFi LoRa 32",
+          "fqbn": "esp32:esp32:heltec_wifi_lora_32"
+        },
+        {
+          "name": "FireBeetle-ESP32",
+          "fqbn": "esp32:esp32:firebeetle32"
+        },
+        {
+          "name": "Metro ESP-32",
+          "fqbn": "esp32:esp32:metro_esp-32"
+        },
+        {
+          "name": "Electronic SweetPeas - ESP320",
+          "fqbn": "esp32:esp32:esp320"
+        },
+        {
+          "name": "WEMOS LOLIN32 Lite",
+          "fqbn": "esp32:esp32:lolin32-lite"
+        },
+        {
+          "name": "Hornbill ESP32 Minima",
+          "fqbn": "esp32:esp32:hornbill32minima"
+        },
+        {
+          "name": "ProtoCentral HealthyPi 4",
+          "fqbn": "esp32:esp32:healthypi4"
+        },
+        {
+          "name": "TTGO T7 V1.4 Mini32",
+          "fqbn": "esp32:esp32:ttgo-t7-v14-mini32"
+        },
+        {
+          "name": "SparkFun LoRa Gateway 1-Channel",
+          "fqbn": "esp32:esp32:sparkfun_lora_gateway_1-channel"
+        },
+        {
+          "name": "SparkFun ESP32 Thing",
+          "fqbn": "esp32:esp32:esp32thing"
+        },
+        {
+          "name": "T-Beam",
+          "fqbn": "esp32:esp32:t-beam"
+        },
+        {
+          "name": "Turta IoT Node",
+          "fqbn": "esp32:esp32:turta_iot_node"
+        },
+        {
+          "name": "DOIT ESPduino32",
+          "fqbn": "esp32:esp32:esp32doit-espduino"
+        },
+        {
+          "name": "OLIMEX ESP32-DevKit-LiPo",
+          "fqbn": "esp32:esp32:esp32-DevKitLipo"
+        },
+        {
+          "name": "Frog Board ESP32",
+          "fqbn": "esp32:esp32:frogboard"
+        },
+        {
+          "name": "u-blox NINA-W10 series (ESP32)",
+          "fqbn": "esp32:esp32:nina_w10"
+        },
+        {
+          "name": "Microduino-CoreESP32",
+          "fqbn": "esp32:esp32:CoreESP32"
+        },
+        {
+          "name": "Adafruit ESP32 Feather",
+          "fqbn": "esp32:esp32:featheresp32"
+        },
+        {
+          "name": "WEMOS D1 MINI ESP32",
+          "fqbn": "esp32:esp32:d1_mini32"
+        },
+        {
+          "name": "NodeMCU-32S",
+          "fqbn": "esp32:esp32:nodemcu-32s"
+        },
+        {
+          "name": "TTGO LoRa32-OLED v2.1.6",
+          "fqbn": "esp32:esp32:ttgo-lora32-v21new"
+        },
+        {
+          "name": "Silicognition wESP32",
+          "fqbn": "esp32:esp32:wesp32"
+        },
+        {
+          "name": "ALKS ESP32",
+          "fqbn": "esp32:esp32:alksesp32"
+        },
+        {
+          "name": "M5Stick-C",
+          "fqbn": "esp32:esp32:m5stick-c"
+        },
+        {
+          "name": "Labplus mPython",
+          "fqbn": "esp32:esp32:mPython"
+        },
+        {
+          "name": "LOLIN D32 PRO",
+          "fqbn": "esp32:esp32:d32_pro"
+        },
+        {
+          "name": "IntoRobot Fig",
+          "fqbn": "esp32:esp32:intorobot-fig"
+        },
+        {
+          "name": "OROCA EduBot",
+          "fqbn": "esp32:esp32:oroca_edubot"
+        },
+        {
+          "name": "BPI-BIT",
+          "fqbn": "esp32:esp32:bpi-bit"
+        },
+        {
+          "name": "TinyPICO",
+          "fqbn": "esp32:esp32:tinypico"
+        },
+        {
+          "name": "SparkFun ESP32 Thing Plus",
+          "fqbn": "esp32:esp32:esp32thing_plus"
+        },
+        {
+          "name": "DOIT ESP32 DEVKIT V1",
+          "fqbn": "esp32:esp32:esp32doit-devkit-v1"
+        },
+        {
+          "name": "Pycom GPy",
+          "fqbn": "esp32:esp32:gpy"
+        },
+        {
+          "name": "M5Stack-ATOM",
+          "fqbn": "esp32:esp32:m5stack-atom"
+        },
+        {
+          "name": "MagicBit",
+          "fqbn": "esp32:esp32:magicbit"
+        },
+        {
+          "name": "D-duino-32",
+          "fqbn": "esp32:esp32:d-duino-32"
+        },
+        {
+          "name": "Dongsen Tech Pocket 32",
+          "fqbn": "esp32:esp32:pocket_32"
+        },
+        {
+          "name": "MH ET LIVE ESP32DevKIT",
+          "fqbn": "esp32:esp32:mhetesp32devkit"
+        },
+        {
+          "name": "VintLabs ESP32 Devkit",
+          "fqbn": "esp32:esp32:vintlabs-devkit-v1"
+        },
+        {
+          "name": "IMBRIOS LOGSENS_V1P1",
+          "fqbn": "esp32:esp32:imbrios-logsens-v1p1"
+        },
+        {
+          "name": "WiPy 3.0",
+          "fqbn": "esp32:esp32:wipy3"
+        },
+        {
+          "name": "S.ODI Ultra v1",
+          "fqbn": "esp32:esp32:S_ODI_Ultra"
+        },
+        {
+          "name": "ESPectro32",
+          "fqbn": "esp32:esp32:espectro32"
+        },
+        {
+          "name": "ESP32 Pico Kit",
+          "fqbn": "esp32:esp32:pico32"
+        },
+        {
+          "name": "ESP32 Dev Module",
+          "fqbn": "esp32:esp32:esp32"
+        },
+        {
+          "name": "Heltec WiFi LoRa 32(V2)",
+          "fqbn": "esp32:esp32:heltec_wifi_lora_32_V2"
+        },
+        {
+          "name": "ODROID ESP32",
+          "fqbn": "esp32:esp32:odroid_esp32"
+        },
+        {
+          "name": "M5Stack-FIRE",
+          "fqbn": "esp32:esp32:m5stack-fire"
+        },
+        {
+          "name": "Piranha ESP-32",
+          "fqbn": "esp32:esp32:piranha_esp-32"
+        },
+        {
+          "name": "INEX OpenKB",
+          "fqbn": "esp32:esp32:OpenKB"
+        },
+        {
+          "name": "LoPy4",
+          "fqbn": "esp32:esp32:lopy4"
+        },
+        {
+          "name": "HONEYLemon",
+          "fqbn": "esp32:esp32:honeylemon"
+        },
+        {
+          "name": "WiFiduino32",
+          "fqbn": "esp32:esp32:wifiduino32"
+        },
+        {
+          "name": "M5Stack-Timer-CAM",
+          "fqbn": "esp32:esp32:m5stack-timer-cam"
+        },
+        {
+          "name": "Node32s",
+          "fqbn": "esp32:esp32:node32s"
+        },
+        {
+          "name": "XinaBox CW02",
+          "fqbn": "esp32:esp32:cw02"
+        },
+        {
+          "name": "M5Stack-Core-ESP32",
+          "fqbn": "esp32:esp32:m5stack-core-esp32"
+        },
+        {
+          "name": "KITS ESP32 EDU",
+          "fqbn": "esp32:esp32:kits-edu"
+        },
+        {
+          "name": "ESPea32",
+          "fqbn": "esp32:esp32:espea32"
+        },
+        {
+          "name": "Widora AIR",
+          "fqbn": "esp32:esp32:widora-air"
+        },
+        {
+          "name": "Heltec Wireless Stick Lite",
+          "fqbn": "esp32:esp32:heltec_wireless_stick_lite"
+        },
+        {
+          "name": "WeMos WiFi&Bluetooth Battery",
+          "fqbn": "esp32:esp32:WeMosBat"
+        },
+        {
+          "name": "TTGO T1",
+          "fqbn": "esp32:esp32:ttgo-t1"
+        },
+        {
+          "name": "Nano32",
+          "fqbn": "esp32:esp32:nano32"
+        },
+        {
+          "name": "TTGO T7 V1.3 Mini32",
+          "fqbn": "esp32:esp32:ttgo-t7-v13-mini32"
+        },
+        {
+          "name": "Heltec Wireless Stick",
+          "fqbn": "esp32:esp32:heltec_wireless_stick"
+        },
+        {
+          "name": "ESP32vn IoT Uno",
+          "fqbn": "esp32:esp32:esp32vn-iot-uno"
+        },
+        {
+          "name": "MGBOT IOTIK 32A",
+          "fqbn": "esp32:esp32:mgbot-iotik32a"
+        },
+        {
+          "name": "M5Stack-CoreInk",
+          "fqbn": "esp32:esp32:m5stack-coreink"
+        },
+        {
+          "name": "MH ET LIVE ESP32MiniKit",
+          "fqbn": "esp32:esp32:mhetesp32minikit"
+        },
+        {
+          "name": "ESP32 Wrover Module",
+          "fqbn": "esp32:esp32:esp32wrover"
+        },
+        {
+          "name": "WEMOS LOLIN32",
+          "fqbn": "esp32:esp32:lolin32"
+        },
+        {
+          "name": "TTGO T-Watch",
+          "fqbn": "esp32:esp32:twatch"
+        },
+        {
+          "name": "Heltec WiFi Kit 32",
+          "fqbn": "esp32:esp32:heltec_wifi_kit_32"
+        },
+        {
+          "name": "Hornbill ESP32 Dev",
+          "fqbn": "esp32:esp32:hornbill32dev"
+        },
+        {
+          "name": "ThaiEasyElec's ESPino32",
+          "fqbn": "esp32:esp32:espino32"
+        }
+      ]
+    },
+    {
+      "id": "industruino:samd",
+      "installed": "1.0.1",
+      "latest": "1.0.1",
+      "name": "Industruino SAMD Boards (32-bits ARM Cortex-M0+)",
+      "maintainer": "Industruino",
+      "website": "https://industruino.com/",
+      "email": "connect@industruino.com",
+      "boards": [
+        {
+          "name": "Industruino D21G",
+          "fqbn": "industruino:samd:industruino_d21g"
+        }
+      ]
+    },
+    {
+      "id": "Intel:arc32",
+      "installed": "2.0.5",
+      "latest": "2.0.5",
+      "name": "Intel Curie Boards",
+      "maintainer": "Intel",
+      "website": "http://maker.intel.com/",
+      "email": "support@intel.com",
+      "boards": [
+        {
+          "name": "Arduino/Genuino 101",
+          "fqbn": "Intel:arc32:arduino_101"
+        }
+      ]
+    },
+    {
+      "id": "Intel:i586",
+      "installed": "1.6.7+1.0",
+      "latest": "1.6.7+1.0",
+      "name": "Intel i586 Boards",
+      "maintainer": "Intel",
+      "website": "http://maker.intel.com/",
+      "email": "support@intel.com",
+      "boards": [
+        {
+          "name": "Intel® Galileo Gen2",
+          "fqbn": "Intel:i586:izmir_fg"
+        },
+        {
+          "name": "Intel® Galileo",
+          "fqbn": "Intel:i586:izmir_fd"
+        }
+      ]
+    },
+    {
+      "id": "Intel:i686",
+      "installed": "1.6.7+1.0",
+      "latest": "1.6.7+1.0",
+      "name": "Intel i686 Boards",
+      "maintainer": "Intel",
+      "website": "http://maker.intel.com/",
+      "email": "support@intel.com",
+      "boards": [
+        {
+          "name": "Intel® Edison",
+          "fqbn": "Intel:i686:izmir_ec"
+        }
+      ]
+    },
+    {
+      "id": "littleBits:avr",
+      "latest": "1.0.0",
+      "name": "littleBits Arduino AVR Modules",
+      "maintainer": "littleBits Electronics",
+      "website": "http://www.littlebits.cc/bits/w6-arduino",
+      "email": "support@littlebits.cc",
+      "boards": [
+        {
+          "name": "littleBits w6 Arduino module"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft:win10",
+      "installed": "1.1.2",
+      "latest": "1.1.2",
+      "name": "Windows 10 Iot Core",
+      "maintainer": "Microsoft.IoT",
+      "website": "https://github.com/ms-iot/iot-utilities/tree/master/IotCoreAppDeployment/ArduinoIde/",
+      "email": "bfjelds@microsoft.com",
+      "boards": [
+        {
+          "name": "Windows 10 IoT Core",
+          "fqbn": "Microsoft:win10:w10iotcore"
+        }
+      ]
+    },
+    {
+      "id": "arduino:mbed",
+      "latest": "2.7.2",
+      "name": "[DEPRECATED - Please install standalone packages] Arduino Mbed OS Boards",
+      "maintainer": "Arduino",
+      "website": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "boards": [
+        {
+          "name": "Arduino Nano 33 BLE"
+        },
+        {
+          "name": "Arduino Nano 33 BLE Sense"
+        },
+        {
+          "name": "Arduino Nano RP2040 Connect"
+        },
+        {
+          "name": "Arduino Portenta H7"
+        },
+        {
+          "name": "Arduino Edge Control"
+        },
+        {
+          "name": "Raspberry Pi Pico"
+        },
+        {
+          "name": "Nicla Sense ME"
+        }
+      ],
+      "deprecated": true
+    }
+  ],
+  "reason": ""
+}

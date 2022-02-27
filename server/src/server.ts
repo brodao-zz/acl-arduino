@@ -72,6 +72,8 @@ process.argv.forEach((element: string, index: number, argv: string[]) => {
     config.logToFile = true; //argv[index + 1] === "true";
   } else if (element === "--no-show-banner") {
     config.showBanner = false; //argv[index + 1] === "true";
+  } else if (element === "--master") {
+    config.master = true; //argv[index + 1] === "true";
   } else if (element === "--trace-level") {
     //config. = true; //argv[index + 1] === "true";
   }
@@ -171,9 +173,11 @@ connection.onInitialize((_params: InitializeParams) => {
       documentFormattingProvider: false,
       documentHighlightProvider: false,
       documentSymbolProvider: false,
-      executeCommandProvider: {
-        commands: [COMMAND_CHECK_PROJECT, COMMAND_INSTALL_CLI],
-      },
+      executeCommandProvider: config.master
+        ? {
+            commands: [COMMAND_CHECK_PROJECT, COMMAND_INSTALL_CLI],
+          }
+        : undefined,
       hoverProvider: false,
       renameProvider: false,
       referencesProvider: false,

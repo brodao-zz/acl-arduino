@@ -28,7 +28,7 @@ export interface ArduinoCliOptions {
 const FORMAT_JSON: string[] = ["--format", "json"];
 const FORMAT_TEXT: string[] = ["--format", "text"];
 
-interface IArduinoExec {
+export interface IArduinoExec {
   status: boolean;
   data: any;
   reason: string;

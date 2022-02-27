@@ -1,7 +1,7 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "cliVersion": "0.21.0",
-  "port": "xxxxx",
+  "port": "com2",
   "board": "esp32:esp32:esp32",
   "board_name": "ESP32 Dev Module",
   "alias": ""

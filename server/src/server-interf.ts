@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export namespace Server {
   export interface IArduinoRelease {
     name: string;
@@ -18,6 +19,7 @@ export namespace Server {
   export interface IArduinoPlatform {
     id: string;
     latest: string;
+    installed: string;
     versions: string[];
     name: string;
     maintainer: string;

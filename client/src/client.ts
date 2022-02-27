@@ -160,6 +160,7 @@ export class Client implements vscode.Disposable {
       }`,
       "--traceLevel",
       AcLabConfig.traceLevel(),
+      `${Client.isFirstTime ? "--master" : ""}`,
     ];
     Client.isFirstTime = false;
 

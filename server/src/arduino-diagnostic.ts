@@ -13,13 +13,16 @@ export namespace ArduinoDiagnostic {
     E001_INVALID_CLI_VERSION = "E001",
     E002_INVALID_BOARD = "E002",
     E003_INVALID_PLATFORM_VERSION = "E003",
+    E0031_PLATFORM_NOT_INSTALED = "E031",
     E004_INVALID_PORT = "E004",
     E005_INVALID_CONTENT = "E005",
     E006_FILE_NOT_FOUND = "E006",
     E007_CLI_NOT_INSTALLED = "E007",
+    E099_ARDUIONO_CLI = "E099_ARDUIONO_CLI",
   }
 
   export enum Information {
+    I001_PLATFORM_VERSION_NOT_LATEST = "I001_PLATFORM_VERSION",
     I002_INVALID_BOARD_NAME_UPDATE = "I002",
     I003_INVALID_BOARD_NAME_INSERT = "I003",
     I004_INVALID_PROJECT = "I004",
@@ -102,6 +105,8 @@ export namespace ArduinoDiagnostic {
         return "Invalid board (FQBN).";
       case Error.E003_INVALID_PLATFORM_VERSION:
         return "Invalid platform version.";
+      case Error.E0031_PLATFORM_NOT_INSTALED:
+        return "Platform not instaled.";
       case Error.E004_INVALID_PORT:
         return "Port required.";
       case Error.E005_INVALID_CONTENT:
@@ -110,8 +115,12 @@ export namespace ArduinoDiagnostic {
         return "File not found.";
       case Error.E007_CLI_NOT_INSTALLED:
         return "Arduino CLI not installed.";
+      case Error.E007_CLI_NOT_INSTALLED:
+        return "Arduino CLI excution error.";
       //
       //
+      case Information.I001_PLATFORM_VERSION_NOT_LATEST:
+        return "Version in use is not the latest available.";
       case Information.I002_INVALID_BOARD_NAME_UPDATE:
         return "Board name is not equal FQBN name.";
       case Information.I003_INVALID_BOARD_NAME_INSERT:

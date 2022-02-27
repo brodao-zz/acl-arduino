@@ -35,6 +35,7 @@ export namespace ACLLogger {
     logToFile: boolean;
     logFormat: string;
     label: string;
+    master: boolean;
   }
 
   export interface ILogger {
@@ -76,6 +77,7 @@ export namespace ACLLogger {
       logToFile: false,
       logFormat: "text",
       label: "AC Lab",
+      master: false,
     };
 
     private _id: string;

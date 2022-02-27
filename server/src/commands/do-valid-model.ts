@@ -4,7 +4,7 @@ import { Diagnostic } from "vscode-languageserver/node";
 import { ArduinoDiagnostic } from "../arduino-diagnostic";
 import { IConfigServerModel, Server } from "..";
 import { ArduinoGithub } from "../arduino-github";
-import { ArduinoCli } from "../arduino-cli";
+import { ArduinoCli, IArduinoExec } from "../arduino-cli";
 import { configSchema } from "../modes/language-modes";
 
 export const COMMAND_VALID_MODEL: string = "arduinoExplorer.validModel";
@@ -41,6 +41,8 @@ export async function doValidContentModel(
     });
   } else {
     result.push(...(await doValidCliVersion(workspace, data)));
+    result.push(...(await doValidPort(workspace, data)));
+    result.push(...(await doValidPlatformAndBoard(workspace, data)));
   }
 
   return result;
@@ -80,6 +82,108 @@ async function doValidCliVersion(
       )
     );
   }
+
+  return Promise.resolve(diagnostics);
+}
+
+async function doValidPort(
+  workspace: string,
+  data: IConfigServerModel
+): Promise<Diagnostic[]> {
+  const diagnostics: Diagnostic[] = [];
+
+  data.port = data.port.trim();
+
+  if (!data.port.startsWith("com")) {
+    diagnostics.push(
+      ArduinoDiagnostic.createProjectDiagnostic(
+        workspace,
+        ArduinoDiagnostic.Error.E004_INVALID_PORT,
+        data.port,
+        {}
+      )
+    );
+  }
+
+  return Promise.resolve(diagnostics);
+}
+
+async function doValidPlatformAndBoard(
+  workspace: string,
+  data: IConfigServerModel
+): Promise<Diagnostic[]> {
+  const diagnostics: Diagnostic[] = [];
+  const createDiag = (
+    code: ArduinoDiagnostic.Error | ArduinoDiagnostic.Information,
+    message: string
+  ) => {
+    diagnostics.push(
+      ArduinoDiagnostic.createProjectDiagnostic(workspace, code, message, {})
+    );
+  };
+  let exec: IArduinoExec = ArduinoCli.instance().coreList("--all");
+
+  if (exec.status) {
+    let boardFoud: Server.IArduinoBoard | undefined;
+    const platforms: Server.IArduinoPlatform[] = exec.data;
+    const platform: Server.IArduinoPlatform | undefined = platforms.find(
+      (platform: Server.IArduinoPlatform | undefined) => {
+        const board: Server.IArduinoBoard | undefined = platform?.boards.find(
+          (board: Server.IArduinoBoard) => {
+            return board.fqbn === data.board;
+          }
+        );
+        if (board) {
+          boardFoud = board;
+        }
+
+        return platform;
+      }
+    );
+
+    if (!boardFoud) {
+      createDiag(ArduinoDiagnostic.Error.E002_INVALID_BOARD, data.board);
+    } else if (platform) {
+      exec = ArduinoCli.instance().coreList("");
+      const platforms: Server.IArduinoPlatform[] = exec.data;
+      const target: Server.IArduinoPlatform | undefined = platforms.find(
+        (platform: Server.IArduinoPlatform | undefined) => {
+          return platform?.id === platform?.id;
+        }
+      );
+      if (!target || !target.installed) {
+        createDiag(
+          ArduinoDiagnostic.Error.E0031_PLATFORM_NOT_INSTALED,
+          platform.id
+        );
+      } else if (target.latest !== platform.installed) {
+        createDiag(
+          ArduinoDiagnostic.Information.I001_PLATFORM_VERSION_NOT_LATEST,
+          `Installed: ${platform.installed} Latest: ${platform.latest}`
+        );
+      }
+    }
+  } else {
+    diagnostics.push(
+      ArduinoDiagnostic.createProjectDiagnostic(
+        workspace,
+        ArduinoDiagnostic.Error.E099_ARDUIONO_CLI,
+        exec.reason,
+        {}
+      )
+    );
+  }
+  // if (release) {
+  //   await ArduinoCli.instance()
+  //     .checkEnvironment(data.cliVersion)
+  //     .then((diagnostic: Diagnostic | undefined) => {
+  //       if (diagnostic) {
+  //         diagnostics.push(diagnostic);
+  //       }
+  //     });
+  // } else {
+  //   );
+  // }
 
   return Promise.resolve(diagnostics);
 }

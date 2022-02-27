@@ -4,10 +4,7 @@ import {
   CompletionList,
   Diagnostic,
 } from "vscode-languageserver/node";
-import {
-  LanguageService as JsonLanguageService,
-  JSONDocument,
-} from "vscode-json-languageservice";
+import { LanguageService as JsonLanguageService } from "vscode-json-languageservice";
 import { LanguageMode } from "./language-modes";
 import { doValidContentModel } from "../commands/do-valid-model";
 
@@ -27,18 +24,19 @@ export function getConfigMode(
       return completionItem;
     },
     async doValidation(textDocument: TextDocument): Promise<Diagnostic[]> {
-      const jsonDocument: JSONDocument =
-        jsonLanguageService.parseJSONDocument(textDocument);
-      const diagnostics: Diagnostic[] = await jsonLanguageService.doValidation(
-        textDocument,
-        jsonDocument,
-        {
-          comments: "ignore",
-          trailingCommas: "ignore",
-          schemaValidation: "warning",
-          schemaRequest: "warning",
-        }
-      );
+      const diagnostics: Diagnostic[] = [];
+      // const jsonDocument: JSONDocument =
+      //   jsonLanguageService.parseJSONDocument(textDocument);
+      // const diagnostics: Diagnostic[] = await jsonLanguageService.doValidation(
+      //   textDocument,
+      //   jsonDocument,
+      //   {
+      //     comments: "ignore",
+      //     trailingCommas: "ignore",
+      //     schemaValidation: "warning",
+      //     schemaRequest: "warning",
+      //   }
+      // );
 
       //if (diagnostics.length === 0) {
       diagnostics.push(

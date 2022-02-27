@@ -1,0 +1,82 @@
+[
+  {
+    "name": "0.21.1",
+    "tag_name": "0.21.1",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.21.1",
+    "prerelease": false,
+    "published_at": "2022-02-24T15:54:11Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.21.1-rc1",
+    "tag_name": "0.21.1-rc1",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.21.1-rc1",
+    "prerelease": true,
+    "published_at": "2022-02-23T17:03:48Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.21.0",
+    "tag_name": "0.21.0",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.21.0",
+    "prerelease": false,
+    "published_at": "2022-02-08T15:17:47Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.21.0-rc1",
+    "tag_name": "0.21.0-rc1",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.21.0-rc1",
+    "prerelease": true,
+    "published_at": "2022-02-04T16:12:53Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.20.2",
+    "tag_name": "0.20.2",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.20.2",
+    "prerelease": false,
+    "published_at": "2021-12-09T13:41:53Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.20.2-rc1",
+    "tag_name": "0.20.2-rc1",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.20.2-rc1",
+    "prerelease": true,
+    "published_at": "2021-12-07T16:54:15Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.20.1",
+    "tag_name": "0.20.1",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.20.1",
+    "prerelease": false,
+    "published_at": "2021-11-29T11:47:11Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.20.1-rc1",
+    "tag_name": "0.20.1-rc1",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.20.1-rc1",
+    "prerelease": true,
+    "published_at": "2021-11-26T10:05:40Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.20.0",
+    "tag_name": "0.20.0",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.20.0",
+    "prerelease": false,
+    "published_at": "2021-11-23T14:45:56Z",
+    "author": "github-actions[bot]"
+  },
+  {
+    "name": "0.20.0-rc3",
+    "tag_name": "0.20.0-rc3",
+    "html_url": "https://github.com/arduino/arduino-cli/releases/tag/0.20.0-rc3",
+    "prerelease": true,
+    "published_at": "2021-11-23T11:40:55Z",
+    "author": "github-actions[bot]"
+  }
+]
