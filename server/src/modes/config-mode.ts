@@ -8,7 +8,7 @@ import {
 import { LanguageService as JsonLanguageService } from "vscode-json-languageservice";
 import { LanguageMode } from "./language-modes";
 import { doValidContentModel } from "../commands/do-valid-model";
-import { _provideCodeActions } from "../code-action-provider";
+import { provideCodeActions } from "../code-action-provider";
 
 export interface IConfigMode {}
 
@@ -67,7 +67,7 @@ export function getConfigMode(
       return completionList as Thenable<CompletionList>;
     },
     _doProvideCodeActions(params: CodeActionParams) {
-      return _provideCodeActions(params);
+      return provideCodeActions(params);
     },
     onDocumentRemoved(_document: TextDocument) {
       /* nothing to do */
