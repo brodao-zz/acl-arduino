@@ -1,6 +1,9 @@
 import fse = require("fs-extra");
 import { Position, TextDocument } from "vscode-languageserver-textdocument";
 import {
+  CodeAction,
+  CodeActionParams,
+  Command,
   CompletionItem,
   CompletionItemTag,
   CompletionList,
@@ -40,6 +43,7 @@ export interface LanguageMode {
     position: Position
   ) => Thenable<CompletionList>;
   doResolve?(item: CompletionItem): Thenable<CompletionItem>;
+  _doProvideCodeActions(params: CodeActionParams): (Command | CodeAction)[];
   //doSignatureHelp(document: TextDocument, position: Position): any;
 }
 

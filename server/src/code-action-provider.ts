@@ -1,4 +1,4 @@
-import { TextDocument } from "vscode-languageserver-textdocument";
+import * as Ajv from "ajv";
 import {
   CodeAction,
   CodeActionParams,
@@ -6,6 +6,7 @@ import {
   Command,
   CodeActionOptions,
   TextEdit,
+  Diagnostic,
 } from "vscode-languageserver/node";
 import { ArduinoDiagnostic } from "./arduino-diagnostic";
 import { COMMAND_INSTALL_CLI } from "./commands/do-install-cli";
@@ -17,29 +18,15 @@ export function getCodeActionProvider(): CodeActionOptions {
   };
 }
 
-export function provideCodeActions(
-  document: TextDocument,
-  params: CodeActionParams
-): CodeAction[] {
+export function _provideCodeActions(params: CodeActionParams): CodeAction[] {
   ACLLogger.instance().debug("provideCodeActions");
 
   if (!params.context.diagnostics.length) {
     return [];
   }
 
-  return quickfix(document, params);
-}
-
-function quickfix(
-  textDocument: TextDocument,
-  params: CodeActionParams
-): CodeAction[] {
-  const diagnostics = params.context.diagnostics;
-  if (!diagnostics || diagnostics.length === 0) {
-    return [];
-  }
-
   const codeActions: CodeAction[] = [];
+  const diagnostics: Diagnostic[] = params.context.diagnostics;
 
   diagnostics.forEach((diag) => {
     if (diag.message === 'Missing property "board".') {
@@ -51,7 +38,7 @@ function quickfix(
         command: Command.create(
           "Select Board",
           "aclabExplorer.selectBoard",
-          textDocument.uri.toString()
+          params.textDocument.uri.toString()
         ),
       });
     } else if (diag.code === ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION) {
@@ -134,6 +121,56 @@ function quickfix(
       });
 
       return;
+    } else if (diag.code === ArduinoDiagnostic.Error.E005_INVALID_CONTENT) {
+      const data: any = diag.data;
+      const error = data.error as Ajv.ErrorObject;
+
+      if (error.keyword === "required") {
+        const property: string = error.params.missingProperty;
+        codeActions.push({
+          title: `Insert '${property}' property`,
+          kind: CodeActionKind.QuickFix,
+          diagnostics: [diag],
+          edit: {
+            changes: {
+              [params.textDocument.uri]: [
+                TextEdit.insert(
+                  {
+                    line: diag.range.end.line + 1,
+                    character: diag.range.start.character,
+                  },
+                  `"${property}": "${
+                    error.parentSchema?.properties[property].const ||
+                    error.parentSchema?.properties[property].default ||
+                    ""
+                  }",\n${" ".repeat(diag.range.start.character)}`
+                ),
+              ],
+            },
+          },
+        });
+      } else {
+        codeActions.push({
+          title: `Change '${data.instancePath}' property`,
+          kind: CodeActionKind.QuickFix,
+          diagnostics: [diag],
+          edit: {
+            changes: {
+              [params.textDocument.uri]: [
+                TextEdit.insert(
+                  {
+                    line: diag.range.end.line + 1,
+                    character: diag.range.start.character,
+                  },
+                  `"${data.params[0]}": "${data.params[1]}",\n${" ".repeat(
+                    diag.range.start.character
+                  )}`
+                ),
+              ],
+            },
+          },
+        });
+      }
     } else if (diag.code === ArduinoDiagnostic.Error.E007_CLI_NOT_INSTALLED) {
       const data: any = diag.data || {};
 
@@ -221,6 +258,5 @@ function quickfix(
     //   return;
     // }
   });
-
   return codeActions;
 }

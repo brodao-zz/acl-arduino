@@ -35,6 +35,7 @@ export namespace ArduinoDiagnostic {
 
   export function createProjectDiagnostic(
     workspace: string,
+    range: Range | undefined,
     code: Error | Information,
     message: string,
     data: any
@@ -43,7 +44,7 @@ export namespace ArduinoDiagnostic {
       severity: codeToSeverity(code),
       code: code,
       //source: workspace,
-      range: NO_RANGE,
+      range: range || NO_RANGE,
       message: `${codeToMessage(code)} ${message}`,
       codeDescription: codeToDescription(code),
       tags: codeToTags(code),

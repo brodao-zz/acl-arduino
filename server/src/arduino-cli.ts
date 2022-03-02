@@ -214,6 +214,7 @@ export class ArduinoCli {
           this.runOptions.workspaceFolder &&
           ArduinoDiagnostic.createProjectDiagnostic(
             this.runOptions.workspaceFolder.uri,
+            undefined,
             ArduinoDiagnostic.Error.E006_FILE_NOT_FOUND,
             this.runOptions.configFile,
             {}
@@ -231,6 +232,7 @@ export class ArduinoCli {
             this.runOptions.workspaceFolder &&
             ArduinoDiagnostic.createProjectDiagnostic(
               this.runOptions.workspaceFolder.uri,
+              undefined,
               ArduinoDiagnostic.Error.E007_CLI_NOT_INSTALLED,
               "",
               { version: release }

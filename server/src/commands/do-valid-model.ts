@@ -7,35 +7,60 @@ import { ArduinoGithub } from "../arduino-github";
 import { ArduinoCli, IArduinoExec } from "../arduino-cli";
 import { configSchema } from "../modes/language-modes";
 
+const jsonMap = require("json-source-map");
+
 export const COMMAND_VALID_MODEL: string = "arduinoExplorer.validModel";
 
 export function doValidModel(filename: string): Promise<Diagnostic[]> {
-  const content: any = fse.readJSONSync(filename);
+  const content: string = fse.readFileSync(filename).toString();
 
-  return doValidContentModel(filename, content);
+  return doValidContentModel(filename, JSON.parse(content), content);
 }
 
 export async function doValidContentModel(
   workspace: string,
-  data: IConfigServerModel
+  data: IConfigServerModel,
+  content: string
 ): Promise<Diagnostic[]> {
   const result: Diagnostic[] = [];
 
-  const ajv = new Ajv.default({ allErrors: true, verbose: true });
+  const ajv = new Ajv.default({
+    allErrors: true,
+    //jsPropertySyntax: true,
+    //jsonPointers: true,
+    verbose: true,
+  });
   const schema: Ajv.JSONSchemaType<IConfigServerModel> =
     JSON.parse(configSchema);
   const validate = ajv.compile(schema);
 
   if (!validate(data)) {
+    const sourceMap = jsonMap.parse(content);
+
     validate.errors?.forEach((value: Ajv.ErrorObject) => {
+      const errorPointer = sourceMap.pointers[value.instancePath];
+
       result.push(
         ArduinoDiagnostic.createProjectDiagnostic(
           workspace,
+          {
+            start: {
+              line: errorPointer.key?.line | 0,
+              character: errorPointer.key?.column | 0,
+            },
+            end: {
+              line: errorPointer.value?.line | 0,
+              character: errorPointer.value?.column | 0,
+            },
+          },
           ArduinoDiagnostic.Error.E005_INVALID_CONTENT,
           `${value.keyword.charAt(0).toUpperCase()}${value.keyword.substring(
             1
           )}: ${value.message}`,
-          {} //[${JSON.stringify(value.params)}]
+          {
+            errorPointer: errorPointer,
+            error: value,
+          }
         )
       );
     });
@@ -76,6 +101,7 @@ async function doValidCliVersion(
     diagnostics.push(
       ArduinoDiagnostic.createProjectDiagnostic(
         workspace,
+        undefined,
         ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION,
         "cliVersion invalid or unsupported.",
         {}
@@ -98,6 +124,7 @@ async function doValidPort(
     diagnostics.push(
       ArduinoDiagnostic.createProjectDiagnostic(
         workspace,
+        undefined,
         ArduinoDiagnostic.Error.E004_INVALID_PORT,
         data.port,
         {}
@@ -118,7 +145,13 @@ async function doValidPlatformAndBoard(
     message: string
   ) => {
     diagnostics.push(
-      ArduinoDiagnostic.createProjectDiagnostic(workspace, code, message, {})
+      ArduinoDiagnostic.createProjectDiagnostic(
+        workspace,
+        undefined,
+        code,
+        message,
+        {}
+      )
     );
   };
   let exec: IArduinoExec = ArduinoCli.instance().coreList("--all");
@@ -167,6 +200,7 @@ async function doValidPlatformAndBoard(
     diagnostics.push(
       ArduinoDiagnostic.createProjectDiagnostic(
         workspace,
+        undefined,
         ArduinoDiagnostic.Error.E099_ARDUIONO_CLI,
         exec.reason,
         {}

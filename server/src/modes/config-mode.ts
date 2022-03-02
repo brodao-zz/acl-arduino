@@ -1,5 +1,6 @@
 import { Position, TextDocument } from "vscode-languageserver-textdocument";
 import {
+  CodeActionParams,
   CompletionItem,
   CompletionList,
   Diagnostic,
@@ -7,6 +8,7 @@ import {
 import { LanguageService as JsonLanguageService } from "vscode-json-languageservice";
 import { LanguageMode } from "./language-modes";
 import { doValidContentModel } from "../commands/do-valid-model";
+import { _provideCodeActions } from "../code-action-provider";
 
 export interface IConfigMode {}
 
@@ -25,8 +27,8 @@ export function getConfigMode(
     },
     async doValidation(textDocument: TextDocument): Promise<Diagnostic[]> {
       const diagnostics: Diagnostic[] = [];
-      // const jsonDocument: JSONDocument =
-      //   jsonLanguageService.parseJSONDocument(textDocument);
+      //const jsonDocument: JSONDocument =
+      //  jsonLanguageService.parseJSONDocument(textDocument);
       // const diagnostics: Diagnostic[] = await jsonLanguageService.doValidation(
       //   textDocument,
       //   jsonDocument,
@@ -36,13 +38,14 @@ export function getConfigMode(
       //     schemaValidation: "warning",
       //     schemaRequest: "warning",
       //   }
-      // );
+      //      );
 
       //if (diagnostics.length === 0) {
       diagnostics.push(
         ...(await doValidContentModel(
           textDocument.uri,
-          JSON.parse(textDocument.getText())
+          JSON.parse(textDocument.getText()),
+          textDocument.getText()
         ))
       );
       //}
@@ -62,6 +65,9 @@ export function getConfigMode(
       }
 
       return completionList as Thenable<CompletionList>;
+    },
+    _doProvideCodeActions(params: CodeActionParams) {
+      return _provideCodeActions(params);
     },
     onDocumentRemoved(_document: TextDocument) {
       /* nothing to do */

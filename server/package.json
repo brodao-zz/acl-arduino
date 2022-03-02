@@ -34,6 +34,7 @@
     "download": "^8.0.0",
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
+    "json-source-map": "^0.6.1",
     "octokit": "^1.7.1",
     "targz": "^1.0.1",
     "unzip-stream": "^0.3.1",

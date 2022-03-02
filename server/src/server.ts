@@ -28,10 +28,7 @@ import { fileURLToPath } from "url";
 import { ACLLogger } from "./logger";
 import { ACLCache } from "./cache";
 import { doInitializeConfig } from "./commands/initialize-config";
-import {
-  getCodeActionProvider,
-  provideCodeActions,
-} from "./code-action-provider";
+import { getCodeActionProvider } from "./code-action-provider";
 import {
   COMMAND_CHECK_PROJECT,
   doCheckProject,
@@ -300,7 +297,13 @@ connection.onCodeAction((params: CodeActionParams) => {
     return null;
   }
 
-  return provideCodeActions(document, params);
+  const mode = languageModes.getModeAtPosition(document, params.range.start);
+  if (!mode || !mode._doProvideCodeActions) {
+    return null;
+  }
+  const doProvideCodeActions = mode._doProvideCodeActions!;
+
+  return doProvideCodeActions(params);
 });
 
 connection.onExecuteCommand((params: ExecuteCommandParams) => {
