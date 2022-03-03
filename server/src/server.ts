@@ -303,7 +303,7 @@ connection.onCodeAction((params: CodeActionParams) => {
   }
   const doProvideCodeActions = mode._doProvideCodeActions!;
 
-  return doProvideCodeActions(params);
+  return doProvideCodeActions(document, params);
 });
 
 connection.onExecuteCommand((params: ExecuteCommandParams) => {

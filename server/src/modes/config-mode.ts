@@ -5,9 +5,12 @@ import {
   CompletionList,
   Diagnostic,
 } from "vscode-languageserver/node";
-import { LanguageService as JsonLanguageService } from "vscode-json-languageservice";
+import {
+  JSONDocument,
+  LanguageService as JsonLanguageService,
+} from "vscode-json-languageservice";
 import { LanguageMode } from "./language-modes";
-import { doValidContentModel } from "../commands/do-valid-model";
+//import { doValidContentModel } from "../commands/do-valid-model";
 import { provideCodeActions } from "../code-action-provider";
 
 export interface IConfigMode {}
@@ -26,28 +29,27 @@ export function getConfigMode(
       return completionItem;
     },
     async doValidation(textDocument: TextDocument): Promise<Diagnostic[]> {
-      const diagnostics: Diagnostic[] = [];
-      //const jsonDocument: JSONDocument =
-      //  jsonLanguageService.parseJSONDocument(textDocument);
-      // const diagnostics: Diagnostic[] = await jsonLanguageService.doValidation(
-      //   textDocument,
-      //   jsonDocument,
-      //   {
-      //     comments: "ignore",
-      //     trailingCommas: "ignore",
-      //     schemaValidation: "warning",
-      //     schemaRequest: "warning",
-      //   }
-      //      );
+      const jsonDocument: JSONDocument =
+        jsonLanguageService.parseJSONDocument(textDocument);
+      const diagnostics: Diagnostic[] = await jsonLanguageService.doValidation(
+        textDocument,
+        jsonDocument,
+        {
+          comments: "ignore",
+          trailingCommas: "ignore",
+          schemaValidation: "warning",
+          schemaRequest: "warning",
+        }
+      );
 
       //if (diagnostics.length === 0) {
-      diagnostics.push(
-        ...(await doValidContentModel(
-          textDocument.uri,
-          JSON.parse(textDocument.getText()),
-          textDocument.getText()
-        ))
-      );
+      // diagnostics.push(
+      //   ...(await doValidContentModel(
+      //     textDocument.uri,
+      //     JSON.parse(textDocument.getText()),
+      //     textDocument.getText()
+      //   ))
+      // );
       //}
 
       return diagnostics;
@@ -66,8 +68,11 @@ export function getConfigMode(
 
       return completionList as Thenable<CompletionList>;
     },
-    _doProvideCodeActions(params: CodeActionParams) {
-      return provideCodeActions(params);
+    _doProvideCodeActions(
+      textDocument: TextDocument,
+      params: CodeActionParams
+    ) {
+      return provideCodeActions(textDocument, params);
     },
     onDocumentRemoved(_document: TextDocument) {
       /* nothing to do */

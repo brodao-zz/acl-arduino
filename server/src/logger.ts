@@ -59,7 +59,9 @@ export namespace ACLLogger {
 
   const textFormat = winston.format.printf(
     ({ level, message, label, timestamp }) => {
-      if (message.indexOf("\n") > -1) {
+      if (message.hasOwnProperty("stack")) {
+        message = (message as any).stack;
+      } else {
         message = ("\n" + message).replaceAll("\n", "\n\t");
       }
 

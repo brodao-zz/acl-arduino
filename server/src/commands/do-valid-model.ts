@@ -5,7 +5,7 @@ import { ArduinoDiagnostic } from "../arduino-diagnostic";
 import { IConfigServerModel, Server } from "..";
 import { ArduinoGithub } from "../arduino-github";
 import { ArduinoCli, IArduinoExec } from "../arduino-cli";
-import { configSchema } from "../modes/language-modes";
+import { DynamicSchema } from "../dynamicSchema";
 
 const jsonMap = require("json-source-map");
 
@@ -25,13 +25,12 @@ export async function doValidContentModel(
   const result: Diagnostic[] = [];
 
   const ajv = new Ajv.default({
+    schemas: [DynamicSchema.cliVersion()],
     allErrors: true,
-    //jsPropertySyntax: true,
-    //jsonPointers: true,
     verbose: true,
   });
   const schema: Ajv.JSONSchemaType<IConfigServerModel> =
-    JSON.parse(configSchema);
+    DynamicSchema.acLabArduino();
   const validate = ajv.compile(schema);
 
   if (!validate(data)) {
@@ -65,9 +64,17 @@ export async function doValidContentModel(
       );
     });
   } else {
-    result.push(...(await doValidCliVersion(workspace, data)));
-    result.push(...(await doValidPort(workspace, data)));
-    result.push(...(await doValidPlatformAndBoard(workspace, data)));
+    await doValidCliVersion(workspace, data)
+      .then((diagnostic: Diagnostic[]) => {
+        result.push(...diagnostic);
+        return diagnostic.length === 0;
+      })
+      .then(async (ok: boolean) => {
+        if (ok) {
+          result.push(...(await doValidPort(workspace, data)));
+          result.push(...(await doValidPlatformAndBoard(workspace, data)));
+        }
+      });
   }
 
   return result;
@@ -109,7 +116,7 @@ async function doValidCliVersion(
     );
   }
 
-  return Promise.resolve(diagnostics);
+  return diagnostics;
 }
 
 async function doValidPort(
@@ -197,15 +204,7 @@ async function doValidPlatformAndBoard(
       }
     }
   } else {
-    diagnostics.push(
-      ArduinoDiagnostic.createProjectDiagnostic(
-        workspace,
-        undefined,
-        ArduinoDiagnostic.Error.E099_ARDUIONO_CLI,
-        exec.reason,
-        {}
-      )
-    );
+    createDiag(ArduinoDiagnostic.Error.E099_ARDUIONO_CLI, exec.reason);
   }
   // if (release) {
   //   await ArduinoCli.instance()

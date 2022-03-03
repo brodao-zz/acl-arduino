@@ -1,7 +1,7 @@
 import fse = require("fs-extra");
 import glob = require("glob");
 import { Diagnostic } from "vscode-languageserver/node";
-import { doValidModel } from "./do-valid-model";
+//import { doValidModel } from "./do-valid-model";
 
 export const COMMAND_CHECK_PROJECT: string = "arduinoExplorer.checkProject";
 export interface ICheckProjectResult {
@@ -27,7 +27,7 @@ export async function doCheckProject(
   if (existsConfig) {
     result.status = 1;
 
-    const diagnostics: Diagnostic[] = await doValidModel(filename);
+    const diagnostics: Diagnostic[] = []; // await doValidModel(filename);
     if (diagnostics.length > 0) {
       result.status = 4;
       result.diagnostics.push(...diagnostics);

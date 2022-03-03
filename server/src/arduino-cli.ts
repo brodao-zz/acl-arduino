@@ -159,13 +159,17 @@ export class ArduinoCli {
     return this._config;
   }
 
-  private _executeCommand(
+  private executeCommand(
     commandCli: string,
     args: string[] = [],
     extra: string[] = FORMAT_JSON
   ): IArduinoExec {
     if (!this.runOptions.arduinCliBin) {
-      throw new Error("Arduino-CLI not informed.");
+      return {
+        status: false,
+        data: undefined,
+        reason: "Arduino-CLI not informed",
+      };
     }
 
     const params = [
@@ -289,9 +293,11 @@ export class ArduinoCli {
     let version: string = "";
 
     try {
-      const result: IArduinoExec = this._executeCommand("version");
+      const result: IArduinoExec = this.executeCommand("version");
       if (result.status) {
         version = result.data["VersionString"];
+      } else {
+        this._logger.error(result.reason);
       }
     } catch (e: any) {
       this._logger.error(e.toString());
@@ -301,15 +307,15 @@ export class ArduinoCli {
   }
 
   configInitDir(destFolder: string): IArduinoExec {
-    return this._executeCommand("config", ["init", "--dest-dir", destFolder]);
+    return this.executeCommand("config", ["init", "--dest-dir", destFolder]);
   }
 
   configInitFile(destFile: string): IArduinoExec {
-    return this._executeCommand("config", ["init", "--dest-file", destFile]);
+    return this.executeCommand("config", ["init", "--dest-file", destFile]);
   }
 
   coreDownload(): any {
-    return this._executeCommand("core", ["download"]);
+    return this.executeCommand("core", ["download"]);
   }
 
   coreList(params: string): IArduinoExec {
@@ -317,7 +323,7 @@ export class ArduinoCli {
     let result = ACLCache.load(cacheId);
 
     if (!result) {
-      result = this._executeCommand("core", ["list", params]);
+      result = this.executeCommand("core", ["list", params]);
       ACLCache.write(cacheId, result);
     }
 
@@ -327,7 +333,7 @@ export class ArduinoCli {
   coreUpdateIndex(): IArduinoExec {
     ACLCache.clear();
 
-    return this._executeCommand("core", ["update-index"], FORMAT_TEXT);
+    return this.executeCommand("core", ["update-index"], FORMAT_TEXT);
   }
 
   validate3rdPartyUrl(url: string): IArduinoExec[] {
@@ -345,7 +351,7 @@ export class ArduinoCli {
   // }
 
   configAdd3rdPartyUrl(url: string): IArduinoExec {
-    return this._executeCommand(
+    return this.executeCommand(
       "config",
       ["add", "board_manager.additional_urls", url],
       FORMAT_TEXT
@@ -353,7 +359,7 @@ export class ArduinoCli {
   }
 
   configRemove3thPartyUrl(url: string): IArduinoExec {
-    return this._executeCommand(
+    return this.executeCommand(
       "config",
       ["remove", "board_manager.additional_urls", url],
       FORMAT_TEXT
@@ -361,7 +367,7 @@ export class ArduinoCli {
   }
 
   coreInstall(platform: string, version: string): any {
-    return this._executeCommand(
+    return this.executeCommand(
       "core",
       ["install", `${platform}@${version}`],
       FORMAT_TEXT
@@ -373,7 +379,7 @@ export class ArduinoCli {
     let result = ACLCache.load(cacheId);
 
     if (!result) {
-      result = this._executeCommand("board", ["list"], FORMAT_JSON);
+      result = this.executeCommand("board", ["list"], FORMAT_JSON);
       ACLCache.write(cacheId, result);
     }
 

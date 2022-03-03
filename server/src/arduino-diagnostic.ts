@@ -138,27 +138,27 @@ export namespace ArduinoDiagnostic {
 
   // @ts-ignore
   function codeToTags(code: Error | Information): DiagnosticTag[] | undefined {
-    switch (code) {
-      case Error.E001_INVALID_CLI_VERSION:
-        return [DiagnosticTag.Deprecated];
+    // switch (code) {
+    //   case Error.E001_INVALID_CLI_VERSION:
+    //     return [DiagnosticTag.Deprecated];
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
 
     return undefined;
   }
 
   function codeToDescription(
-    code: ArduinoDiagnostic.Error | ArduinoDiagnostic.Information
+    _code: ArduinoDiagnostic.Error | ArduinoDiagnostic.Information
   ): CodeDescription | undefined {
-    switch (code) {
-      case Error.E001_INVALID_CLI_VERSION:
-        return { href: "http://teste" };
+    // switch (code) {
+    //   case Error.E001_INVALID_CLI_VERSION:
+    //     return { href: "http://teste" };
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
 
     return undefined;
   }

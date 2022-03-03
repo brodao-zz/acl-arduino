@@ -1,4 +1,5 @@
 import fse = require("fs-extra");
+import path = require("path");
 import { Position, TextDocument } from "vscode-languageserver-textdocument";
 import {
   CodeAction,
@@ -23,7 +24,6 @@ import {
 } from "./language-model-cache";
 import { getDocumentRegions, JsonDocumentRegions } from "./regions-support";
 import { getConfigMode } from "./config-mode";
-const path = require("path");
 import { debug } from "console";
 import { ArduinoGithub } from "../arduino-github";
 import { Server } from "../server-interf";
@@ -32,6 +32,7 @@ import {
   createReleaseDocumentation,
 } from "./completion-item-documentation";
 import { ArduinoCli } from "../arduino-cli";
+import { DynamicSchema } from "../dynamicSchema";
 
 export interface LanguageMode {
   getId(): string;
@@ -43,7 +44,10 @@ export interface LanguageMode {
     position: Position
   ) => Thenable<CompletionList>;
   doResolve?(item: CompletionItem): Thenable<CompletionItem>;
-  _doProvideCodeActions(params: CodeActionParams): (Command | CodeAction)[];
+  _doProvideCodeActions(
+    document: TextDocument,
+    params: CodeActionParams
+  ): (Command | CodeAction)[];
   //doSignatureHelp(document: TextDocument, position: Position): any;
 }
 
@@ -69,25 +73,14 @@ if (!fse.existsSync(SCHEMA_FOLDER)) {
   SCHEMA_FOLDER = path.join(__dirname, "..", "..", "schema");
 }
 
-const configSchemaUri: string = "aclab://server/aclabarduino.schema.json";
-export const configSchema = fse
-  .readFileSync(path.join(SCHEMA_FOLDER, "aclabarduino.schema.json"))
-  .toString();
-
-// const jsonBoardSchemaUri = "aclab://server/board.schema.json";
-// const jsonBoardSchema = fse
-//   .readFileSync(path.join(SCHEMA_FOLDER, "board.schema.json"))
-//   .toString();
-
 export function getLanguageModes(): LanguageModes {
   const jsonLanguageService: JsonLanguageService = getJsonLanguageService({
     schemaRequestService: (uri) => {
-      if (uri === configSchemaUri) {
-        return Promise.resolve(configSchema);
+      if (uri === DynamicSchema.SCHEMA_ACLABARDUINO) {
+        return Promise.resolve(JSON.stringify(DynamicSchema.acLabArduino()));
+      } else if (uri === DynamicSchema.SCHEMA_CLI_VERSION) {
+        return Promise.resolve(JSON.stringify(DynamicSchema.cliVersion()));
       }
-      // if (uri === jsonBoardSchemaUri) {
-      //   return Promise.resolve(jsonBoardSchema);
-      // }
 
       return Promise.reject(`Unabled to load schema at ${uri}`);
     },
@@ -156,7 +149,12 @@ export function getLanguageModes(): LanguageModes {
   // associate `*.data.json` with the `foo://server/data.schema.json` schema
   jsonLanguageService.configure({
     allowComments: true,
-    schemas: [{ fileMatch: ["aclabarduino.json"], uri: configSchemaUri }],
+    schemas: [
+      {
+        fileMatch: ["aclabarduino.json"],
+        uri: DynamicSchema.SCHEMA_ACLABARDUINO,
+      },
+    ],
   });
 
   const documentRegions = getLanguageModelCache<JsonDocumentRegions>(

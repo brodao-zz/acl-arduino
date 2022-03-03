@@ -1,4 +1,5 @@
 import * as Ajv from "ajv";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import {
   CodeAction,
   CodeActionParams,
@@ -7,6 +8,7 @@ import {
   CodeActionOptions,
   TextEdit,
   Diagnostic,
+  ExecuteCommandOptions,
 } from "vscode-languageserver/node";
 import { ArduinoDiagnostic } from "./arduino-diagnostic";
 import { COMMAND_INSTALL_CLI } from "./commands/do-install-cli";
@@ -14,11 +16,20 @@ import { ACLLogger } from "./logger";
 
 export function getCodeActionProvider(): CodeActionOptions {
   return {
-    codeActionKinds: [CodeActionKind.QuickFix],
+    codeActionKinds: [CodeActionKind.QuickFix, CodeActionKind.SourceFixAll],
   };
 }
 
-export function provideCodeActions(params: CodeActionParams): CodeAction[] {
+export function getExecuteCommandProvider(): ExecuteCommandOptions {
+  return {
+    commands: ["sample.fixMe"],
+  };
+}
+
+export function provideCodeActions(
+  document: TextDocument,
+  params: CodeActionParams
+): CodeAction[] {
   ACLLogger.instance().debug("provideCodeActions");
 
   if (!params.context.diagnostics.length) {
@@ -27,21 +38,33 @@ export function provideCodeActions(params: CodeActionParams): CodeAction[] {
 
   const codeActions: CodeAction[] = [];
   const diagnostics: Diagnostic[] = params.context.diagnostics;
+  const documentUri: string = params.textDocument.uri;
+
+  const missingPropertyDiags: Diagnostic[] = diagnostics.filter(
+    (diag: Diagnostic) => {
+      return diag.message.startsWith("Missing property");
+    }
+  );
+
+  if (missingPropertyDiags.length > 1) {
+    codeActions.push(missingAllProperty(documentUri, missingPropertyDiags));
+  }
 
   diagnostics.forEach((diag) => {
-    // if (diag.message === 'Missing property "board".') {
-    //   codeActions.push({
-    //     title: `Run Configuration Board`,
-    //     kind: CodeActionKind.QuickFix,
-    //     diagnostics: [diag],
-    //     //isPreferred: true,
-    //     command: Command.create(
-    //       "Select Board",
-    //       "aclabExplorer.selectBoard",
-    //       params.textDocument.uri.toString()
-    //     ),
-    //   });
-    //} else
+    const start: number = document.offsetAt(diag.range.start);
+    const end: number = document.offsetAt(diag.range.end) - start;
+    const text: string = document.getText().substring(start, end);
+
+    if (diag.message.startsWith("Missing property")) {
+      codeActions.push(
+        missingProperty(documentUri, diag, diag.range.start.line)
+      );
+    } else if (diag.code === 1) {
+      codeActions.push(...valueMust(documentUri, diag));
+    } else if (diag.code === 516) {
+    } else if (diag.code === 516) {
+      console.log(text);
+    }
     if (diag.code === ArduinoDiagnostic.Error.E001_INVALID_CLI_VERSION) {
       codeActions.push(processE001(params.textDocument.uri, diag));
     } else if (
@@ -59,77 +82,8 @@ export function provideCodeActions(params: CodeActionParams): CodeAction[] {
     } else if (diag.code === ArduinoDiagnostic.Error.E007_CLI_NOT_INSTALLED) {
       codeActions.push(processE007(diag));
     }
-
-    // if (
-    //   diag.severity === DiagnosticSeverity.Error &&
-    //   diag.message.includes(QUICKFIX_SPACE_BEFORE_EOS_MSG)
-    // ) {
-    //   codeActions.push({
-    //     title: "Adding space between value and end of statement operator",
-    //     kind: CodeActionKind.QuickFix,
-    //     diagnostics: [diag],
-    //     edit: {
-    //       changes: {
-    //         [params.textDocument.uri]: [
-    //           {
-    //             range: diag.range,
-    //             newText: " " + textDocument.getText(diag.range),
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   });
-    //   return;
-    // }
-
-    // if (
-    //   diag.severity === DiagnosticSeverity.Error &&
-    //   diag.message.includes(QUICKFIX_NO_EOS_MSG)
-    // ) {
-    //   codeActions.push({
-    //     title: "Adding end of statement operator",
-    //     kind: CodeActionKind.QuickFix,
-    //     diagnostics: [diag],
-    //     edit: {
-    //       changes: {
-    //         [params.textDocument.uri]: [
-    //           {
-    //             range: diag.range,
-    //             newText: textDocument.getText(diag.range) + " . ",
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   });
-    //   return;
-    // }
-
-    // if (
-    //   diag.severity === DiagnosticSeverity.Error &&
-    //   !diag.relatedInformation &&
-    //   diag.relatedInformation[0].message.includes(QUICKFIX_CHOICE_MSG)
-    // ) {
-    //   const actions = diag.relatedInformation[0].message
-    //     .substring(QUICKFIX_CHOICE_MSG.length)
-    //     .split(",");
-    //   codeActions.push({
-    //     title: `Change to a possible valid value: ${actions[0].trim()}`,
-    //     kind: CodeActionKind.QuickFix,
-    //     diagnostics: [diag],
-    //     edit: {
-    //       changes: {
-    //         [params.textDocument.uri]: [
-    //           {
-    //             range: diag.range,
-    //             newText: actions[0].trim(),
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   });
-    //   return;
-    // }
   });
+
   return codeActions;
 }
 
@@ -171,6 +125,82 @@ function processI002(documentUri: string, diag: Diagnostic): CodeAction {
       },
     },
   };
+}
+
+function missingAllProperty(
+  documentUri: string,
+  diagnostics: Diagnostic[]
+): CodeAction {
+  let line: number = 1;
+  const changes: { [uri: string]: TextEdit[] } = {};
+  changes[documentUri] = [];
+
+  diagnostics.forEach((diagnostic: Diagnostic) => {
+    const action: CodeAction = missingProperty(documentUri, diagnostic, line);
+    if (action.edit && action.edit.changes) {
+      changes[documentUri].push(...action.edit.changes[documentUri]);
+      //line++;
+    }
+  });
+
+  return {
+    title: `Fix all missing properties`,
+    kind: CodeActionKind.QuickFix,
+    diagnostics: diagnostics,
+    edit: {
+      changes: changes,
+    },
+  };
+}
+
+function missingProperty(
+  documentUri: string,
+  diagnostic: Diagnostic,
+  line: number
+): CodeAction {
+  const groups: string[] = /.*"(.*)"/.exec(diagnostic.message) || [];
+  const property: string = groups[1];
+
+  return {
+    title: `Add '${property}' property`,
+    kind: CodeActionKind.QuickFix,
+    diagnostics: [diagnostic],
+    edit: {
+      changes: {
+        [documentUri]: [
+          TextEdit.insert(
+            { line: line, character: diagnostic.range.end.character },
+            `\n${" ".repeat(
+              diagnostic.range.end.character
+            )}"${property}": "${""}",`
+          ),
+        ],
+      },
+    },
+  };
+}
+
+function valueMust(documentUri: string, diagnostic: Diagnostic): CodeAction[] {
+  const codeAction: CodeAction[] = [];
+  const block: string[] = diagnostic.message.match(/(".*")/g) || [];
+
+  if (block.length) {
+    const groups: string[] = block[0].split(",");
+    groups.forEach((value: string) => {
+      codeAction.push({
+        title: `${groups.length === 1 ? "Set " : ""}${value}`,
+        kind: CodeActionKind.QuickFix,
+        diagnostics: [diagnostic],
+        edit: {
+          changes: {
+            [documentUri]: [TextEdit.replace(diagnostic.range, `${value}`)],
+          },
+        },
+      });
+    });
+  }
+
+  return codeAction;
 }
 
 function processI003(documentUri: string, diag: Diagnostic): CodeAction {

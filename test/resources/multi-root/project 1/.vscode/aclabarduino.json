@@ -1,4 +1,6 @@
 {
-  "cliVersion": "",
-  "board": ""
+  "version": "0.0.1",
+  "board": "",
+  "port": "",
+  "cliVersion": "b"
 }
